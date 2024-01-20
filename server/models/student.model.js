@@ -69,6 +69,11 @@ const studentSchema = new mongoose.Schema(
       type: Boolean,
       default: true,
     },
+    deviceTokens: [
+      {
+        type: String,
+      },
+    ],
   },
   {
     timestamps: true,
@@ -77,5 +82,25 @@ const studentSchema = new mongoose.Schema(
   }
 );
 
+studentSchema.virtual("certifications", {
+  ref: "Certification",
+  localField: "_id",
+  foreignField: "student",
+});
+
+studentSchema.virtual("internships", {
+  ref: "Internship",
+  localField: "_id",
+  foreignField: "student",
+});
+
+studentSchema.virtual("courses", {
+  ref: "Course",
+  localField: "_id",
+  foreignField: "student",
+});
+
 // Make all strings have option `trim` equal to true. (remove whitespaces)
 mongoose.Schema.String.set("trim", true);
+
+export default new mongoose.model("Student", studentSchema);
