@@ -1,5 +1,7 @@
 import mongoose from "mongoose";
 import validator from "validator";
+import jwt from "jsonwebtoken";
+import bcrypt from "bcryptjs";
 
 //define the student model
 const studentSchema = new mongoose.Schema(
@@ -74,6 +76,10 @@ const studentSchema = new mongoose.Schema(
         type: String,
       },
     ],
+    role: {
+      type: String,
+      default: "student",
+    },
   },
   {
     timestamps: true,
@@ -98,6 +104,26 @@ studentSchema.virtual("courses", {
   ref: "Course",
   localField: "_id",
   foreignField: "student",
+});
+
+//generate access token for the student document
+studentSchema.methods.createAccessToken = async function () {
+  return jwt.sign(
+    { userId: this._id, role: this.role },
+    process.env.STUDENT_ACCESS_SECRET,
+    {
+      expiresIn: "1d",
+    }
+  );
+};
+
+studentSchema.methods.isPasswordCorrect = async function (oldPassword) {
+  return await bcrypt.compare(oldPassword, this.password);
+};
+
+studentSchema.pre("save", async function () {
+  if (!this.isModified("password")) return;
+  this.password = await bcrypt.hash(this.password, 10);
 });
 
 // Make all strings have option `trim` equal to true. (remove whitespaces)
