@@ -45,5 +45,5 @@ const internshipSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
-mongoose.Schema.String.set("trim", true);
-export default new mongoose.Schema("Internship", internshipSchema);
+
+export default mongoose.model("Internship", internshipSchema);

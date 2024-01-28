@@ -1,6 +1,6 @@
 import mongoose, { mongo } from "mongoose";
 import validator from "validator";
-import bcrypt from "bcryptjs"
+import bcrypt from "bcryptjs";
 
 const userSchema = new mongoose.Schema(
   {
@@ -21,6 +21,7 @@ const userSchema = new mongoose.Schema(
     password: {
       type: String,
       required: [true, "Password is required"],
+      select: false,
     },
     contact: {
       type: String,
@@ -57,7 +58,13 @@ const userSchema = new mongoose.Schema(
 //generate access token
 userSchema.methods.createAccessToken = async function () {
   return jwt.sign(
-    { userId: this._id, role: this.role },
+    {
+      user: {
+        userId: this._id,
+        role: this.role,
+        branch: this.branch,
+      },
+    },
     process.env.USER_ACCESS_SECRET,
     {
       expiresIn: "1d",
@@ -75,5 +82,4 @@ studentSchema.pre("save", async function () {
   this.password = await bcrypt.hash(this.password, 10);
 });
 
-mongoose.Schema.String.set("trim", true);
-export default new mongoose.model("User", userSchema);
+export default mongoose.model("User", userSchema);

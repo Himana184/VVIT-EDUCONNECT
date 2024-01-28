@@ -37,5 +37,5 @@ const courseSchema = new mongoose.Schema({
     },
   ],
 });
-mongoose.Schema.String.set("trim", true);
-export default new mongoose.model("Course", courseSchema);
+
+export default mongoose.model("Course", courseSchema);

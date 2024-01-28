@@ -2,6 +2,7 @@ import { Student, User } from "../models/index.js";
 import { StatusCodes } from "http-status-codes";
 import bcrypt from "bcryptjs";
 import mongoose from "mongoose";
+import { Student,User } from "../models/index.js";
 
 const cookieOptions = {
   httpOnly: true,
