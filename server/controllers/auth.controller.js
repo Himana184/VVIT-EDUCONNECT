@@ -1,52 +1,53 @@
-import { Student, User } from "../models/index.js";
+import { ApiResponse } from "../utils/ApiResponse.js";
+import { ApiError } from "../utils/ApiError.js";
 import { StatusCodes } from "http-status-codes";
-import bcrypt from "bcryptjs";
+import { cookieOptions } from "./constants.js";
+import Student from "../models/student.model.js";
+import User from "../models/user.model.js";
 import mongoose from "mongoose";
-import { Student,User } from "../models/index.js";
-
-const cookieOptions = {
-  httpOnly: true,
-  secure: process.env.NODE_ENV === "production",
-  sameSite: "None",
-  maxAge: 24 * 60 * 60 * 1000,
-};
 
 export const handleStudentLogin = async (req, res) => {
   //check whether student email and password are received
   const { email, password } = req.body;
+
   if (!email || !password) {
-    throw new Error("email and password are required", StatusCodes.BAD_REQUEST);
+    throw new ApiError(
+      StatusCodes.BAD_REQUEST,
+      "Email and password are required"
+    );
   }
 
-  //check whether the student exists in database with the given email
-  const student = await Student.findOne({ email }).select("-deviceTokens");
+  //check whether the student exists in database with the given email which can be either college or personal mail
+  var student = await Student.findOne({
+    $or: [{ collegeMail: email }, { personalMail: email }],
+  })
+    .select("+password")
+    .exec();
+
+  //if student details are not found with the given email
   if (!student) {
-    throw new Error("student details not found", StatusCodes.UNAUTHORIZED);
+    throw new ApiError(StatusCodes.NOT_FOUND, "Student details not found");
   }
 
   //compare the password received and password stored in the database
   const passwordMatch = await student.isPasswordCorrect(password);
   if (!passwordMatch) {
-    throw new Error("invalid login details", StatusCodes.UNAUTHORIZED);
+    throw new ApiError(StatusCodes.UNAUTHORIZED, "Invalid login details");
   }
 
   //generate a access token where the data contains the student id, rollnumber and role
   const accessToken = await student.generateAccessToken();
 
-  //password should not be sent back to frontend
-  delete student.password;
-
   //after the login is successful an email must be sent to the user
   //this will be done by kafka service
-  
+
   //return success response
   return res
     .status(StatusCodes.OK)
     .cookie("accessToken", accessToken, cookieOptions)
-    .json({
-      message: "student login successful",
-      student,
-    });
+    .json(
+      new ApiResponse(StatusCodes.OK, { student }, "student login successful")
+    );
 };
 
 export const handleUserLogin = async (req, res) => {

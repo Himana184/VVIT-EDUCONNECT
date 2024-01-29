@@ -125,9 +125,14 @@ studentSchema.virtual("coursesCount").get(function () {
 });
 
 //generate access token for the student document
-studentSchema.methods.createAccessToken = async function () {
+studentSchema.methods.generateAccessToken = async function () {
   return jwt.sign(
-    { userId: this._id, role: this.role },
+    {
+      user: {
+        userId: this._id,
+        role: "student",
+      },
+    },
     process.env.STUDENT_ACCESS_SECRET,
     {
       expiresIn: "1d",

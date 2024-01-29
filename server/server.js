@@ -3,8 +3,8 @@ import connectDB from "./db/connect.js";
 import dotenv from "dotenv";
 import "express-async-errors";
 import { errorHandler } from "./middleware/error.middlewares.js";
-import Internship from "./models/internship.model.js"
 import studentRouter from "./routes/student.routes.js";
+import authRouter from "./routes/auth.routes.js";
 
 //configure the env variable from the root path of the server (filename: .env)
 dotenv.config();
@@ -13,6 +13,7 @@ const app = express();
 app.use(express.json());
 
 //routes
+app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/student", studentRouter);
 
 //custom error middleware

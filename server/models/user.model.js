@@ -56,7 +56,7 @@ const userSchema = new mongoose.Schema(
 );
 
 //generate access token
-userSchema.methods.createAccessToken = async function () {
+userSchema.methods.generateAccessToken = async function () {
   return jwt.sign(
     {
       user: {
@@ -73,11 +73,11 @@ userSchema.methods.createAccessToken = async function () {
 };
 
 //compare the password received and password in db
-studentSchema.methods.isPasswordCorrect = async function (oldPassword) {
+userSchema.methods.isPasswordCorrect = async function (oldPassword) {
   return await bcrypt.compare(oldPassword, this.password);
 };
 
-studentSchema.pre("save", async function () {
+userSchema.pre("save", async function () {
   if (!this.isModified("password")) return;
   this.password = await bcrypt.hash(this.password, 10);
 });
