@@ -131,6 +131,7 @@ studentSchema.methods.generateAccessToken = async function () {
       user: {
         userId: this._id,
         role: "student",
+        branch: this.branch,
       },
     },
     process.env.STUDENT_ACCESS_SECRET,

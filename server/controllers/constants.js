@@ -22,6 +22,8 @@ export const certificationRequiredFields = [
 export const internshipRequiredFields = [
   "companyName",
   "student",
+  "internshipDomain",
+  "branch",
   "role",
   "stipend",
   "offerLetter",
@@ -59,7 +61,6 @@ export const studentRequiredFields = [
   "image",
   "passoutYear",
 ];
-
 
 export const cookieOptions = {
   httpOnly: true,
