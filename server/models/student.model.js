@@ -1,5 +1,11 @@
 import mongoose from "mongoose";
 import validator from "validator";
+import jwt from "jsonwebtoken";
+import bcrypt from "bcryptjs";
+import Internship from "./internship.model.js";
+import Course from "./course.model.js";
+import Certification from "./certification.model.js";
+import Query from "./query.model.js";
 
 //define the student model
 const studentSchema = new mongoose.Schema(
@@ -14,7 +20,7 @@ const studentSchema = new mongoose.Schema(
       required: [true, "Student roll number is required"],
       unique: true,
     },
-    collegemail: {
+    collegeMail: {
       type: String,
       required: [true, "College Mail is required"],
       unique: true,
@@ -35,6 +41,7 @@ const studentSchema = new mongoose.Schema(
     password: {
       type: String,
       required: [true, "Password is required"],
+      select: false,
     },
     contact: {
       type: String,
@@ -72,8 +79,14 @@ const studentSchema = new mongoose.Schema(
     deviceTokens: [
       {
         type: String,
+        select: false,
       },
     ],
+    role: {
+      select: false,
+      type: String,
+      default: "student",
+    },
   },
   {
     timestamps: true,
@@ -100,7 +113,48 @@ studentSchema.virtual("courses", {
   foreignField: "student",
 });
 
-// Make all strings have option `trim` equal to true. (remove whitespaces)
-mongoose.Schema.String.set("trim", true);
+studentSchema.virtual("queries", {
+  ref: "Query",
+  localField: "_id",
+  foreignField: "student",
+});
 
-export default new mongoose.model("Student", studentSchema);
+studentSchema.virtual("internshipsCount").get(function () {
+  return this.internships?.length || 0;
+});
+
+studentSchema.virtual("certificationsCount").get(function () {
+  return this.certifications?.length || 0;
+});
+
+studentSchema.virtual("coursesCount").get(function () {
+  return this.courses?.count || 0;
+});
+
+//generate access token for the student document
+studentSchema.methods.generateAccessToken = async function () {
+  return jwt.sign(
+    {
+      user: {
+        userId: this._id,
+        role: "student",
+        branch: this.branch,
+      },
+    },
+    process.env.STUDENT_ACCESS_SECRET,
+    {
+      expiresIn: "1d",
+    }
+  );
+};
+
+studentSchema.methods.isPasswordCorrect = async function (oldPassword) {
+  return await bcrypt.compare(oldPassword, this.password);
+};
+
+studentSchema.pre("save", async function () {
+  if (!this.isModified("password")) return;
+  this.password = await bcrypt.hash(this.password, 10);
+});
+
+export default mongoose.model("Student", studentSchema);

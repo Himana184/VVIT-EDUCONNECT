@@ -41,6 +41,5 @@ const certificationSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
-mongoose.Schema.String.set("trim", true);
 
-export default new mongoose.model("Certification", certificationSchema);
+export default mongoose.model("Certification", certificationSchema);
