@@ -7,6 +7,16 @@ const internshipSchema = new mongoose.Schema(
       ref: "Student",
       required: [true, "student details are required"],
     },
+    branch: {
+      type: String,
+      required: [true, "student branch is required"],
+    },
+    internshipDomain: [
+      {
+        type: String,
+        required: [true, "Atleast one domain is required"],
+      },
+    ],
     companyName: {
       type: String,
       required: [true, "company name is required"],
@@ -40,10 +50,20 @@ const internshipSchema = new mongoose.Schema(
       type: String,
       required: [true, "internship completion certificate is required"],
     },
+    verificationStatus: {
+      type: String,
+      enum : ["pending","verified","rejected"],
+    },
+    comment : {
+      type : String
+    }
   },
   {
     timestamps: true,
   }
 );
-mongoose.Schema.String.set("trim", true);
-export default new mongoose.Schema("Internship", internshipSchema);
+
+
+mongoose.SchemaTypes.String.set("trim", true);
+
+export default mongoose.model("Internship", internshipSchema);

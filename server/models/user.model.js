@@ -1,5 +1,6 @@
 import mongoose, { mongo } from "mongoose";
 import validator from "validator";
+import bcrypt from "bcryptjs";
 
 const userSchema = new mongoose.Schema(
   {
@@ -20,6 +21,7 @@ const userSchema = new mongoose.Schema(
     password: {
       type: String,
       required: [true, "Password is required"],
+      select: false,
     },
     contact: {
       type: String,
@@ -52,5 +54,32 @@ const userSchema = new mongoose.Schema(
     toObject: { virtuals: true },
   }
 );
-mongoose.Schema.String.set("trim", true);
-export default new mongoose.model("User", userSchema);
+
+//generate access token
+userSchema.methods.generateAccessToken = async function () {
+  return jwt.sign(
+    {
+      user: {
+        userId: this._id,
+        role: this.role,
+        branch: this.branch,
+      },
+    },
+    process.env.USER_ACCESS_SECRET,
+    {
+      expiresIn: "1d",
+    }
+  );
+};
+
+//compare the password received and password in db
+userSchema.methods.isPasswordCorrect = async function (oldPassword) {
+  return await bcrypt.compare(oldPassword, this.password);
+};
+
+userSchema.pre("save", async function () {
+  if (!this.isModified("password")) return;
+  this.password = await bcrypt.hash(this.password, 10);
+});
+
+export default mongoose.model("User", userSchema);

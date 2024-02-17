@@ -30,6 +30,4 @@ const announcementSchema = new mongoose.Schema({
   },
 });
 
-mongoose.Schema.String.set("trim", true);
-
-export default new mongoose.model("Announcement", announcementSchema);
+export default mongoose.model("Announcement", announcementSchema);
