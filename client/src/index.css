@@ -60,3 +60,22 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Track */
+::-webkit-scrollbar {
+  width: 5px;
+  padding: 2px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #f4511e;
+  border-radius: 9999px;
+  padding: 2px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #fff;
+  padding: 2px;
+}

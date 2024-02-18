@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 const Sidebar = ({ show }) => {
   const role = "admin"
   return (
-    <aside className={`fixed w-28 lg:block h-screen px-2 bg-white border-r border-r-blue-gray-50 ${show ? "block" : "hidden"}`}>
+    <aside className={` flex justify-center items-center fixed w-[26] lg:block h-screen px-2 bg-white border-r border-r-blue-gray-50 ${show ? "block" : "hidden"}`}>
       {sidebarLinks[role].map((link, index) => (
         <Link
           key={index}
