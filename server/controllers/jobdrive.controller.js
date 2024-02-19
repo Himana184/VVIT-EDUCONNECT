@@ -20,43 +20,51 @@ export const handleAddJobDrive = async (req, res) => {
     throw new ApiError(StatusCodes.BAD_REQUEST, message);
   }
 
-  //set the branch of the user so that it is easy to filter the jobs based on branch
-  req.body.branch = req.user.branch;
-
+  //create a new job drive with given details
   const newJobDrive = await JobDrive.create(req.body);
+
+  //fetch all jobdrives
+  const jobDrives = await JobDrive.find({}).sort({ createdAt: -1 });
 
   return res
     .status(StatusCodes.OK)
     .json(
       new ApiResponse(
         StatusCodes.CREATED,
-        { jobdrives },
-        `Offer at ${newJobDrive.companyName} has been added`
+        { jobDrives },
+        `Job drive of ${newJobDrive.companyName} has been added`
       )
     );
 };
 
-
 export const getAllJobDrives = async (req, res) => {
-    
-    const jobDrives = await JobDrive.find({})
-    .populate("optedStudents")  // Populate optedStudents if needed
+  const jobDrives = await JobDrive.find({})
+    .populate("optedStudents") // Populate optedStudents if needed
     .exec();
-  
-    return res
-     .status(StatusCodes.OK)
-     .json(
-        new ApiResponse(
-            StatusCodes.OK,
-            { jobDrives },
-            "Job Drives data sent"
-        )
-        );
-    
-  };
+
+  return res
+    .status(StatusCodes.OK)
+    .json(
+      new ApiResponse(StatusCodes.OK, { jobDrives }, "Job Drives data sent")
+    );
+};
 
 export const handleDeleteJobDrive = async (req, res) => {
-  const { jobdriveIds } = req.body;
-  const response = await JobDrive.deleteMany({ _id: { $in: jobdriveIds } });
-  return res.status(StatusCodes.OK).json(new ApiResponse(StatusCodes.OK,{response},"Jobdrive deleted successfully"))
+  const jobDriveId = req.params.jobdriveId;
+
+  if (!mongoose.isValidObjectId(jobDriveId)) {
+    throw new ApiError(StatusCodes.BAD_REQUEST, "Not a valid Job Drive Id");
+  }
+  const response = await JobDrive.findOneAndDelete(jobDriveId);
+  //fetch all jobdrives
+  const jobDrives = await JobDrive.find({}).sort({ createdAt: -1 });
+  return res
+    .status(StatusCodes.OK)
+    .json(
+      new ApiResponse(
+        StatusCodes.OK,
+        { jobDrives },
+        `Job drive of ${response.companyName} has been deleted`
+      )
+    );
 };
