@@ -26,7 +26,9 @@ export const handleAddCertification = async (req, res) => {
   const newCertification = await Certification.create(req.body);
 
   //return all the certifications of the student
-  const certifications = await Certification.find({ student: req.user.userId }).sort({
+  const certifications = await Certification.find({
+    student: req.user.userId,
+  }).sort({
     createdAt: 1,
   });
 
@@ -51,7 +53,10 @@ export const handleUpdateCertification = async (req, res) => {
   const certification = await Certification.findById(certificationId);
 
   if (!certification) {
-    throw new ApiError(StatusCodes.NOT_FOUND, "certification details not found");
+    throw new ApiError(
+      StatusCodes.NOT_FOUND,
+      "certification details not found"
+    );
   }
 
   const updatedCertification = await Certification.findByIdAndUpdate(
@@ -63,7 +68,9 @@ export const handleUpdateCertification = async (req, res) => {
     }
   );
 
-  const certifications = await Certification.find({ student: req.user.userId }).sort({
+  const certifications = await Certification.find({
+    student: req.user.userId,
+  }).sort({
     createdAt: 1,
   });
 
@@ -77,8 +84,6 @@ export const handleUpdateCertification = async (req, res) => {
     )
   );
 };
-
-
 
 export const getStudentCertifications = async (req, res) => {
   const { studentId } = req.params;
@@ -112,12 +117,28 @@ export const getAllCertifications = async (req, res) => {
   return res
     .status(StatusCodes.OK)
     .json(
-      new ApiResponse(StatusCodes.OK, { certifications }, "certifications data sent")
+      new ApiResponse(
+        StatusCodes.OK,
+        { certifications },
+        "certifications data sent"
+      )
     );
 };
 
 export const handleDeleteCertification = async (req, res) => {
-  const { certificationIds } = req.body;
-  const response = await Certification.deleteMany({ _id: { $in: certificationIds } });
-  return res.status(StatusCodes.OK).json(new ApiResponse(StatusCodes.OK,{response},"Certifications deleted successfully"))
+  const certificationId = req.params.certificationId;
+  if (!mongoose.isValidObjectId(certificationId)) {
+    throw new ApiError(StatusCodes.BAD_REQUEST, "Not a valid certification Id");
+  }
+  const response = await Certification.findByIdAndDelete(certificationId);
+  const certifications = await Certification.find({ student: req.user.userId });
+  return res
+    .status(StatusCodes.OK)
+    .json(
+      new ApiResponse(
+        StatusCodes.OK,
+        { certifications },
+        `Certification ${response.name} deleted successfully`
+      )
+    );
 };
