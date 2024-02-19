@@ -51,6 +51,7 @@ const AddJobDrive = () => {
 
   //function which handles job drive
   const handleAddJobDrive = async (data) => {
+    // combine data from all the states in the form and print it 
     console.log("Job drive data:", data);
   }
 
