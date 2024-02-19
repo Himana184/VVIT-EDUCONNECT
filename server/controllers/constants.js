@@ -46,6 +46,7 @@ export const announcementRequiredFields = [
   "title",
   "description",
   "category",
+  "branches",
   "priority",
 ];
 
@@ -60,6 +61,18 @@ export const studentRequiredFields = [
   "section",
   "image",
   "passoutYear",
+];
+export const jobDriveRequiredFields = [
+  "salary",
+  "eligibleBranches",
+  "companyName",
+  "category",
+  "roles",
+  "offerType",
+  "lastDate",
+  "description",
+  "jobLocation",
+  "skills",
 ];
 
 export const cookieOptions = {
