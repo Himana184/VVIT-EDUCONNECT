@@ -142,3 +142,17 @@ export const handleDeleteCertification = async (req, res) => {
       )
     );
 };
+export const getCertificationsByRole = async (role) => {
+  let certifications = [];
+  if (req.user.role === "admin") {
+    certifications = await Certification.find({}).sort({ createdAt: -1 });
+  } else if (req.user.role === "coordinator") {
+    certifications = await Certification.find({ branch: req.user.branch }).sort({
+      createdAt: -1,
+    });
+  } else {
+    certifications = await Certification .find({ student: req.user.userId }).sort({
+      createdAt: -1,
+    });
+  }
+};

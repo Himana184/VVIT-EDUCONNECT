@@ -155,3 +155,17 @@ export const handleDeleteInternship = async (req, res) => {
   const response = await Internship.deleteMany({ _id: { $in: internshipIds } });
   return res.status(StatusCodes.OK).json(new ApiResponse(StatusCodes.OK,{response},"Internships deleted successfully"))
 };
+export const getInternshipsByRole = async (role) => {
+  let internships = [];
+  if (req.user.role === "admin") {
+    internships = await Internship.find({}).sort({ createdAt: -1 });
+  } else if (req.user.role === "coordinator") {
+    internships = await Internship.find({ branch: req.user.branch }).sort({
+      createdAt: -1,
+    });
+  } else {
+    internships = await Internship.find({ student: req.user.userId }).sort({
+      createdAt: -1,
+    });
+  }
+};

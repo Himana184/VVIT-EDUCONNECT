@@ -132,7 +132,7 @@ export const handleDeleteCourse = async (req, res) => {
     );
 };
 
-const getCoursesByRole = async (role) => {
+export const getCoursesByRole = async (role) => {
   let courses = [];
   if (req.user.role === "admin") {
     courses = await Course.find({}).sort({ createdAt: -1 });

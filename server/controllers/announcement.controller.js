@@ -50,9 +50,24 @@ export const handleAddAnnouncement = async (req, res) => {
         )
         );
     
-  };
-  export const handleDeleteAnnouncement = async (req, res) => {
-    const { announcementIds } = req.body;
-    const response = await Announcement.deleteMany({ _id: { $in: announcementIds } });
-    return res.status(StatusCodes.OK).json(new ApiResponse(StatusCodes.OK,{response},"Announcement deleted successfully"))
-  };
+};
+export const handleDeleteAnnouncement = async (req, res) => {
+  const announcementId = req.params.announceId;
+
+  if (!mongoose.isValidObjectId(announcementId)) {
+    throw new ApiError(StatusCodes.BAD_REQUEST, "Not a valid Announcement Id");
+  }
+  const response = await Announcement.findOneAndDelete(jobDriveId);
+  //fetch all anouncements
+  const announcements = await Announcement.find({}).sort({ createdAt: -1 });
+  return res
+    .status(StatusCodes.OK)
+    .json(
+      new ApiResponse(
+        StatusCodes.OK,
+        { announcements },
+        `Announcement of ${response.branches} has been deleted`
+      )
+    );
+};
+

@@ -164,3 +164,17 @@ export const deleteStudent = async (req, res) => {
       )
     );
 };
+export const getStudentsByRole = async (role) => {
+  let students = [];
+  if (req.user.role === "admin") {
+    students = await Student.find({}).sort({ createdAt: -1 });
+  } else if (req.user.role === "coordinator") {
+    students = await Student.find({ branch: req.user.branch }).sort({
+      createdAt: -1,
+    });
+  } else {
+    students = await Student.find({ student: req.user.userId }).sort({
+      createdAt: -1,
+    });
+  }
+};
