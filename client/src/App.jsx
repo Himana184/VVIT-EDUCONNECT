@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 
 import AdminLayout from "./components/layouts/AdminLayout"
 import Students from "./pages/admin/Students"
+import Coordinators from "./pages/admin/Coordinators"
 const App = () => {
   return (
     <Router>
@@ -23,6 +24,7 @@ const App = () => {
         {/* all routes of admin */}
         <Route path="/admin" element={<AdminLayout />}>
           <Route path="students" index element={<Students />}></Route>
+          <Route path="coordinators" index element={<Coordinators />}></Route>
         </Route>
 
         {/* all routes of coordinator */}

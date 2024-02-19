@@ -34,6 +34,7 @@ const userSchema = new mongoose.Schema(
     },
     branch: {
       type: String,
+      required: [true, "Branch is required"],
     },
     role: {
       type: String,
