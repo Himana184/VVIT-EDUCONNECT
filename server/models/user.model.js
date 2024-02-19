@@ -35,6 +35,10 @@ const userSchema = new mongoose.Schema(
     branch: {
       type: String,
     },
+    loginAccess: {
+      type: Boolean,
+      default: true,
+    },
     role: {
       type: String,
       required: [true, "user role is required"],
