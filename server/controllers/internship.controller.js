@@ -151,9 +151,21 @@ export const getAllInternships = async (req, res) => {
 };
 
 export const handleDeleteInternship = async (req, res) => {
-  const { internshipIds } = req.body;
-  const response = await Internship.deleteMany({ _id: { $in: internshipIds } });
-  return res.status(StatusCodes.OK).json(new ApiResponse(StatusCodes.OK,{response},"Internships deleted successfully"))
+  const internshipId = req.params.internshipId;
+  if (!mongoose.isValidObjectId(internshipId)) {
+    throw new ApiError(StatusCodes.BAD_REQUEST, "Not a valid certification Id");
+  }
+  const response = await Internship.findByIdAndDelete(internshipId);
+  const internships = await Internship.find({ student: req.user.userId });
+  return res
+    .status(StatusCodes.OK)
+    .json(
+      new ApiResponse(
+        StatusCodes.OK,
+        { internships },
+        `internship ${response.companyName} deleted successfully`
+      )
+    );
 };
 export const getInternshipsByRole = async (role) => {
   let internships = [];

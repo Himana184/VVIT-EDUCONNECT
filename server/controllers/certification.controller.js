@@ -151,7 +151,7 @@ export const getCertificationsByRole = async (role) => {
       createdAt: -1,
     });
   } else {
-    certifications = await Certification .find({ student: req.user.userId }).sort({
+    certifications = await Certification.find({ student: req.user.userId }).sort({
       createdAt: -1,
     });
   }

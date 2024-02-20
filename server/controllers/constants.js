@@ -62,6 +62,13 @@ export const studentRequiredFields = [
   "image",
   "passoutYear",
 ];
+export const queryRequiredFields = [
+  "title",
+  "description",
+  "category",
+  "student",
+  "branch",
+];
 export const jobDriveRequiredFields = [
   "salary",
   "eligibleBranches",
