@@ -6,6 +6,7 @@ import Students from "./pages/admin/Students"
 import Coordinators from "./pages/admin/Coordinators"
 import Jobs from "./pages/admin/Jobs"
 import JobDetail from "./components/jobs/JobDetail"
+import Certifications from "./pages/admin/Certifications"
 const App = () => {
   return (
     <Router>
@@ -28,8 +29,8 @@ const App = () => {
           <Route path="students" index element={<Students />}></Route>
           <Route path="coordinators" index element={<Coordinators />}></Route>
           <Route path="jobs" element={<Jobs />} >
-
           </Route>
+          <Route path="certifications" element={<Certifications />}></Route>
           <Route path="detail" element={<JobDetail />} />
         </Route>
 

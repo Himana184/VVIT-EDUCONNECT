@@ -3,8 +3,6 @@
 import { Banknote, Briefcase, CalendarSearch, MapPin } from "lucide-react";
 import { Badge } from "../ui/badge"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../ui/card"
-import { FaLocationDot } from "react-icons/fa6";
-import { MdOutlineWork } from "react-icons/md";
 import { Button } from "../ui/button";
 
 const JobCard = ({ job }) => {
