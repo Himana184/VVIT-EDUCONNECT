@@ -158,6 +158,5 @@ export const getQueriesByRole = async (role) => {
       createdAt: -1,
     });
   }
-
   return queries;
 };

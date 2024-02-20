@@ -3,6 +3,7 @@ import {
     handleAddAnnouncement,
     getAllAnnouncements,
     handleDeleteAnnouncement,
+    handleUpdateAnnouncement,
   } from '../controllers/announcement.controller.js';
 const router = express.Router();
 // actions can be performed by  admin, coordinator
@@ -10,5 +11,6 @@ router
   .route("/")
   .get(getAllAnnouncements)
   .post(handleAddAnnouncement)
-  .delete(handleDeleteAnnouncement);
+  .delete(handleDeleteAnnouncement)
+  .patch(handleUpdateAnnouncement);
 export default router;

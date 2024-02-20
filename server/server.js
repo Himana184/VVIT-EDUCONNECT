@@ -9,8 +9,8 @@ import internshipRouter from "./routes/internship.routes.js";
 import certificationRouter from "./routes/certification.routes.js";
 import courseRouter from "./routes/course.routes.js";
 import announcementRouter from "./routes/announcement.routes.js";
-import queryRouter from "./routes/query.route.js";
-import jobdriveRouter from "./routes/jobdrive.route.js";
+import queryRouter from "./routes/query.routes.js";
+import jobdriveRouter from "./routes/jobdrive.routes.js";
 //configure the env variable from the root path of the server (filename: .env)
 dotenv.config();
 

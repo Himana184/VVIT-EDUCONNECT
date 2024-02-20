@@ -5,80 +5,101 @@ import { announcementRequiredFields } from "./constants.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import Announcement from "../models/announcement.model.js";
 import mongoose from "mongoose";
+
 export const handleAddAnnouncement = async (req, res) => {
-    //check whether all the required fields have been received or not
-    const requiredFieldsValidation = checkRequiredFields(
-      req.body,
-      announcementRequiredFields
-    );
-  
-    //if required fields are not present
-    if (!requiredFieldsValidation.status) {
-      const { message } = requiredFieldsValidation;
-      throw new ApiError(StatusCodes.BAD_REQUEST, message);
-    }
-  
-    //set the branch of the user so that it is easy to filter the announcements based on branch
-    req.body.branch = req.user.branch;
-  
-    const newAnnouncement = await Announcement.create(req.body);
+  //check whether all the required fields have been received or not
+  const requiredFieldsValidation = checkRequiredFields(
+    req.body,
+    announcementRequiredFields
+  );
 
-  
-    return res
-      .status(StatusCodes.OK)
-      .json(
-        new ApiResponse(
-          StatusCodes.CREATED,
-          { certifications },
-          `Announcement for ${newAnnouncement.branches} has been added`
-        )
-      );
-  };
-  export const getAllAnnouncements = async (req, res) => {
-    
-    const announcements = await getAnnouncementsByRole(req.user.role);
-    return res
-     .status(StatusCodes.OK)
-     .json(
-        new ApiResponse(
-            StatusCodes.OK,
-            { announcements },
-            "Announcements data sent"
-        )
-        );
-    
-};
-export const handleDeleteAnnouncement = async (req, res) => {
-  const announcementId = req.params.announceId;
-
-  if (!mongoose.isValidObjectId(announcementId)) {
-    throw new ApiError(StatusCodes.BAD_REQUEST, "Not a valid Announcement Id");
+  //if required fields are not present
+  if (!requiredFieldsValidation.status) {
+    const { message } = requiredFieldsValidation;
+    throw new ApiError(StatusCodes.BAD_REQUEST, message);
   }
-  const response = await Announcement.findOneAndDelete(jobDriveId);
-  //fetch all anouncements
-  const announcements = await getAnnouncementsByRole(req.user.role);
+
+  const newAnnouncement = await Announcement.create(req.body);
+
+  const announcements = await Announcement.find({});
+
+  return res
+    .status(StatusCodes.OK)
+    .json(
+      new ApiResponse(
+        StatusCodes.CREATED,
+        { announcements },
+        `Announcement for ${newAnnouncement.title} has been created`
+      )
+    );
+};
+
+export const getAllAnnouncements = async (req, res) => {
+  const announcements = await announcements.find({}).sort({ createdAt: -1 });
   return res
     .status(StatusCodes.OK)
     .json(
       new ApiResponse(
         StatusCodes.OK,
         { announcements },
-        `Announcement of ${response.branches} has been deleted`
+        "Announcements data sent"
       )
     );
 };
-export const getAnnouncementsByRole = async (role) => {
-  let announcements = [];
-  if (req.user.role === "admin") {
-    announcements = await Announcement.find({})
-      .sort({ createdAt: -1 })
-      .populate("description");
-  } else if (req.user.role === "coordinator") {
-    announcements = await Announcement.find({ branches: { $in: [req.user.branch] } })
-      .sort({
-        createdAt: -1,
-      })
-      .populate("description");
-  } 
-  return announcements;
+
+export const handleUpdateAnnouncement = async (req, res) => {
+  const announcementId = req.params.announcementId;
+
+  if (!mongoose.isValidObjectId(announcementId)) {
+    throw new ApiError(StatusCodes.BAD_REQUEST, "Not a valid announcement Id");
+  }
+
+  const announcement = await Announcement.findById(announcementId);
+
+  if (!announcement) {
+    throw new ApiError("Announcement not found", StatusCodes.NOT_FOUND);
+  }
+  const response = await Announcement.findByIdAndUpdate(
+    announcementId,
+    req.body,
+    {
+      runValidators: true,
+      new: true,
+    }
+  );
+  const announcements = await Announcement.find({}).sort({ createdAt: -1 });
+
+  return res
+    .status(StatusCodes.OK)
+    .json(
+      new ApiResponse(
+        StatusCodes.OK,
+        { announcements },
+        `Announcement ${response.title} updated`
+      )
+    );
+};
+
+export const handleDeleteAnnouncement = async (req, res) => {
+  const announcementId = req.params.announceId;
+
+  //check whether it is a valid announcement id or not
+  if (!mongoose.isValidObjectId(announcementId)) {
+    throw new ApiError(StatusCodes.BAD_REQUEST, "Not a valid Announcement Id");
+  }
+
+  const response = await Announcement.findOneAndDelete(announcementId);
+
+  //fetch all anouncements
+  const announcements = await announcements.find({}).sort({ createdAt: -1 });
+
+  return res
+    .status(StatusCodes.OK)
+    .json(
+      new ApiResponse(
+        StatusCodes.OK,
+        { announcements },
+        `Announcement of ${response.title} has been deleted`
+      )
+    );
 };
