@@ -27,10 +27,8 @@ export const handleAddInternship = async (req, res) => {
   const newInternship = await Internship.create(req.body);
 
   //return all the internships of the student
-  const internships = await Internship.find({ student: req.user.userId }).sort({
-    createdAt: 1,
-  });
-
+  const internships = await getInternshipsByRole(req.user.role);
+  
   return res
     .status(StatusCodes.OK)
     .json(
@@ -64,9 +62,7 @@ export const handleUpdateInternship = async (req, res) => {
     }
   );
 
-  const internships = await Internship.find({ student: req.user.userId }).sort({
-    createdAt: 1,
-  });
+  const internships = await getInternshipsByRole(req.user.role);
 
   return res.status(StatusCodes.OK).json(
     new ApiResponse(
@@ -100,15 +96,17 @@ export const handleInternshipVerification = async (req, res) => {
     );
   }
 
+
   internship.verificationStatus = req.body.verificationStatus;
   await internship.save();
+  const internships = await getInternshipsByRole(req.user.role);
 
   return res
     .status(StatusCodes.OK)
     .json(
       new ApiResponse(
         StatusCodes.OK,
-        { internship },
+        { internships },
         `Internship marked as ${verificationStatus}`
       )
     );
@@ -134,14 +132,7 @@ export const getStudentInternships = async (req, res) => {
 };
 
 export const getAllInternships = async (req, res) => {
-  const internships = await Internship.find({})
-    .populate({
-      path: "student",
-      match: {
-        passoutYear: { $gte: currentYear },
-      },
-    })
-    .exec();
+  const internships = await getInternshipsByRole(req.user.role);
 
   return res
     .status(StatusCodes.OK)
@@ -156,7 +147,7 @@ export const handleDeleteInternship = async (req, res) => {
     throw new ApiError(StatusCodes.BAD_REQUEST, "Not a valid certification Id");
   }
   const response = await Internship.findByIdAndDelete(internshipId);
-  const internships = await Internship.find({ student: req.user.userId });
+  const internships = await getInternshipsByRole(req.user.role);
   return res
     .status(StatusCodes.OK)
     .json(
@@ -170,14 +161,30 @@ export const handleDeleteInternship = async (req, res) => {
 export const getInternshipsByRole = async (role) => {
   let internships = [];
   if (req.user.role === "admin") {
-    internships = await Internship.find({}).sort({ createdAt: -1 });
+    internships = await Internship.find({})
+      .sort({ createdAt: -1 })
+      .populate({
+        path: "student",
+        match: {
+          passoutYear: { $gte: currentYear },
+        },
+      });
   } else if (req.user.role === "coordinator") {
-    internships = await Internship.find({ branch: req.user.branch }).sort({
-      createdAt: -1,
-    });
+    internships = await Internship.find({ branch: req.user.branch })
+      .sort({
+        createdAt: -1,
+      })
+      .populate({
+        path: "student",
+        match: {
+          passoutYear: { $gte: currentYear },
+        },
+      });
   } else {
     internships = await Internship.find({ student: req.user.userId }).sort({
       createdAt: -1,
     });
   }
+
+  return internships;
 };

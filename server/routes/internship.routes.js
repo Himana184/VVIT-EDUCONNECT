@@ -1,23 +1,27 @@
 import express from "express";
 import {
-    handleAddInternship,
-    handleUpdateInternship,
-    handleInternshipVerification,
-    getStudentInternships,
-    getAllInternships,
-    handleDeleteInternship,
-    getInternshipsByRole,
+  getAllInternships,
+  getStudentInternships,
+  handleAddInternship,
+  handleDeleteInternship,
+  handleInternshipVerification,
+  handleUpdateInternship,
 } from "../controllers/internship.controller.js";
+
 const router = express.Router();
 
-router.route("/addinternship").post(handleAddInternship);
-router.route("/updateinternship").patch(handleUpdateInternship);
-router.route("/allinterns").get(getAllInternships);
-router.route("/internsbyrole").get(getInternshipsByRole);
+// actions can be performed by student, admin, coordinator
 router
-  .route("/:studentId")
-  .get(getInternshipsByRole)
-  .patch(handleInternshipVerification)
+  .route("/")
+  .get(getAllInternships)
+  .post(handleAddInternship)
+  .patch(handleUpdateInternship)
   .delete(handleDeleteInternship);
+
+//used when admin or coordinator is viewing individual student data
+router.route("/student/:studentId").get(getStudentInternships);
+
+//to be done by admin or coordinator
+router.route("/verify").patch(handleInternshipVerification);
 
 export default router;
