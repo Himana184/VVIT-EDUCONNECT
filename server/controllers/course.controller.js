@@ -59,9 +59,7 @@ export const handleUpdateCourse = async (req, res) => {
     new: true,
   });
 
-  const courses = await Course.find({ student: req.user.userId }).sort({
-    createdAt: 1,
-  });
+  const courses = await getCoursesByRole(req.user.role);
 
   return res.status(StatusCodes.OK).json(
     new ApiResponse(
@@ -94,19 +92,12 @@ export const getStudentCourses = async (req, res) => {
 };
 
 export const getAllCourses = async (req, res) => {
-  const courses = await Course.find({})
-    .populate({
-      path: "student",
-      match: {
-        passoutYear: { $gte: currentYear },
-      },
-    })
-    .exec();
+  const courses = await getCoursesByRole(req.user.role);
 
   return res
     .status(StatusCodes.OK)
     .json(
-      new ApiResponse(StatusCodes.OK, { courses }, "certifications data sent")
+      new ApiResponse(StatusCodes.OK, { courses }, "courses data sent")
     );
 };
 
@@ -135,14 +126,30 @@ export const handleDeleteCourse = async (req, res) => {
 export const getCoursesByRole = async (role) => {
   let courses = [];
   if (req.user.role === "admin") {
-    courses = await Course.find({}).sort({ createdAt: -1 });
+    courses = await Course.find({})
+      .sort({ createdAt: -1 })
+      .populate({
+        path: "student",
+        match: {
+          passoutYear: { $gte: currentYear },
+        },
+      });
   } else if (req.user.role === "coordinator") {
-    courses = await Course.find({ branch: req.user.branch }).sort({
-      createdAt: -1,
-    });
+    courses = await Course.find({ branch: req.user.branch })
+      .sort({
+        createdAt: -1,
+      })
+      .populate({
+        path: "student",
+        match: {
+          passoutYear: { $gte: currentYear },
+        },
+      });
   } else {
     courses = await Course.find({ student: req.user.userId }).sort({
       createdAt: -1,
     });
   }
+
+  return courses;
 };

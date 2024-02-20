@@ -36,10 +36,7 @@ export const handleAddAnnouncement = async (req, res) => {
   };
   export const getAllAnnouncements = async (req, res) => {
     
-    const announcements = await Announcement.find({})
-    .populate("branches")  // Populate branches if needed
-    .exec();
-  
+    const announcements = await getAnnouncementsByRole(req.user.role);
     return res
      .status(StatusCodes.OK)
      .json(
@@ -59,7 +56,7 @@ export const handleDeleteAnnouncement = async (req, res) => {
   }
   const response = await Announcement.findOneAndDelete(jobDriveId);
   //fetch all anouncements
-  const announcements = await Announcement.find({}).sort({ createdAt: -1 });
+  const announcements = await getAnnouncementsByRole(req.user.role);
   return res
     .status(StatusCodes.OK)
     .json(
@@ -70,4 +67,18 @@ export const handleDeleteAnnouncement = async (req, res) => {
       )
     );
 };
-
+export const getAnnouncementsByRole = async (role) => {
+  let announcements = [];
+  if (req.user.role === "admin") {
+    announcements = await Announcement.find({})
+      .sort({ createdAt: -1 })
+      .populate("description");
+  } else if (req.user.role === "coordinator") {
+    announcements = await Announcement.find({ branches: { $in: [req.user.branch] } })
+      .sort({
+        createdAt: -1,
+      })
+      .populate("description");
+  } 
+  return announcements;
+};

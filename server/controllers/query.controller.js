@@ -68,11 +68,7 @@ export const handleUpdateQuery = async (req, res) => {
     }
   );
 
-  const queries = await Query.find({
-    student: req.user.userId,
-  }).sort({
-    createdAt: 1,
-  });
+  const queries = await getQueriesByRole(req.user.role);
 
   return res.status(StatusCodes.OK).json(
     new ApiResponse(
@@ -105,14 +101,7 @@ export const getStudentQueries = async (req, res) => {
 };
 
 export const getAllQueries = async (req, res) => {
-  const queries = await Query.find({})
-    .populate({
-      path: "student",
-      match: {
-        passoutYear: { $gte: currentYear },
-      },
-    })
-    .exec();
+  const queries = getQueriesByRole(req.user.role);
 
   return res
     .status(StatusCodes.OK)
@@ -131,13 +120,13 @@ export const handleDeleteQuery = async (req, res) => {
     throw new ApiError(StatusCodes.BAD_REQUEST, "Not a valid query Id");
   }
   const response = await Query.findByIdAndDelete(queryId);
-  const queries = await Query.find({ student: req.user.userId });
+  const queries = await getQueriesByRole(req.user.role);
   return res
     .status(StatusCodes.OK)
     .json(
       new ApiResponse(
         StatusCodes.OK,
-        { queriess },
+        { queries },
         `Query ${response.category} deleted successfully`
       )
     );
@@ -145,14 +134,30 @@ export const handleDeleteQuery = async (req, res) => {
 export const getQueriesByRole = async (role) => {
   let queries = [];
   if (req.user.role === "admin") {
-    queries = await Query.find({}).sort({ createdAt: -1 });
+    queries = await Query.find({})
+      .sort({ createdAt: -1 })
+      .populate({
+        path: "student",
+        match: {
+          passoutYear: { $gte: currentYear },
+        },
+      });
   } else if (req.user.role === "coordinator") {
-    queries = await Query.find({ branch: req.user.branch }).sort({
-      createdAt: -1,
-    });
+    queries = await Query.find({ branch: req.user.branch })
+      .sort({
+        createdAt: -1,
+      })
+      .populate({
+        path: "student",
+        match: {
+          passoutYear: { $gte: currentYear },
+        },
+      });
   } else {
-    queries = await  Query.find({ student: req.user.userId }).sort({
+    queries = await Query.find({ student: req.user.userId }).sort({
       createdAt: -1,
     });
   }
+
+  return queries;
 };

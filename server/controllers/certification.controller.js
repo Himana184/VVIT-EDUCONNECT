@@ -68,11 +68,7 @@ export const handleUpdateCertification = async (req, res) => {
     }
   );
 
-  const certifications = await Certification.find({
-    student: req.user.userId,
-  }).sort({
-    createdAt: 1,
-  });
+  const certifications = await getCertificationsByRole(req.user.role);
 
   return res.status(StatusCodes.OK).json(
     new ApiResponse(
@@ -105,14 +101,7 @@ export const getStudentCertifications = async (req, res) => {
 };
 
 export const getAllCertifications = async (req, res) => {
-  const certifications = await Certification.find({})
-    .populate({
-      path: "student",
-      match: {
-        passoutYear: { $gte: currentYear },
-      },
-    })
-    .exec();
+  const certifications = await getCertificationsByRole(req.user.role);
 
   return res
     .status(StatusCodes.OK)
@@ -131,7 +120,7 @@ export const handleDeleteCertification = async (req, res) => {
     throw new ApiError(StatusCodes.BAD_REQUEST, "Not a valid certification Id");
   }
   const response = await Certification.findByIdAndDelete(certificationId);
-  const certifications = await Certification.find({ student: req.user.userId });
+  const certifications = await getCertificationsByRole(req.user.role);
   return res
     .status(StatusCodes.OK)
     .json(
@@ -145,14 +134,30 @@ export const handleDeleteCertification = async (req, res) => {
 export const getCertificationsByRole = async (role) => {
   let certifications = [];
   if (req.user.role === "admin") {
-    certifications = await Certification.find({}).sort({ createdAt: -1 });
+    certifications = await Certification.find({})
+      .sort({ createdAt: -1 })
+      .populate({
+        path: "student",
+        match: {
+          passoutYear: { $gte: currentYear },
+        },
+      });
   } else if (req.user.role === "coordinator") {
-    certifications = await Certification.find({ branch: req.user.branch }).sort({
-      createdAt: -1,
-    });
+    certifications = await Certification.find({ branch: req.user.branch })
+      .sort({
+        createdAt: -1,
+      })
+      .populate({
+        path: "student",
+        match: {
+          passoutYear: { $gte: currentYear },
+        },
+      });
   } else {
     certifications = await Certification.find({ student: req.user.userId }).sort({
       createdAt: -1,
     });
   }
+
+  return certifications;
 };

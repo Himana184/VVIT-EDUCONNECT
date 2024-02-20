@@ -83,7 +83,7 @@ export const getStudentDetails = async (req, res) => {
 export const getAllStudents = async (req, res) => {
   var students = [];
 
-  students = await Student.find({ passoutYear: { $gte: currentYear } });
+  students = await getStudentsByRole(req.user.role);
 
   return res
     .status(StatusCodes.OK)
@@ -111,15 +111,17 @@ export const updateStudentDetails = async (req, res) => {
       runValidators: true,
       new: true,
     }
-  ).populate(["internships", "courses", "certifications"]);
+  );
+  const students = await getStudentsByRole(req.user.role);
+  
 
   return res
     .status(StatusCodes.OK)
     .json(
       new ApiResponse(
         StatusCodes.OK,
-        { student: updatedStudentDetails },
-        "student details updated"
+        { students },
+        `Details of ${updatedStudentDetails.name} updated`
       )
     );
 };
@@ -167,14 +169,30 @@ export const deleteStudent = async (req, res) => {
 export const getStudentsByRole = async (role) => {
   let students = [];
   if (req.user.role === "admin") {
-    students = await Student.find({}).sort({ createdAt: -1 });
+    students = await Student.find({})
+      .sort({ createdAt: -1 })
+      .populate({
+        path: "student",
+        match: {
+          passoutYear: { $gte: currentYear },
+        },
+      });
   } else if (req.user.role === "coordinator") {
-    students = await Student.find({ branch: req.user.branch }).sort({
-      createdAt: -1,
-    });
+    students = await Student.find({ branch: req.user.branch })
+      .sort({
+        createdAt: -1,
+      })
+      .populate({
+        path: "student",
+        match: {
+          passoutYear: { $gte: currentYear },
+        },
+      });
   } else {
     students = await Student.find({ student: req.user.userId }).sort({
       createdAt: -1,
     });
   }
+
+  return students;
 };
