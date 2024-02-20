@@ -1,9 +1,9 @@
 import { StatusCodes } from "http-status-codes";
-import { ApiError } from "../utils/ApiError";
-import { checkRequiredFields } from "../utils/requiredFields";
-import { announcementRequiredFields } from "./constants";
-import { ApiResponse } from "../utils/ApiResponse";
-import Announcement from "../models/announcement.model";
+import { ApiError } from "../utils/ApiError.js";
+import { checkRequiredFields } from "../utils/requiredFields.js";
+import { announcementRequiredFields } from "./constants.js";
+import { ApiResponse } from "../utils/ApiResponse.js";
+import Announcement from "../models/announcement.model.js";
 import mongoose from "mongoose";
 export const handleAddAnnouncement = async (req, res) => {
     //check whether all the required fields have been received or not

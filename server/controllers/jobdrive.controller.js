@@ -1,8 +1,8 @@
 import { StatusCodes } from "http-status-codes";
-import { ApiError } from "../utils/ApiError";
-import { checkRequiredFields } from "../utils/requiredFields";
-import { jobDriveRequiredFields } from "./constants";
-import { ApiResponse } from "../utils/ApiResponse";
+import { ApiError } from "../utils/ApiError.js";
+import { checkRequiredFields } from "../utils/requiredFields.js";
+import { jobDriveRequiredFields } from "./constants.js";
+import { ApiResponse } from "../utils/ApiResponse.js";
 import JobDrive from "../models/jobdrive.model.js";
 import mongoose from "mongoose";
 //const currentYear = new Date().getFullYear();

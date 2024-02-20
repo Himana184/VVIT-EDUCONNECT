@@ -1,9 +1,9 @@
 import { StatusCodes } from "http-status-codes";
-import { ApiError } from "../utils/ApiError";
-import { checkRequiredFields } from "../utils/requiredFields";
-import { courseRequiredFields } from "./constants";
-import { ApiResponse } from "../utils/ApiResponse";
-import Course from "../models/course.model";
+import { ApiError } from "../utils/ApiError.js";
+import { checkRequiredFields } from "../utils/requiredFields.js";
+import { courseRequiredFields } from "./constants.js";
+import { ApiResponse } from "../utils/ApiResponse.js";
+import Course from "../models/course.model.js";
 import mongoose from "mongoose";
 const currentYear = new Date().getFullYear();
 

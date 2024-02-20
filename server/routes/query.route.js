@@ -5,7 +5,7 @@ import {
   getStudentQueries,
   getAllQueries,
   handleDeleteQuery,
-} from '../controllers/query.controller';
+} from '../controllers/query.controller.js';
 
 const router = express.Router();
 
