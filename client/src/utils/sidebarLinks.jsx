@@ -2,7 +2,7 @@ import { PiStudentFill, PiCertificateFill } from "react-icons/pi";
 import { TfiAnnouncement } from "react-icons/tfi";
 import { FaRegUser } from "react-icons/fa"
 import { MdOutlineHelp } from "react-icons/md";
-import { BriefcaseIcon } from "lucide-react";
+import { BriefcaseIcon, FolderKanban } from "lucide-react";
 
 export const sidebarLinks = {
   admin: [
@@ -20,6 +20,11 @@ export const sidebarLinks = {
       icon: <BriefcaseIcon size={24} />,
       text: "Jobs",
       href: "jobs"
+    },
+    {
+      icon: <FolderKanban size={24} />,
+      text: "Internships",
+      href: "internships"
     },
     {
       icon: <PiCertificateFill size={24} />,

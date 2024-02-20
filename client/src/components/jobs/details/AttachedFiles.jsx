@@ -4,12 +4,12 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { DownloadCloud } from "lucide-react"
 const AttachedFiles = () => {
   return (
-    <Card>
+    <Card >
       <CardHeader>
         <CardTitle>Attached Documents</CardTitle>
         <CardDescription>Download the files below and go through them carefully</CardDescription>
       </CardHeader>
-      <CardContent className="flex space-x-5">
+      <CardContent className="flex space-x-5 overflow-auto">
         {
           Array.from({ length: 4 }).map((item, index) => {
             return (
