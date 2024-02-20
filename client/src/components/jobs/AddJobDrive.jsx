@@ -9,6 +9,8 @@ import { TagsInput } from "react-tag-input-component";
 import { MultiSelect } from "react-multi-select-component";
 import { eligibleBranchesList } from '@/data/branches'
 import { Editor } from "react-draft-wysiwyg";
+import { convertToHTML } from 'draft-convert';
+import { EditorState } from 'draft-js';
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 const jobCategories = [
   {
@@ -29,7 +31,8 @@ const AddJobDrive = () => {
   // state to maintain close and open of dialog
   const [open, setOpen] = useState(false)
   const [eligibleBranches, setEligibleBranches] = useState([]);
-  const [description, setDescription] = useState();
+  const [description, setDescription] = useState(
+    () => EditorState.createEmpty())
   // roles offered by the company
   const [roles, setRoles] = useState([]);
   const [skills, setSkills] = useState([]);
@@ -54,11 +57,15 @@ const AddJobDrive = () => {
     // combine data from all the states in the form and print it 
     console.log("Job drive data:", data);
   }
-
+  const [content, setContent] = useState("");
+  useEffect(() => {
+    let html = convertToHTML(description.getCurrentContent());
+    setContent(html);
+  }, [description]);
   useEffect(() => {
     clearErrors();
   }, [])
-
+  console.log(content)
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger>
@@ -173,6 +180,11 @@ const AddJobDrive = () => {
               wrapperClassName="demo-wrapper"
               editorClassName="demo-editor"
               onEditorStateChange={setDescription} />
+
+            <textarea
+              disabled
+              value={content}
+            />
           </div>
 
           <div className='space-y-3'>
