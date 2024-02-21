@@ -6,8 +6,10 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import Internship from "../models/internship.model.js";
 import mongoose from "mongoose";
 import { groupData } from "../utils/groupdata.js";
-
 const currentYear = new Date().getFullYear();
+
+// TODO: Google Cloud Integration for storing internship offer and completion certificaton
+// TODO: Add a controller for uploading completion certificate of the internship
 
 // Access permission - Student
 export const handleAddInternship = async (req, res) => {
