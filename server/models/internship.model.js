@@ -2,21 +2,6 @@ import mongoose from "mongoose";
 
 const internshipSchema = new mongoose.Schema(
   {
-    student: {
-      type: mongoose.SchemaTypes.ObjectId,
-      ref: "Student",
-      required: [true, "student details are required"],
-    },
-    branch: {
-      type: String,
-      required: [true, "student branch is required"],
-    },
-    internshipDomain: [
-      {
-        type: String,
-        required: [true, "Atleast one domain is required"],
-      },
-    ],
     companyName: {
       type: String,
       required: [true, "company name is required"],
@@ -28,6 +13,19 @@ const internshipSchema = new mongoose.Schema(
     stipend: {
       type: Number,
       required: [true, "stipend amount is required"],
+    },
+    student: {
+      type: mongoose.SchemaTypes.ObjectId,
+      ref: "Student",
+      required: [true, "student details are required"],
+    },
+    branch: {
+      type: String,
+      required: [true, "student branch is required"],
+    },
+    internshipDomain: {
+      type: String,
+      required: [true, "Internship domain is required"],
     },
     offerLetter: {
       type: String,
@@ -52,17 +50,16 @@ const internshipSchema = new mongoose.Schema(
     },
     verificationStatus: {
       type: String,
-      enum : ["pending","verified","rejected"],
+      enum: ["pending", "verified", "rejected"],
     },
-    comment : {
-      type : String
-    }
+    comment: {
+      type: String,
+    },
   },
   {
     timestamps: true,
   }
 );
-
 
 mongoose.SchemaTypes.String.set("trim", true);
 

@@ -5,9 +5,11 @@ import { internshipRequiredFields } from "./constants.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import Internship from "../models/internship.model.js";
 import mongoose from "mongoose";
+import { groupData } from "../utils/groupdata.js";
 
 const currentYear = new Date().getFullYear();
 
+// Access permission - Student
 export const handleAddInternship = async (req, res) => {
   //check whether all the required fields have been received or not
   const requiredFieldsValidation = checkRequiredFields(
@@ -26,20 +28,24 @@ export const handleAddInternship = async (req, res) => {
 
   const newInternship = await Internship.create(req.body);
 
-  //return all the internships of the student
+  //fetch the internships based on role
   const internships = await getInternshipsByRole(req.user.role);
-  
+
+  //group the internships based on the verification status this will be helpful to filter in the frontend
+  groupedInternships = groupData(internships, "verificationStatus");
+
   return res
     .status(StatusCodes.OK)
     .json(
       new ApiResponse(
         StatusCodes.CREATED,
-        { internships },
+        { internships: groupedInternships },
         `Internship at ${newInternship.companyName} has been added`
       )
     );
 };
 
+// Access permission - Student
 export const handleUpdateInternship = async (req, res) => {
   const { internshipId } = req.params;
 
@@ -64,17 +70,20 @@ export const handleUpdateInternship = async (req, res) => {
 
   const internships = await getInternshipsByRole(req.user.role);
 
+  const groupedInternships = groupData(internships, "verificationStatus");
+
   return res.status(StatusCodes.OK).json(
     new ApiResponse(
       StatusCodes.OK,
       {
-        internships,
+        internships: groupedInternships,
       },
       `Internship details of ${updatedInternship.companyName} updated`
     )
   );
 };
 
+// Access permission - Admin, Coordinator of that branch
 export const handleInternshipVerification = async (req, res) => {
   const { internshipId } = req.params;
 
@@ -95,29 +104,36 @@ export const handleInternshipVerification = async (req, res) => {
       `Internship already ${verificationStatus}`
     );
   }
-
-
+  //save the verification status of the internship
   internship.verificationStatus = req.body.verificationStatus;
   await internship.save();
+
+  //fetch and group the internship based on verification status
   const internships = await getInternshipsByRole(req.user.role);
+
+  const groupedInternships = groupData(internships, "verificationStatus");
 
   return res
     .status(StatusCodes.OK)
     .json(
       new ApiResponse(
         StatusCodes.OK,
-        { internships },
+        { internships: groupedInternships },
         `Internship marked as ${verificationStatus}`
       )
     );
 };
 
+// Access permission - Admin, Coordinator, Student
 export const getStudentInternships = async (req, res) => {
   const { studentId } = req.params;
+
+  //check whether it is a valid student id or not ( valid mongodb id or not )
   if (!studentId || !mongoose.isValidObjectId(studentId)) {
     throw new ApiError(StatusCodes.BAD_REQUEST, "Not a valid student Id");
   }
 
+  //get all the internships of the student
   const internships = await Internship.find({ student: studentId });
 
   return res
@@ -131,33 +147,49 @@ export const getStudentInternships = async (req, res) => {
     );
 };
 
+// Access permission - Admin, Coordinator, Student - based on their roles data will be sent back
 export const getAllInternships = async (req, res) => {
   const internships = await getInternshipsByRole(req.user.role);
 
-  return res
-    .status(StatusCodes.OK)
-    .json(
-      new ApiResponse(StatusCodes.OK, { internships }, "Internships data sent")
-    );
-};
+  const groupedInternships = await groupData(internships, "verificationStatus");
 
-export const handleDeleteInternship = async (req, res) => {
-  const internshipId = req.params.internshipId;
-  if (!mongoose.isValidObjectId(internshipId)) {
-    throw new ApiError(StatusCodes.BAD_REQUEST, "Not a valid certification Id");
-  }
-  const response = await Internship.findByIdAndDelete(internshipId);
-  const internships = await getInternshipsByRole(req.user.role);
   return res
     .status(StatusCodes.OK)
     .json(
       new ApiResponse(
         StatusCodes.OK,
-        { internships },
+        { internships: groupedInternships },
+        "Internships data sent"
+      )
+    );
+};
+
+// Access permission - Admin, Coordinator, Student
+export const handleDeleteInternship = async (req, res) => {
+  const internshipId = req.params.internshipId;
+
+  //check whether received mongodb id is valid or not
+  if (!mongoose.isValidObjectId(internshipId)) {
+    throw new ApiError(StatusCodes.BAD_REQUEST, "Not a valid certification Id");
+  }
+
+  const response = await Internship.findByIdAndDelete(internshipId);
+
+  //fetch and group the internships based on verification status
+  const internships = await getInternshipsByRole(req.user.role);
+  const groupedInternships = groupData(internships, "verificationStatus");
+  return res
+    .status(StatusCodes.OK)
+    .json(
+      new ApiResponse(
+        StatusCodes.OK,
+        { internships: groupedInternships },
         `internship ${response.companyName} deleted successfully`
       )
     );
 };
+
+// Helper function to fetch data by role of the user and return it
 export const getInternshipsByRole = async (role) => {
   let internships = [];
   if (req.user.role === "admin") {
