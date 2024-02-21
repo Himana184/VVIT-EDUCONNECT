@@ -21,11 +21,11 @@ app.use(express.json());
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/student", studentRouter);
 app.use("/api/v1/internship",internshipRouter);
-app.use('api/v1/certification', certificationRouter);
-app.use('api/v1/course', courseRouter);
-app.use('api/v1/announcement', announcementRouter);
-app.use('api/v1/query', queryRouter);
-app.use('api/v1/jobdrive', jobdriveRouter);
+app.use("/api/v1/certification", certificationRouter);
+app.use("/api/v1/course", courseRouter);
+app.use("/api/v1/announcement", announcementRouter);
+app.use("/api/v1/query", queryRouter);
+app.use("/api/v1/jobdrive", jobdriveRouter);
 //custom error middleware
 app.use(errorHandler);
 
