@@ -2,6 +2,7 @@ import express from "express";
 import connectDB from "./db/connect.js";
 import dotenv from "dotenv";
 import "express-async-errors";
+import multer from "multer";
 import { errorHandler } from "./middleware/error.middlewares.js";
 import studentRouter from "./routes/student.routes.js";
 import authRouter from "./routes/auth.routes.js";
@@ -13,19 +14,33 @@ import queryRouter from "./routes/query.routes.js";
 import jobdriveRouter from "./routes/jobdrive.routes.js";
 //configure the env variable from the root path of the server (filename: .env)
 dotenv.config();
-
+const upload = multer({
+  storage: multer.memoryStorage(),
+  limits: {
+    fileSize: 5 * 1024 * 1024, // Maximum file size is 20MB
+  },
+});
 const app = express();
 app.use(express.json());
 
 //routes
 app.use("/api/v1/auth", authRouter);
-app.use("/api/v1/student", studentRouter);
-app.use("/api/v1/internship",internshipRouter);
-app.use("/api/v1/certification", certificationRouter);
-app.use("/api/v1/course", courseRouter);
+app.use("/api/v1/student", upload.single("studentImage"), studentRouter);
+app.use(
+  "/api/v1/internship",
+  upload.array("internshipFiles"),
+  internshipRouter
+);
+app.use(
+  "/api/v1/certification",
+  upload.single("certificationFile"),
+  certificationRouter
+);
+app.use("/api/v1/course", upload.single("courseFile"), courseRouter);
 app.use("/api/v1/announcement", announcementRouter);
 app.use("/api/v1/query", queryRouter);
-app.use("/api/v1/jobdrive", jobdriveRouter);
+app.use("/api/v1/jobdrive", upload.array("jobFiles"), jobdriveRouter);
+
 //custom error middleware
 app.use(errorHandler);
 

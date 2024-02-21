@@ -7,6 +7,9 @@ import {
   handleInternshipVerification,
   handleUpdateInternship,
 } from "../controllers/internship.controller.js";
+import { filesPayloadExists } from "../middleware/filePayloadExists.js";
+import { fileSizeLimiter } from "../middleware/fileSizeLimiter.js";
+import { fileExtLimiter } from "../middleware/fileSizeLimiter.js";
 
 const router = express.Router();
 
@@ -14,7 +17,6 @@ const router = express.Router();
 router
   .route("/")
   .get(getAllInternships)
-  .post(handleAddInternship)
   .patch(handleUpdateInternship)
   .delete(handleDeleteInternship);
 
@@ -23,5 +25,12 @@ router.route("/student/:studentId").get(getStudentInternships);
 
 //to be done by admin or coordinator
 router.route("/verify").patch(handleInternshipVerification);
- 
+
+router.use(filesPayloadExists);
+router.use(
+  fileExtLimiter([".JPG", ".PNG", ".JPEG", ".jpg", ".png", ".jpeg", ".pdf"])
+);
+router.use(fileSizeLimiter);
+
+router.route("/").post(handleAddInternship);
 export default router;
