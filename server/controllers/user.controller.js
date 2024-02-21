@@ -7,6 +7,41 @@ import { ApiError } from "../utils/ApiError.js";
 import mongoose from "mongoose";
 import User from "../models/user.model.js";
 import Student from "../models/student.model.js";
+export const handleUserRegisteration = async (req, res) => {
+  const validationResponse = checkRequiredFields(
+    req.body,
+    userRequiredFields
+  );
+
+  if (!validationResponse.status) {
+    throw new ApiError(StatusCodes.BAD_REQUEST, validationResponse.message);
+  }
+
+  const { email, contact } = req.body;
+
+  const user = await User.findOne({
+    $or: [{ email }, { contact }],
+  });
+
+  if (user) {
+    throw new ApiError(
+      StatusCodes.CONFLICT,
+      "user with given details already exists"
+    );
+  }
+
+  const newUser = await User.create(req.body);
+
+  return res
+    .status(StatusCodes.CREATED)
+    .json(
+      new ApiResponse(
+        StatusCodes.CREATED,
+        { user: newUser },
+        "user resgisteration successful"
+      )
+    );
+}; 
 export const addCoordinator = async (req, res) => {
    const validationResponse = checkRequiredFields(
     req.body,
