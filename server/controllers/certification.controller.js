@@ -5,8 +5,12 @@ import { certificationRequiredFields } from "./constants.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import Certification from "../models/certification.model.js";
 import mongoose from "mongoose";
+import { groupData } from "../utils/groupdata.js";
 const currentYear = new Date().getFullYear();
 
+// TODO: Integration with google cloud
+
+// Access permission - student can add certification
 export const handleAddCertification = async (req, res) => {
   //check whether all the required fields have been received or not
   const requiredFieldsValidation = checkRequiredFields(
@@ -26,11 +30,7 @@ export const handleAddCertification = async (req, res) => {
   const newCertification = await Certification.create(req.body);
 
   //return all the certifications of the student
-  const certifications = await Certification.find({
-    student: req.user.userId,
-  }).sort({
-    createdAt: 1,
-  });
+  const certifications = await getCertificationsByRole("student");
 
   return res
     .status(StatusCodes.OK)
@@ -43,6 +43,7 @@ export const handleAddCertification = async (req, res) => {
     );
 };
 
+// Access permission - student will update the certification
 export const handleUpdateCertification = async (req, res) => {
   const { certificationId } = req.params;
 
@@ -68,7 +69,7 @@ export const handleUpdateCertification = async (req, res) => {
     }
   );
 
-  const certifications = await getCertificationsByRole(req.user.role);
+  const certifications = await getCertificationsByRole("student");
 
   return res.status(StatusCodes.OK).json(
     new ApiResponse(
@@ -81,6 +82,7 @@ export const handleUpdateCertification = async (req, res) => {
   );
 };
 
+// Access permission - Admin, coordinator
 export const getStudentCertifications = async (req, res) => {
   const { studentId } = req.params;
   if (!studentId || !mongoose.isValidObjectId(studentId)) {
@@ -100,37 +102,48 @@ export const getStudentCertifications = async (req, res) => {
     );
 };
 
+// access permission - Admin, coordinator - will group the certification by issuer name
 export const getAllCertifications = async (req, res) => {
   const certifications = await getCertificationsByRole(req.user.role);
-
+  const groupedCertifications = groupData(certifications, "issuer");
   return res
     .status(StatusCodes.OK)
     .json(
       new ApiResponse(
         StatusCodes.OK,
-        { certifications },
+        { certifications: groupedCertifications },
         "certifications data sent"
       )
     );
 };
 
+// access permission - admin, coordinator, student
 export const handleDeleteCertification = async (req, res) => {
   const certificationId = req.params.certificationId;
+
   if (!mongoose.isValidObjectId(certificationId)) {
     throw new ApiError(StatusCodes.BAD_REQUEST, "Not a valid certification Id");
   }
+
   const response = await Certification.findByIdAndDelete(certificationId);
+
   const certifications = await getCertificationsByRole(req.user.role);
+
+  const groupedCertifications = groupData(certifications, "issuer");
+
   return res
     .status(StatusCodes.OK)
     .json(
       new ApiResponse(
         StatusCodes.OK,
-        { certifications },
+        { certifications: groupedCertifications },
         `Certification ${response.name} deleted successfully`
       )
     );
 };
+
+
+// helper function to get certifications by role
 export const getCertificationsByRole = async (role) => {
   let certifications = [];
   if (req.user.role === "admin") {
@@ -154,7 +167,9 @@ export const getCertificationsByRole = async (role) => {
         },
       });
   } else {
-    certifications = await Certification.find({ student: req.user.userId }).sort({
+    certifications = await Certification.find({
+      student: req.user.userId,
+    }).sort({
       createdAt: -1,
     });
   }
