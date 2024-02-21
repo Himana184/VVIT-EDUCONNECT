@@ -8,6 +8,7 @@ import Jobs from "./pages/admin/Jobs"
 import JobDetail from "./components/jobs/JobDetail"
 import Certifications from "./pages/admin/Certifications"
 import Announcements from "./pages/admin/Announcements"
+import Internships from "./pages/admin/Internships"
 const App = () => {
   return (
     <Router>
@@ -34,6 +35,7 @@ const App = () => {
           <Route path="certifications" element={<Certifications />}></Route>
           <Route path="detail" element={<JobDetail />} />
           <Route path="announcements" element={<Announcements />}></Route>
+          <Route path="internships" element={<Internships />}></Route>
         </Route>
 
         {/* all routes of coordinator */}
