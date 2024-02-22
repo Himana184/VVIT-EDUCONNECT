@@ -16,7 +16,7 @@ export const certificationRequiredFields = [
   "student",
   "issueDate",
   "tags",
-  "link",
+  
 ];
 
 export const internshipRequiredFields = [
@@ -30,7 +30,7 @@ export const internshipRequiredFields = [
   "startDate",
   "endDate",
   "internshipType",
-  "completionCertificate",
+
 ];
 
 export const courseRequiredFields = [

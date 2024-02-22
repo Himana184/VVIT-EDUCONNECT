@@ -5,6 +5,7 @@ import { courseRequiredFields } from "./constants.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import Course from "../models/course.model.js";
 import mongoose from "mongoose";
+import uploadSingleFile from "../utils/uploadToCloud.js";
 const currentYear = new Date().getFullYear();
 
 export const handleAddCourse = async (req, res) => {
@@ -22,6 +23,22 @@ export const handleAddCourse = async (req, res) => {
 
   //set the branch of the user so that it is easy to filter the courses based on branch
   req.body.branch = req.user.branch;
+  const fileType = req.file.originalname.split(".")[1]
+  //upload the image of the course certificate to cloud.
+  const uploadResponse = await uploadSingleFile(
+    req.file,
+    "coursecertificate-images",
+    req.body.courseName.replace(/\s+/g, "")+"."+fileType
+  );
+  
+  if (!uploadResponse.status) {
+    throw new ApiError(
+      StatusCodes.INTERNAL_SERVER_ERROR,
+      "Unable to upload course completion certificate"
+    );
+  }
+  //set the image value to the response url from the upload.
+  req.body.certificate = uploadResponse.url;
 
   const newCourse = await Course.create(req.body);
 
