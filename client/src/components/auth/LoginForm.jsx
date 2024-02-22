@@ -34,7 +34,7 @@ const LoginForm = () => {
 
 
   return (
-    <Card className="w-[400px] shadow-md">
+    <Card className="w-[90%] md:w-[400px] shadow-md">
       <CardHeader className="flex space-y-5">
         <div className="w-full flex justify-center">
           <img src="https://upload.wikimedia.org/wikipedia/commons/e/ec/VVIT_Logo.png" className="w-40 h-30" />
