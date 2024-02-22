@@ -9,6 +9,8 @@ import JobDetail from "./components/jobs/JobDetail"
 import Certifications from "./pages/admin/Certifications"
 import Announcements from "./pages/admin/Announcements"
 import Internships from "./pages/admin/Internships"
+import LoginPage from "./pages/auth/LoginPage"
+import RegisterPage from "./pages/auth/RegisterPage"
 const App = () => {
   return (
     <Router>
@@ -19,8 +21,8 @@ const App = () => {
 
         {/* routes related to registeration and login of users */}
         <Route path="/auth">
-          {/* <Route path="login" element={<Login />}></Route>
-          <Route path="register" element={<Register />}></Route> */}
+          <Route path="login" element={<LoginPage />}></Route>
+          <Route path="register" element={<RegisterPage />}></Route>
         </Route>
 
         {/* all routes of student */}

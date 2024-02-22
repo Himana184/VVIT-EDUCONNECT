@@ -58,6 +58,10 @@ module.exports = {
           foreground: "hsl(var(--card-foreground))",
         },
       },
+      backgroundImage: {
+        loginBg:
+          "url('https://storage.googleapis.com/educonnect-testing-1/collegePhoto.jpg')",
+      },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
