@@ -1,63 +1,33 @@
 import { Storage } from "@google-cloud/storage";
-import multer from "multer";
-
+import dotenv from "dotenv";
+dotenv.config();
 const storage = new Storage({
-  projectId: "way-vaaradhi",
+  projectId: process.env.GCP_PROJECT_ID,
   keyFilename: "keyfile.json",
 });
 
-const bucketName = "vvit-educonnect-testing";
+const bucketName = process.env.GCP_BUCKET_NAME;
 const bucket = storage.bucket(bucketName);
 
-// Set up multer middleware for handling file uploads
-const upload = multer({
-  storage: multer.memoryStorage(),
-  limits: {
-    fileSize: 5 * 1024 * 1024, // 5MB file size limit
-  },
-});
-
 // Route for handling file uploads
-const uploadFiles = async (req, res) => {
-  console.log(req.body);
-  const files = req.files;
+const uploadFiles = async (file, folderName,fileName) => {
+  
+  const filePath = `${folderName}/${fileName}`;
+  const blob = bucket.file(filePath);
+  const blobStream = blob.createWriteStream();
 
-  if (!files) {
-    return res.status(400).json({ message: "Files not received !" });
-  }
-
-  const fileUrls = [];
-  try {
-    // Loop through each file and upload it to Cloud Storage
-    for (const file of files) {
-      const fileName = `activities/${Date.now()}-${file.originalname}`;
-      const fileUpload = bucket.file(fileName);
-
-      const stream = fileUpload.createWriteStream({
-        metadata: {
-          contentType: file.mimetype,
-        },
-      });
-
-      stream.on("error", (err) => {
-        console.error(err);
-        res.status(500).send("Error uploading file.");
-      });
-
-      stream.on("finish", () => {
-        const publicUrl = `https://storage.googleapis.com/${bucketName}/${fileName}`;
-        fileUrls.push(publicUrl);
-        // Once all files are uploaded, send back the list of public URLs
-        if (fileUrls.length === files.length) {
-          res.status(200).send(fileUrls);
-        }
-      });
-
-      stream.end(file.buffer);
-    }
-  } catch (err) {
-    return res.status(500).json({ message: err.message });
-  }
+  return new Promise((resolve, reject) => {
+    blobStream.on("error", (err) => {
+      console.log(err);
+      reject({status : false, err});
+    });
+    blobStream.on("finish", async () => {
+      const url = `https://storage.googleapis.com/${bucketName}/${filePath}`;
+      
+      resolve({ status: true, url });
+    });
+    blobStream.end(file.buffer);
+  });
 };
 
 export default uploadFiles;

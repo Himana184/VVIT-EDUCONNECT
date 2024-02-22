@@ -59,7 +59,6 @@ export const studentRequiredFields = [
   "contact",
   "branch",
   "section",
-  "image",
   "passoutYear",
 ];
 export const queryRequiredFields = [

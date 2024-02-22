@@ -8,11 +8,13 @@ import { checkRequiredFields } from "../utils/requiredFields.js";
 import { studentRequiredFields } from "./constants.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { ApiError } from "../utils/ApiError.js";
+import uploadFiles from "../utils/uploadToCloud.js";
 
 //student registeration
 const currentYear = new Date().getFullYear();
 
 export const handleStudentRegisteration = async (req, res) => {
+  //verify whether all the details are received or not
   const validationResponse = checkRequiredFields(
     req.body,
     studentRequiredFields
@@ -22,12 +24,14 @@ export const handleStudentRegisteration = async (req, res) => {
     throw new ApiError(StatusCodes.BAD_REQUEST, validationResponse.message);
   }
 
+  //check whether the details are previously registered in the db
   const { collegeMail, personalMail, rollNumber, contact } = req.body;
 
   const student = await Student.findOne({
     $or: [{ collegeMail }, { rollNumber }, { personalMail }, { contact }],
   });
 
+  // if student is already registered
   if (student) {
     throw new ApiError(
       StatusCodes.CONFLICT,
@@ -35,6 +39,24 @@ export const handleStudentRegisteration = async (req, res) => {
     );
   }
 
+  const fileType = req.file.originalname.split(".")[1]
+  //upload the image of the student to cloud.
+  const uploadResponse = await uploadFiles(
+    req.file,
+    "student-images",
+    req.body.name.replace(/\s+/g, "")+"."+fileType
+  );
+  
+  if (!uploadResponse.status) {
+    throw new ApiError(
+      StatusCodes.INTERNAL_SERVER_ERROR,
+      "Unable to upload student photo"
+    );
+  }
+  //set the image value to the response url from the upload.
+  req.body.image = uploadResponse.url;
+
+  //create a new student 
   const newStudent = await Student.create(req.body);
 
   return res
@@ -113,7 +135,6 @@ export const updateStudentDetails = async (req, res) => {
     }
   );
   const students = await getStudentsByRole(req.user.role);
-  
 
   return res
     .status(StatusCodes.OK)

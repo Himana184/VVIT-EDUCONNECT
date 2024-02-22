@@ -5,3 +5,4 @@ server/.env
 
 ER-diagram.txt
 models.txt
+server/keyfile.json

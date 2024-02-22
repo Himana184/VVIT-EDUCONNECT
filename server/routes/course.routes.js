@@ -10,7 +10,7 @@ import {
 
 import { filesPayloadExists } from "../middleware/filePayloadExists.js";
 import { fileSizeLimiter } from "../middleware/fileSizeLimiter.js";
-import { fileExtLimiter } from "../middleware/fileSizeLimiter.js";
+import { fileExtLimiter } from "../middleware/fileExtLimiter.js";
 
 const router = express.Router();
 router
