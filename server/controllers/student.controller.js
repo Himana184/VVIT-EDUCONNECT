@@ -8,7 +8,7 @@ import { checkRequiredFields } from "../utils/requiredFields.js";
 import { studentRequiredFields } from "./constants.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { ApiError } from "../utils/ApiError.js";
-import uploadFiles from "../utils/uploadToCloud.js";
+import uploadSingleFile from "../utils/uploadToCloud.js";
 
 //student registeration
 const currentYear = new Date().getFullYear();
@@ -41,7 +41,7 @@ export const handleStudentRegisteration = async (req, res) => {
 
   const fileType = req.file.originalname.split(".")[1]
   //upload the image of the student to cloud.
-  const uploadResponse = await uploadFiles(
+  const uploadResponse = await uploadSingleFile(
     req.file,
     "student-images",
     req.body.name.replace(/\s+/g, "")+"."+fileType
