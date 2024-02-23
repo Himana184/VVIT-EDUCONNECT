@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const jobDriveSchema = new mongoose.Schema(
+const jobDrive = new mongoose.Schema(
   {
     companyName: {
       type: String,
@@ -62,4 +62,4 @@ const jobDriveSchema = new mongoose.Schema(
   }
 );
 
-export default mongoose.model("JobDrive", jobDriveSchema);
+export default mongoose.model("JobDrive", jobDrive);
