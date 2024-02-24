@@ -78,7 +78,7 @@ export const handleUserLogin = async (req, res) => {
   return res
     .status(StatusCodes.OK)
     .cookie("accessToken", accessToken, cookieOptions)
-    .json({ message: "user login successful", user });
+    .json({ message: "user login successful", user , accessToken});
 };
 
 export const studentPasswordUpdate = async (req, res) => {

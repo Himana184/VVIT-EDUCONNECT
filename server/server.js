@@ -12,6 +12,8 @@ import courseRouter from "./routes/course.routes.js";
 import announcementRouter from "./routes/announcement.routes.js";
 import queryRouter from "./routes/query.routes.js";
 import jobdriveRouter from "./routes/jobdrive.routes.js";
+import userRouter from "./routes/user.routes.js";
+
 //configure the env variable from the root path of the server (filename: .env)
 dotenv.config();
 const upload = multer({
@@ -40,6 +42,7 @@ app.use("/api/v1/course", upload.single("courseFile"), courseRouter);
 app.use("/api/v1/announcement", announcementRouter);
 app.use("/api/v1/query", queryRouter);
 app.use("/api/v1/jobdrive", upload.array("jobFiles"), jobdriveRouter);
+app.use("/api/v1/user",upload.single('userImage'),userRouter);
 
 //custom error middleware
 app.use(errorHandler);
