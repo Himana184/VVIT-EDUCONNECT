@@ -1,16 +1,23 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 
-
+import StudentAnnouncements from "./pages/student/StudentAnnouncements"
 import AdminLayout from "./components/layouts/AdminLayout"
+import StudentLayout from "./components/layouts/StudentLayout"
 import Students from "./pages/admin/Students"
 import Coordinators from "./pages/admin/Coordinators"
 import Jobs from "./pages/admin/Jobs"
 import JobDetail from "./components/jobs/JobDetail"
 import Certifications from "./pages/admin/Certifications"
+import StuCertifications from "./pages/student/StuCertifications"
 import Announcements from "./pages/admin/Announcements"
 import Internships from "./pages/admin/Internships"
+import StudentInternships from "./pages/student/StudentInternships"
 import LoginPage from "./pages/auth/LoginPage"
 import RegisterPage from "./pages/auth/RegisterPage"
+import StudentJobs from "./pages/student/StudentJobs"
+import StudentCourses from "./pages/student/StudentCourses"
+import StudentQueries from "./pages/student/StudentQueries"
+
 const App = () => {
   return (
     <Router>
@@ -26,14 +33,20 @@ const App = () => {
         </Route>
 
         {/* all routes of student */}
-        <Route path="/student"></Route>
+        <Route path="/student" element={<StudentLayout />}>
+          <Route path="stuannouncements" element={<StudentAnnouncements />}></Route>
+          <Route path="stujobs" element={<StudentJobs />}></Route>
+          <Route path="stuinternships" element={<StudentInternships />}></Route>
+          <Route path="stucourses" element={<StudentCourses />}></Route>
+          <Route path="stuqueries" element={<StudentQueries />}></Route>         
+          <Route path="stucertifications" element={<StuCertifications />}></Route>
+        </Route>
 
         {/* all routes of admin */}
         <Route path="/admin" element={<AdminLayout />}>
           <Route path="students" index element={<Students />}></Route>
           <Route path="coordinators" index element={<Coordinators />}></Route>
-          <Route path="jobs" element={<Jobs />} >
-          </Route>
+          <Route path="jobs" element={<Jobs />} ></Route>
           <Route path="certifications" element={<Certifications />}></Route>
           <Route path="detail" element={<JobDetail />} />
           <Route path="announcements" element={<Announcements />}></Route>

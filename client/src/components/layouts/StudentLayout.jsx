@@ -1,13 +1,13 @@
 import Navbar from "../common/Navbar";
-import AdminSidebar from "../common/AdminSidebar";
+import StudentSidebar from "../common/StudentSidebar";
 import { Outlet } from "react-router-dom";
 
-const AdminLayout = () => {
+const StudentLayout = () => {
   return (
     <>
       <Navbar />
       <div className="pt-20">
-        <AdminSidebar />
+        <StudentSidebar />
         <main className="p-4 lg:ml-28">
           <Outlet />
         </main>
@@ -16,4 +16,4 @@ const AdminLayout = () => {
   )
 };
 
-export default AdminLayout;
+export default StudentLayout;

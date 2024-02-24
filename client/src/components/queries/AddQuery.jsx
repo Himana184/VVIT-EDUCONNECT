@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { useEffect, useState } from "react"
 import { Dialog, DialogContent, DialogHeader, DialogTrigger, DialogTitle, DialogFooter } from "../ui/dialog"
-import { PiCertificateFill } from "react-icons/pi";
+import { MdOutlineHelp } from "react-icons/md";
 import { useForm } from "react-hook-form"
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
@@ -13,19 +13,18 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from ".
 import { Loader2 } from "lucide-react";
 import { Button } from "../ui/button";
 
-const AddCertification = () => {
+const AddQuery = () => {
   const isLoading = false;
   // State to handle dialog open and close
   const [open, setOpen] = useState(false);
 
-  const [name, setName] = useState("");
-  //const [branches, setBranches] = useState([]);
+
   //react hook form
   const form = useForm();
   const { register, handleSubmit, formState, clearErrors, reset } = form;
   const { errors } = formState;
 
- 
+
 
   //clear errors of the form based on the open and close of dialog
   useEffect(() => {
@@ -36,80 +35,87 @@ const AddCertification = () => {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger>
         <Button className="space-x-2">
-          <PiCertificateFill size={20} />
-          <span>Add certification</span>
+          <MdOutlineHelp size={20} />
+          <span>Add Query</span>
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[450px] max-h-[400px] lg:max-h-[600px] overflow-auto pb-10">
         <DialogHeader>
           <DialogTitle>
-            Fill the details of the certification
+            Fill the details of the query
           </DialogTitle>
         </DialogHeader>
         <form className='space-y-6' onSubmit={handleSubmit()}>
           <div className='space-y-2'>
-            <Label>Name</Label>
+            <Label>Title</Label>
             <Input
               type="text"
-              placeholder="enter name of the certification" {...register("name", {
+              placeholder="title of your query" {...register("title", {
                 required: {
                   value: true,
-                  message: "Certification name is required"
+                  message: "title is required"
                 }
               })} />
-            {errors["name"] && <FormError message={errors["name"].message} />}
+            {errors["title"] && <FormError message={errors["title"].message} />}
           </div>
 
           <div className='space-y-2'>
-            <Label>Issuer</Label>
-            <Input
+            <Label>Description</Label>
+            <Textarea
               type="text"
-              placeholder="enter name of the issuer" {...register("issuer", {
+              placeholder="Details of query"
+              {...register("description", {
                 required: {
                   value: true,
-                  message: "Certification issuer is required"
-                }
+                  message: "description is required"
+                },
               })} />
-            {errors["issuer"] && <FormError message={errors["issuer"].message} />}
+            {errors["description"] && <FormError message={errors["description"].message} />}
           </div>
 
           <div className='space-y-2'>
-            <Label>Certification ID</Label>
+            <Label>Category</Label>
             <Input
               type="text"
-              placeholder="id of certification"
-              {...register("certificateId", {
+              placeholder="Exams, Webinars, Events"
+              {...register("category", {
                 required: {
                   value: true,
-                  message: "certification id is required"
+                  message: "Query category is required"
                 }
               })} />
-            {errors["certificateId"] && <FormError message={errors["certificateId"].message} />}
+            {errors["category"] && <FormError message={errors["category"].message} />}
           </div>
 
-          <div className='space-y-3'>
-            <Label>Issued Date</Label>
-            <Input type='date' {...register("issueDate", {
-              required: {
-                value: true,
-                message: "Issued Date required"
-              }, valueAsDate: true,
-            })} />
-            {errors["issueDate"] && <FormError message={errors["issueDate"].message} />}
+          <div className='space-y-2'>
+            <Label>Branch</Label>
+            <Input
+              type="text"
+              placeholder="branch of your education"
+              {...register("branch", {
+                required: {
+                  value: true,
+                  message: "branch is required"
+                }
+              })} />
+            {errors["branch"] && <FormError message={errors["branch"].message} />}
           </div>
 
-          
+          <div className='space-y-2'>
+            <Label>Comments</Label>
+            <Input
+              type="text"
+              placeholder="comments if any"
+              {...register("category", {})} />
+            {errors["comments"] && <FormError message={errors["comments"].message} />}
+          </div>
 
           <div>
+            <Label>Upload any documents</Label>
             <label className="block ">
-              <span className="sr-only">Upload certification</span>
+              <span className="sr-only">Choose photo</span>
               <Input type="file"
-                {...register("link", {
-                  required: {
-                    value: true,
-                    message: "Certification image is required"
-                  }
-                })}
+                {...register("file", {})}
                 className="block w-full text-sm text-slate-500 file:mr-4 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-primary hover:file:bg-primary hover:file:text-white file:cursor-pointer " />
             </label>
           </div>
@@ -118,11 +124,11 @@ const AddCertification = () => {
             <Button type="submit" className="w-full">
               {isLoading ? (
                 <>
-                  Adding announcement
+                  Adding query
                   <Loader2 className="w-4 h-4 ml-2 animate-spin font-semibold" />
                 </>
               ) : (
-                "Add certification"
+                "Add query"
               )}
             </Button>
           </DialogFooter>
@@ -132,4 +138,4 @@ const AddCertification = () => {
   )
 }
 
-export default AddCertification
+export default AddQuery
