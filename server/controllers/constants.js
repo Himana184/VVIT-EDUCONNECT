@@ -3,7 +3,6 @@ export const adminRequiredFields = [
   "email",
   "password",
   "contact",
-  "image",
   "role",
 ];
 

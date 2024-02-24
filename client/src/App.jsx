@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
-
+import { Toaster } from 'react-hot-toast';
 import StudentAnnouncements from "./pages/student/StudentAnnouncements"
 import AdminLayout from "./components/layouts/AdminLayout"
 import StudentLayout from "./components/layouts/StudentLayout"
@@ -38,7 +38,7 @@ const App = () => {
           <Route path="stujobs" element={<StudentJobs />}></Route>
           <Route path="stuinternships" element={<StudentInternships />}></Route>
           <Route path="stucourses" element={<StudentCourses />}></Route>
-          <Route path="stuqueries" element={<StudentQueries />}></Route>         
+          <Route path="stuqueries" element={<StudentQueries />}></Route>
           <Route path="stucertifications" element={<StuCertifications />}></Route>
         </Route>
 
@@ -59,6 +59,7 @@ const App = () => {
         {/* all routes of faculty */}
         <Route path="/faculty"></Route>
       </Routes>
+      <Toaster />
     </Router>
   )
 }

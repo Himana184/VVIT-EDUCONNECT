@@ -13,7 +13,7 @@ import announcementRouter from "./routes/announcement.routes.js";
 import queryRouter from "./routes/query.routes.js";
 import jobdriveRouter from "./routes/jobdrive.routes.js";
 import userRouter from "./routes/user.routes.js";
-
+import cors from "cors"
 //configure the env variable from the root path of the server (filename: .env)
 dotenv.config();
 const upload = multer({
@@ -24,7 +24,7 @@ const upload = multer({
 });
 const app = express();
 app.use(express.json());
-
+app.use(cors())
 //routes
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/student", upload.single("studentImage"), studentRouter);

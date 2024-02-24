@@ -21,7 +21,7 @@ export const handleAddUser = async (req, res) => {
     const { message } = requiredFieldsValidation;
     throw new ApiError(StatusCodes.BAD_REQUEST, message);
   }
-
+  const { email, contact } = req.body;
   const user = await User.findOne({ $or: [{ email }, { contact }] });
 
   if (user) {
@@ -59,5 +59,93 @@ export const handleAddUser = async (req, res) => {
     );
 };
 
+export const handleGetUsers = async (req, res) => {
+  const users = await User.find({});
+  return res
+    .status(StatusCodes.OK)
+    .json(new ApiResponse(StatusCodes.OK, { users }, "Users details sent"));
+};
 
+export const handleUpdateLoginAccess = async (req, res) => {
+  const { userId } = req.params;
 
+  if (!mongoose.isValidObjectId(userId)) {
+    throw new ApiError(StatusCodes.BAD_REQUEST, "Not a valid user id");
+  }
+
+  const user = await User.findById(userId);
+
+  if (!user) {
+    throw new ApiError(StatusCodes.NOT_FOUND, "User details not found");
+  }
+
+  user.loginAccess = req.body.loginAccess;
+  await user.save();
+
+  const users = await User.find({}).select("-password");
+  return res
+    .status(StatusCodes.OK)
+    .json(
+      new ApiResponse(
+        StatusCodes.OK,
+        { users },
+        `Login access for ${user.name} has been updated`
+      )
+    );
+};
+
+export const handleDeleteUser = async (req, res) => {
+  const {userId} = req.params;
+
+  if (!mongoose.isValidObjectId(userId)) {
+    throw new ApiError(StatusCodes.BAD_REQUEST, "Not a valid user id");
+  }
+
+  const user = await User.findById(userId);
+
+  if (!user) {
+    throw new ApiError(StatusCodes.NOT_FOUND, "User details not found");
+  }
+
+  const response = await User.findByIdAndDelete(userId);
+  const users = await User.find({});
+
+  return res
+    .status(StatusCodes.OK)
+    .json(
+      new ApiResponse(
+        StatusCodes.OK,
+        { users },
+        `user ${response.name} has been deleted`
+      )
+    );
+};
+
+export const handleUpdateUser = async (req, res) => {
+  const {userId} = req.params;
+
+  if (!mongoose.isValidObjectId(userId)) {
+    throw new ApiError(StatusCodes.BAD_REQUEST, "Not a valid user Id");
+  }
+
+  const user = await User.findById(userId);
+  if (!user) {
+    throw new ApiError(StatusCodes.NOT_FOUND, "User details not found");
+  }
+
+  const response = await User.findByIdAndUpdate(userId, req.body, {
+    new: true,
+    runValidators: true,
+  });
+
+  const users = await User.find({});
+  return res
+    .status(StatusCodes.OK)
+    .json(
+      new ApiResponse(
+        StatusCodes.OK,
+        { users },
+        `User ${response.name} details updated`
+      )
+    );
+};
