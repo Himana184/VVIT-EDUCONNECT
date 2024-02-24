@@ -2,8 +2,8 @@
 import { sidebarLinks } from "@/utils/sidebarLinks";
 import { Link } from "react-router-dom";
 
-const Sidebar = ({ show }) => {
-  const role = "admin"
+const Sidebar = ({ show, role }) => {
+  
   return (
     <aside className={` flex justify-center items-center fixed w-[26] lg:block h-screen px-2 bg-white border-r border-r-blue-gray-50 ${show ? "block" : "hidden"}`}>
       {sidebarLinks[role].map((link, index) => (
@@ -18,6 +18,7 @@ const Sidebar = ({ show }) => {
       ))}
     </aside>
   );
+
 };
 
 export default Sidebar;
