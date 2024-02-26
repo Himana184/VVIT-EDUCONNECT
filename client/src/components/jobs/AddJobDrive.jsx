@@ -12,6 +12,9 @@ import { Editor } from "react-draft-wysiwyg";
 import { convertToHTML } from 'draft-convert';
 import { EditorState } from 'draft-js';
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import { useDispatch, useSelector } from 'react-redux'
+import { handleAddJobDrive } from '@/redux/jobSlice'
+import { Loader2 } from 'lucide-react'
 const jobCategories = [
   {
     label: "Internship",
@@ -27,7 +30,8 @@ const jobCategories = [
   }
 ];
 const AddJobDrive = () => {
-
+  const dispatch = useDispatch();
+  const { isLoading } = useSelector((state) => state["job"])
   // state to maintain close and open of dialog
   const [open, setOpen] = useState(false)
   const [eligibleBranches, setEligibleBranches] = useState([]);
@@ -38,11 +42,6 @@ const AddJobDrive = () => {
   const [skills, setSkills] = useState([]);
   //selected job cateogories
   const [categories, setCategories] = useState([])
-  //last date to apply
-  console.log(roles)
-  console.log(eligibleBranches)
-  console.log(skills)
-  console.log(categories)
   // react hook form
   const form = useForm()
 
@@ -53,10 +52,28 @@ const AddJobDrive = () => {
   const { errors } = formState;
 
   //function which handles job drive
-  const handleAddJobDrive = async (data) => {
-    // combine data from all the states in the form and print it 
-    console.log("Job drive data:", data);
+  const handleAddJob = async (data) => {
+    data.roles = roles;
+    console.log(Object.keys(eligibleBranches[0].value))
+    data.eligibleBranches = JSON.parse(JSON.stringify(eligibleBranches));
+    data.skills = skills;
+    data.description = description
+    data.categories = categories;
+    data.content = content;
+    const jobData = new FormData();
+    for (let key in Object.keys(data.files)) {
+      jobData.append("files", data.files[key])
+    }
+    Object.keys(data).forEach((key) => {
+      if (key !== "files") {
+        jobData.append(key, data[key]);
+      }
+    });
+    const response = await dispatch(handleAddJobDrive(jobData));
+    console.log("Response : ", response)
+    setOpen(false);
   }
+
   const [content, setContent] = useState("");
   useEffect(() => {
     let html = convertToHTML(description.getCurrentContent());
@@ -65,7 +82,8 @@ const AddJobDrive = () => {
   useEffect(() => {
     clearErrors();
   }, [])
-  console.log(content)
+
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger>
@@ -77,7 +95,7 @@ const AddJobDrive = () => {
         <DialogHeader>
           <DialogTitle>Enter job drive details</DialogTitle>
         </DialogHeader>
-        <form onSubmit={handleSubmit(handleAddJobDrive)} className='space-y-6'>
+        <form onSubmit={handleSubmit(handleAddJob)} className='space-y-6'>
           <div className='space-y-3'>
             <Label>Company name</Label>
             <Input
@@ -164,7 +182,7 @@ const AddJobDrive = () => {
           </div>
 
           <div className='space-y-3'>
-            <Label>Category</Label>
+            <Label>Eligible Branches</Label>
             <MultiSelect
               options={eligibleBranchesList}
               value={eligibleBranches}
@@ -181,10 +199,7 @@ const AddJobDrive = () => {
               editorClassName="demo-editor"
               onEditorStateChange={setDescription} />
 
-            <textarea
-              disabled
-              value={content}
-            />
+
           </div>
 
           <div className='space-y-3'>
@@ -192,7 +207,16 @@ const AddJobDrive = () => {
           </div>
 
           <DialogFooter>
-            <Button type="submit">Add Drive</Button>
+            <Button type="submit" className="w-full">
+              {isLoading ? (
+                <>
+                  Adding job drive
+                  <Loader2 className="w-4 h-4 ml-2 animate-spin font-semibold" />
+                </>
+              ) : (
+                "Add Job Drive"
+              )}
+            </Button>
           </DialogFooter>
         </form>
       </DialogContent>

@@ -5,9 +5,11 @@ import { jobDriveRequiredFields } from "./constants.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import JobDrive from "../models/jobdrive.model.js";
 import mongoose from "mongoose";
+import { uploadMultipleFiles } from "../utils/uploadToCloud.js";
 //const currentYear = new Date().getFullYear();
 
 export const handleAddJobDrive = async (req, res) => {
+  console.log(req.body);
   //check whether all the required fields have been received or not
   const requiredFieldsValidation = checkRequiredFields(
     req.body,
@@ -19,6 +21,20 @@ export const handleAddJobDrive = async (req, res) => {
     const { message } = requiredFieldsValidation;
     throw new ApiError(StatusCodes.BAD_REQUEST, message);
   }
+  console.log(req.files);
+  const uploadFilesResponse = await uploadMultipleFiles(
+    req.files,
+    "job-drive-files"
+  );
+  console.log(uploadFilesResponse);
+  if (!uploadFilesResponse.status) {
+    throw new ApiError(
+      StatusCodes.INTERNAL_SERVER_ERROR,
+      "Unable to upload files"
+    );
+  }
+
+  req.body.files = uploadFilesResponse.url;
 
   //create a new job drive with given details
   const newJobDrive = await JobDrive.create(req.body);
@@ -71,13 +87,37 @@ export const getJobdrivesByRole = async (role) => {
   if (req.user.role === "admin") {
     jobdrives = await JobDrive.find({})
       .sort({ createdAt: -1 })
-      .populate(["salary","eligibleBranches","companyName","category","roles","offerType","lastDate","description","jobLocation","skills"]);
+      .populate([
+        "salary",
+        "eligibleBranches",
+        "companyName",
+        "category",
+        "roles",
+        "offerType",
+        "lastDate",
+        "description",
+        "jobLocation",
+        "skills",
+      ]);
   } else if (req.user.role === "coordinator") {
-    jobdrives = await JobDrive.find({ eligibleBranches: { $in: [req.user.branch] } })
+    jobdrives = await JobDrive.find({
+      eligibleBranches: { $in: [req.user.branch] },
+    })
       .sort({
         createdAt: -1,
       })
-      .populate(["salary","eligibleBranches","companyName","category","roles","offerType","lastDate","description","jobLocation","skills"]);
-  } 
+      .populate([
+        "salary",
+        "eligibleBranches",
+        "companyName",
+        "category",
+        "roles",
+        "offerType",
+        "lastDate",
+        "description",
+        "jobLocation",
+        "skills",
+      ]);
+  }
   return jobdrives;
 };

@@ -68,16 +68,15 @@ export const queryRequiredFields = [
   "branch",
 ];
 export const jobDriveRequiredFields = [
-  "salary",
-  "eligibleBranches",
   "companyName",
-  "category",
   "roles",
-  "offerType",
-  "lastDate",
-  "description",
+  "categories",
   "jobLocation",
+  "lastDate",
+  "salary",
   "skills",
+  "eligibleBranches",
+  "description"
 ];
 
 export const cookieOptions = {

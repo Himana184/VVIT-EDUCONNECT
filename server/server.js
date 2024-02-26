@@ -41,7 +41,7 @@ app.use(
 app.use("/api/v1/course", upload.single("courseFile"), courseRouter);
 app.use("/api/v1/announcement", announcementRouter);
 app.use("/api/v1/query", queryRouter);
-app.use("/api/v1/jobdrive", upload.array("jobFiles"), jobdriveRouter);
+app.use("/api/v1/jobdrive", upload.array("files",5), jobdriveRouter);
 app.use("/api/v1/user",upload.single('userImage'),userRouter);
 
 //custom error middleware
