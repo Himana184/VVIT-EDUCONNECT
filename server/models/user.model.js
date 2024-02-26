@@ -1,7 +1,7 @@
 import mongoose, { mongo } from "mongoose";
 import validator from "validator";
 import bcrypt from "bcryptjs";
-
+import jwt from "jsonwebtoken";
 const userSchema = new mongoose.Schema(
   {
     name: {
@@ -21,7 +21,6 @@ const userSchema = new mongoose.Schema(
     password: {
       type: String,
       required: [true, "Password is required"],
-      select: false,
     },
     contact: {
       type: String,
@@ -70,7 +69,7 @@ userSchema.methods.generateAccessToken = async function () {
         branch: this.branch,
       },
     },
-    process.env.USER_ACCESS_SECRET,
+    process.env.ACCESS_TOKEN_SECRET,
     {
       expiresIn: "1d",
     }

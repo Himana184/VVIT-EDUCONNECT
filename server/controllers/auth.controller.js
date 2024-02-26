@@ -46,7 +46,7 @@ export const handleStudentLogin = async (req, res) => {
     .status(StatusCodes.OK)
     .cookie("accessToken", accessToken, cookieOptions)
     .json(
-      new ApiResponse(StatusCodes.OK, { student }, "student login successful")
+      new ApiResponse(StatusCodes.OK, { student,accessToken }, "student login successful")
     );
 };
 
@@ -78,7 +78,7 @@ export const handleUserLogin = async (req, res) => {
   return res
     .status(StatusCodes.OK)
     .cookie("accessToken", accessToken, cookieOptions)
-    .json({ message: "user login successful", user , accessToken});
+    .json(new ApiResponse(StatusCodes.OK,{user,accessToken},"User login successful"));
 };
 
 export const studentPasswordUpdate = async (req, res) => {
