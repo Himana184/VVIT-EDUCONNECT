@@ -15,6 +15,7 @@ const currentYear = new Date().getFullYear();
 
 export const handleStudentRegisteration = async (req, res) => {
   //verify whether all the details are received or not
+  // console.log(req.body)
   const validationResponse = checkRequiredFields(
     req.body,
     studentRequiredFields
@@ -39,14 +40,14 @@ export const handleStudentRegisteration = async (req, res) => {
     );
   }
 
-  const fileType = req.file.originalname.split(".")[1]
+  const fileType = req.file.originalname.split(".")[1];
   //upload the image of the student to cloud.
   const uploadResponse = await uploadSingleFile(
     req.file,
     "student-images",
-    req.body.name.replace(/\s+/g, "")+"."+fileType
+    req.body.name.replace(/\s+/g, "") + "." + fileType
   );
-  
+
   if (!uploadResponse.status) {
     throw new ApiError(
       StatusCodes.INTERNAL_SERVER_ERROR,
@@ -56,7 +57,7 @@ export const handleStudentRegisteration = async (req, res) => {
   //set the image value to the response url from the upload.
   req.body.image = uploadResponse.url;
 
-  //create a new student 
+  //create a new student
   const newStudent = await Student.create(req.body);
 
   return res
@@ -104,8 +105,8 @@ export const getStudentDetails = async (req, res) => {
 //need to add pagination to it as there will be a large number of students
 export const getAllStudents = async (req, res) => {
   var students = [];
-
-  students = await getStudentsByRole(req.user.role);
+  console.log(req.user);
+  students = await getStudentsByRole(req);
 
   return res
     .status(StatusCodes.OK)
@@ -134,7 +135,7 @@ export const updateStudentDetails = async (req, res) => {
       new: true,
     }
   );
-  const students = await getStudentsByRole(req.user.role);
+  const students = await getStudentsByRole(req);
 
   return res
     .status(StatusCodes.OK)
@@ -187,17 +188,16 @@ export const deleteStudent = async (req, res) => {
       )
     );
 };
-export const getStudentsByRole = async (role) => {
+export const getStudentsByRole = async (req) => {
   let students = [];
   if (req.user.role === "admin") {
     students = await Student.find({})
       .sort({ createdAt: -1 })
-      .populate({
-        path: "student",
-        match: {
-          passoutYear: { $gte: currentYear },
-        },
-      });
+      .populate([
+        { path: "internships" },
+        { path: "certifications" },
+        { path: "courses" },
+      ]);
   } else if (req.user.role === "coordinator") {
     students = await Student.find({ branch: req.user.branch })
       .sort({

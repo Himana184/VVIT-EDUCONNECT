@@ -23,7 +23,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from ".
 import { branches } from "@/data/branches"
 
 const EditStudent = ({ data }) => {
-  const isLoading = true;
+  const isLoading = false;
   const dispatch = useDispatch();
   const form = useForm();
   const { register, handleSubmit, formState, clearErrors, reset } = form;

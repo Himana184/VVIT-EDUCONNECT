@@ -1,9 +1,8 @@
 import jwt from "jsonwebtoken";
 import { StatusCodes } from "http-status-codes";
-import asyncHandler from "express-async-handler";
-import { ApiError } from "../utils/ApiError";
+import { ApiError } from "../utils/ApiError.js";
 
-export const isAuthenticated = asyncHandler(async (req, res, next) => {
+export const isAuthenticated = async (req, res, next) => {
   const authHeader = req.headers.authorization;
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
     throw new ApiError(StatusCodes.BAD_REQUEST, "Bearer token missing");
@@ -20,4 +19,4 @@ export const isAuthenticated = asyncHandler(async (req, res, next) => {
     console.log(error);
     throw new ApiError(StatusCodes.FORBIDDEN, "Login again !");
   }
-});
+};

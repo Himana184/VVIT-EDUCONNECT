@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FormError } from "../common/FormError";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import { branches } from "@/data/branches";
 import { Button } from "../ui/button";
+import { useDispatch } from "react-redux";
+import { studentRegisteration } from "@/redux/authSlice";
 
 //function to generate pass out years previous 5 and future 5 years
 function generateYears() {
@@ -21,6 +23,8 @@ function generateYears() {
 
 const RegisterForm = () => {
   // react hook form setup
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const form = useForm();
   const { register, handleSubmit, formState, clearErrors, reset } = form;
   const { errors } = formState;
@@ -42,10 +46,21 @@ const RegisterForm = () => {
   }
 
   const handleStudentRegisteration = async (data) => {
+    const studentData = new FormData();
     data.branch = branch;
     data.section = section;
     data.passoutYear = Number(passoutYear);
-    console.log("Student Data:", data);
+    studentData.append("studentImage", data.studentImage[0])
+    Object.keys(data).forEach((key) => {
+      if (key !== "studentImage") {
+        studentData.append(key, data[key]);
+      }
+    });
+    const response = await dispatch(studentRegisteration(studentData));
+    if (response.meta.requestStatus == "fulfilled") {
+      navigate("/auth/login");
+    }
+
   }
 
   return (
@@ -95,7 +110,7 @@ const RegisterForm = () => {
               <Label>Roll number</Label>
               <Input type="text" placeholder="20BQ1A****"
                 {
-                ...register("rollNo", {
+                ...register("rollNumber", {
                   required: {
                     value: true,
                     message: "Student roll number is required"
@@ -103,14 +118,14 @@ const RegisterForm = () => {
                 })
                 }
               />
-              {errors['rollNo'] && <FormError message={errors['rollNo'].message} />}
+              {errors['rollNumber'] && <FormError message={errors['rollNumber'].message} />}
             </div>
 
             <div className="flex flex-col space-y-2">
               <Label>College Mail</Label>
               <Input type="email" placeholder="20BQ1A****@vvit.net"
                 {
-                ...register("collegeEmail", {
+                ...register("collegeMail", {
                   required: {
                     value: true,
                     message: "Student college email is required"
@@ -118,7 +133,7 @@ const RegisterForm = () => {
                 })
                 }
               />
-              {errors['collegeEmail'] && <FormError message={errors['collegeEmail'].message} />}
+              {errors['collegeMail'] && <FormError message={errors['collegeMail'].message} />}
             </div>
 
             <div className="flex flex-col space-y-2">
