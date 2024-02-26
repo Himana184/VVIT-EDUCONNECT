@@ -10,16 +10,8 @@ import { branches } from "@/data/branches";
 import { Button } from "../ui/button";
 import { useDispatch } from "react-redux";
 import { studentRegisteration } from "@/redux/authSlice";
+import { generateYears } from "@/utils/generateyears";
 
-//function to generate pass out years previous 5 and future 5 years
-function generateYears() {
-  const currentYear = new Date().getFullYear();
-  const yearsArray = [];
-  for (let i = currentYear - 5; i <= currentYear + 5; i++) {
-    yearsArray.push(i.toString());
-  }
-  return yearsArray;
-}
 
 const RegisterForm = () => {
   // react hook form setup

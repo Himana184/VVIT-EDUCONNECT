@@ -1,4 +1,6 @@
+import DeleteDialog from "@/components/common/DeleteDialog";
 import EditStudent from "@/components/student/EditStudent";
+import { generateYears } from "@/utils/generateyears";
 
 export const studentsData = [
   {
@@ -82,34 +84,24 @@ export const studentTableColumns = [
     accessorKey: "passoutYear",
   },
 
-  {
-    header: "Edit",
-    id: "actions",
-    enableHiding: false,
-    cell: ({ row }) => {
-      const mentor = row.original;
-      return <EditStudent data={mentor} />;
-    },
-  },
   // {
-  //   header: "Delete",
+  //   header: "Actions",
   //   id: "actions",
   //   enableHiding: false,
   //   cell: ({ row }) => {
-  //     const mentor = row.original;
-  //     return (
-  //       <div className="flex justify-center ">
-  //         <DeleteDialog
-  //           type="mentor"
-  //           dialogTitle={"Are you sure to delete mentor details"}
-  //           data={mentor}
-  //           dialogDescription={
-  //             "This action is irreversible click delete to delete the details permanently"
-  //           }
-  //           handleDelete={deleteMentor}
-  //         />
-  //       </div>
-  //     );
+  //     const student = row.original;
+  //     return <div className="flex space-x-3">
+  //       {/* <EditStudent data={student} /> */}
+  //       {/* <DeleteDialog
+  //         type="student"
+  //         dialogTitle={"Are you sure to delete student details"}
+  //         data={student}
+  //         dialogDescription={
+  //           "This action is irreversible click delete to delete the details permanently"
+  //         }
+  //         handleDelete={generateYears}
+  //       /> */}
+  //     </div>;
   //   },
-  // },
+  // }
 ];
