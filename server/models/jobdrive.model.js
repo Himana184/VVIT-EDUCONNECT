@@ -12,13 +12,11 @@ const jobDrive = new mongoose.Schema(
         required: [true, "Job role is required"],
       },
     ],
-    categories: [
-      {
-        type: String,
-        enum: ["Internship", "Full Time", "Internship + Full Time"],
-        required: [true, "Job Category is required"],
-      },
-    ],
+    category: {
+      type: String,
+      enum: ["Internship", "Full Time", "Internship + Full Time"],
+      required: [true, "Job Category is required"],
+    },
     jobLocation: {
       type: String,
       required: [true, "Job location is required"],
