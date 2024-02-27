@@ -14,9 +14,9 @@ const router = express.Router();
 
 router
   .route("/")
-  .get(getAllCertifications)
-  .patch(handleUpdateCertification)
-  .delete(handleDeleteCertification);
+  .get(getAllCertifications);
+  router.route("/:certificationId").patch(handleUpdateCertification).delete(handleDeleteCertification);
+
 
 //admin and coordinator will have access to this
 router.route("/student/:studentId").get(getStudentCertifications);

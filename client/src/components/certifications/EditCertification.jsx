@@ -1,80 +1,64 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
-import { useEffect, useState } from "react"
-import { Dialog, DialogContent, DialogHeader, DialogTrigger, DialogTitle, DialogFooter } from "../ui/dialog"
-import { PiCertificateFill } from "react-icons/pi";
+/* eslint-disable react/prop-types */
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog'
+import { PencilSquareIcon } from '@heroicons/react/24/outline'
 import { useForm } from "react-hook-form"
-import { Label } from "../ui/label";
-import { Input } from "../ui/input";
-import { FormError } from "../common/FormError";
-import { Textarea } from "../ui/textarea";
-import { MultiSelect } from "react-multi-select-component";
-import { eligibleBranchesList } from "@/data/branches";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
-import { Loader2 } from "lucide-react";
-import { Button } from "../ui/button";
+import { Label } from '../ui/label';
+import { Input } from '../ui/input';
+import { FormError } from '../common/FormError';
+import { Select } from '@radix-ui/react-select';
+import { SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
+import { branches } from '@/data/branches';
+import { Button } from '../ui/button';
+import { Loader2 } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import toast from 'react-hot-toast';
-import { addCertification } from "@/redux/certificationSlice";
-import React from "react";
+import { updateCertification } from '@/redux/certificationSlice';
 
-const AddCertification = () => {
+const EditCertification = ({ data }) => {
+  const { isLoading } = useSelector((state) => state["certificate"])
+
+  const [name, setName] = useState(data.name);
+
+
   const dispatch = useDispatch();
-  const { isLoading } = useSelector((state) => state["certificate"]);
-  // State to handle dialog open and close
-  const [open, setOpen] = useState(false);
 
-  const [name, setName] = useState("");
-  //const [branches, setBranches] = useState([]);
   //react hook form
-  const form = useForm();
-  const { register, handleSubmit, formState, clearErrors, reset } = form;
+  const form = useForm({
+    defaultValues: { ...data }
+  });
+
+  //destructure the values from the form
+  const { register, handleSubmit, clearErrors, reset, formState } = form;
+
+  //errros from the formstate
   const { errors } = formState;
-  const certificationData = new FormData();
-  const handleAddCertification = async (data) =>{
-    data.name = name;
-    for (let key in Object.keys(data.files)) {
-      certificationData.append("files", data.files[key])
-    }
-    Object.keys(data).forEach((key) => {
-      if (key !== "files") {
-        certificationData.append(key, data[key]);
-      }
-    });
-    const response = await dispatch(addCertification(certificationData));
-      console.log("Response : ", response)
-      setOpen(false);
-  }
-  const certificationsData = new FormData();
 
-  //function to preview the image of the coordinator
-  const handlePhotoUpload = (event) => {
-    certificationsData.append('link', event.target.files[0])
-    var output = document.getElementById('preview_img');
-    output.src = URL.createObjectURL(event.target.files[0]);
-    output.onload = function () {
-      URL.revokeObjectURL(output.src) // free memory
-    }
+  //function that will dispatch the edit details
+  const handleEditDetails = async (data) => {
+    data["name"] = name;
+    
+    const response = await dispatch(updateCertification({ data }))
+    setOpen(false);
+
   }
 
-  //clear errors of the form based on the open and close of dialog
   useEffect(() => {
     clearErrors();
   }, [open])
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger>
-        <Button className="space-x-2">
-          <PiCertificateFill size={20} />
-          <span>Add certification</span>
-        </Button>
+      <DialogTrigger asChild>
+        <PencilSquareIcon className="text-gray-700 cursor-pointer h-7 w-7 hover:text-primary" />
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[450px] max-h-[400px] lg:max-h-[600px] overflow-auto pb-10">
-        <DialogHeader>
-          <DialogTitle>
-            Fill the details of the certification
-          </DialogTitle>
+      <DialogContent className="sm:max-w-[400px] max-h-[400px] lg:max-h-[600px] overflow-auto pb-10">
+        <DialogHeader className="mb-5">
+          <DialogTitle>Edit certification details</DialogTitle>
         </DialogHeader>
+        
+
         <form className='space-y-6' onSubmit={handleSubmit(handleAddCertification)}>
           <div className='space-y-2'>
             <Label>Name</Label>
@@ -154,11 +138,11 @@ const AddCertification = () => {
             <Button type="submit" className="w-full">
               {isLoading ? (
                 <>
-                  Adding announcement
+                  saving
                   <Loader2 className="w-4 h-4 ml-2 animate-spin font-semibold" />
                 </>
               ) : (
-                "Add certification"
+                "Save changes"
               )}
             </Button>
           </DialogFooter>
@@ -168,4 +152,4 @@ const AddCertification = () => {
   )
 }
 
-export default AddCertification
+export default EditCertification
