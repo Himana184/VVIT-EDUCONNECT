@@ -3,6 +3,7 @@ import EditCertification from "@/components/certifications/EditCertification";
 import { Switch } from "@/components/ui/switch";
 import { deleteCertification } from "@/redux/certificationSlice";
 import { useDispatch } from "react-redux";
+import { Badge } from "@/components/ui/badge";
 export const certificationTableColumns = [
   {
     header: "Issuer",
@@ -10,7 +11,7 @@ export const certificationTableColumns = [
       return (
 
         <img
-          src={ row.original.issuer ||
+          src={row.original.issuer ||
             "https://cdn.iconscout.com/icon/free/png-256/free-google-160-189824.png"
           }
           alt={row.original.issuer}
@@ -62,11 +63,7 @@ export const certificationTableColumns = [
     cell: ({ row }) => {
       return (
         <div className="flex flex-wrap gap-x-2 gap-y-1 justify-start ">
-          {row.original.tags.split(",").map((item, index) => {
-            return (
-              <Badge key={index} variant={"outline"}>{item}</Badge>
-            )
-          })}
+          {JSON.stringify(row.original.tags)}
         </div>
       )
     }
@@ -79,16 +76,6 @@ export const certificationTableColumns = [
           <Badge>View</Badge>
         </a>
       );
-    },
-  },
-  {
-    header: "Edit",
-    id: "EditAction",
-    enableHiding: false,
-    cell: ({ row }) => {
-
-      const certification = row.original;
-      return <EditCertification data={certification} />;
     },
   },
   {

@@ -46,11 +46,14 @@ export const deleteCertification = createAsyncThunk(
   async (payload, { rejectWithValue }) => {
     console.log("Delete certification payload : ", payload);
     try {
-      const response = await axios.delete(`/api/v1/certification/${payload.data._id}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
+      const response = await axios.delete(
+        `/api/v1/certification/${payload.data._id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
       return response.data;
     } catch (error) {
       if (!error?.response) {
@@ -115,7 +118,8 @@ const certificationSlice = createSlice({
     });
     builder.addCase(getCertifications.fulfilled, (state, { payload }) => {
       state.isLoading = false;
-      state.certifications = payload.data.certifications;
+      console.log("Payload : ", payload.data.certifications.all);
+      state.certifications = payload.data.certifications.all;
       toast.success(payload.message);
     });
     builder.addCase(getCertifications.rejected, (state, { payload }) => {

@@ -1,6 +1,6 @@
 import AddCertification from "@/components/certifications/AddCertification"
 import TanstackTable from "@/components/table/TanstackTable"
-import { certificationTableColumns, certificationsData } from "@/data/certifications"
+import { certificationTableColumns,  } from "@/data/certifications"
 
 const StuCertifications = () => {
   return (
@@ -9,7 +9,7 @@ const StuCertifications = () => {
         <AddCertification />
       </div>
       <div>
-      <TanstackTable tableData={certificationsData} columns={certificationTableColumns} />
+      <TanstackTable tableData={[]} columns={certificationTableColumns} />
     </div>
     </div>
     

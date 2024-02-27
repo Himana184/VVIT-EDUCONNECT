@@ -47,7 +47,7 @@ export const handleAddCertification = async (req, res) => {
   const newCertification = await Certification.create(req.body);
 
   //return all the certifications of the student
-  const certifications = await getCertificationsByRole("student");
+  const certifications = await getCertificationsByRole(req);
 
   return res
     .status(StatusCodes.OK)
@@ -86,7 +86,7 @@ export const handleUpdateCertification = async (req, res) => {
     }
   );
 
-  const certifications = await getCertificationsByRole("student");
+  const certifications = await getCertificationsByRole(req);
 
   return res.status(StatusCodes.OK).json(
     new ApiResponse(
@@ -121,7 +121,8 @@ export const getStudentCertifications = async (req, res) => {
 
 // access permission - Admin, coordinator - will group the certification by issuer name
 export const getAllCertifications = async (req, res) => {
-  const certifications = await getCertificationsByRole(req.user.role);
+  
+  const certifications = await getCertificationsByRole(req);
   const groupedCertifications = groupData(certifications, "issuer");
   return res
     .status(StatusCodes.OK)
@@ -144,7 +145,7 @@ export const handleDeleteCertification = async (req, res) => {
 
   const response = await Certification.findByIdAndDelete(certificationId);
 
-  const certifications = await getCertificationsByRole(req.user.role);
+  const certifications = await getCertificationsByRole(req);
 
   const groupedCertifications = groupData(certifications, "issuer");
 
@@ -161,7 +162,7 @@ export const handleDeleteCertification = async (req, res) => {
 
 
 // helper function to get certifications by role
-export const getCertificationsByRole = async (role) => {
+export const getCertificationsByRole = async (req) => {
   let certifications = [];
   if (req.user.role === "admin") {
     certifications = await Certification.find({})

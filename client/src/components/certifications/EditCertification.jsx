@@ -17,8 +17,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { updateCertification } from '@/redux/certificationSlice';
 
 const EditCertification = ({ data }) => {
-  const { isLoading } = useSelector((state) => state["certificate"])
-
+  const { isLoading } = useSelector((state) => state["certification"])
+  const [open, setOpen] = useState(false);
   const [name, setName] = useState(data.name);
 
 
@@ -38,7 +38,7 @@ const EditCertification = ({ data }) => {
   //function that will dispatch the edit details
   const handleEditDetails = async (data) => {
     data["name"] = name;
-    
+
     const response = await dispatch(updateCertification({ data }))
     setOpen(false);
 
@@ -57,15 +57,15 @@ const EditCertification = ({ data }) => {
         <DialogHeader className="mb-5">
           <DialogTitle>Edit certification details</DialogTitle>
         </DialogHeader>
-        
 
-        <form className='space-y-6' onSubmit={handleSubmit(handleAddCertification)}>
+
+        <form className='space-y-6' onSubmit={handleSubmit()}>
           <div className='space-y-2'>
             <Label>Name</Label>
-            <Input 
+            <Input
               type="text"
               onValueChange={(e) => setName(e)}
-              placeholder="enter name of the certification" {...register("name", { 
+              placeholder="enter name of the certification" {...register("name", {
                 required: {
 
                   value: true,
@@ -114,25 +114,25 @@ const EditCertification = ({ data }) => {
             {errors["issueDate"] && <FormError message={errors["issueDate"].message} />}
           </div>
 
-          
 
-          <div>
-          <div className="flex flex-col items-center space-y-2">
-            <div className="flex items-center space-x-4 shrink-0">
-              <img id='preview_img' className="object-cover w-16 h-16 rounded-full" src="https://vconnectglobe.s3.ap-south-1.amazonaws.com/mentorimage.jpg" alt="User Image" />
-              <label className="block ">
-                <span className="sr-only">Choose photo</span>
-                <input type="file" {...register("link", {
-                  required: {
-                    value: true,
-                    message: "certificate is required"
-                  }
-                })} onChange={handlePhotoUpload} className="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 " />
-              </label>
+
+          {/* <div>
+            <div className="flex flex-col items-center space-y-2">
+              <div className="flex items-center space-x-4 shrink-0">
+                <img id='preview_img' className="object-cover w-16 h-16 rounded-full" src="https://vconnectglobe.s3.ap-south-1.amazonaws.com/mentorimage.jpg" alt="User Image" />
+                <label className="block ">
+                  <span className="sr-only">Choose photo</span>
+                  <input type="file" {...register("link", {
+                    required: {
+                      value: true,
+                      message: "certificate is required"
+                    }
+                  })} onChange={handlePhotoUpload} className="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 " />
+                </label>
+              </div>
+              <div className="w-full">{errors["link"] && <FormError message={errors["link"].message} />}</div>
             </div>
-            <div className="w-full">{errors["link"] && <FormError message={errors["link"].message} />}</div>
-          </div>
-          </div>
+          </div> */}
 
           <DialogFooter>
             <Button type="submit" className="w-full">

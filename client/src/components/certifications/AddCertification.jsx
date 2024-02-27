@@ -19,7 +19,7 @@ import React from "react";
 
 const AddCertification = () => {
   const dispatch = useDispatch();
-  const { isLoading } = useSelector((state) => state["certificate"]);
+  const { isLoading } = useSelector((state) => state["certification"]);
   // State to handle dialog open and close
   const [open, setOpen] = useState(false);
 

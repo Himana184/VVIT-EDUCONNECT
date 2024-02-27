@@ -11,7 +11,7 @@ import { Input } from "../ui/input";
 
 
 const TanstackTable = ({ tableData, columns }) => {
-
+  console.log("Table data : ", tableData)
   // Memorizing the data using useMemo
   const data = useMemo(() => tableData, [tableData]);
 
