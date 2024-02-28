@@ -47,7 +47,7 @@ export const deleteInternship = createAsyncThunk(
   }
 );
 
-
+const token = localStorage.getItem("token")
 const internshipSlice = createSlice({
   name: "internship",
   initialState: {

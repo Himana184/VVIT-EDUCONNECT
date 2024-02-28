@@ -4,7 +4,7 @@ import AddInternship from '@/components/internships/AddInternship';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
-import { internshipTableColumns, internshipsData } from '@/data/internships';
+import { internshipTableColumns } from '@/data/internships';
 import { useQueryParams } from '@/hooks/useQueryParams';
 import { BuildingIcon } from 'lucide-react';
 import { useState } from 'react'

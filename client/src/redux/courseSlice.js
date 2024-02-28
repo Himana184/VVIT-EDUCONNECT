@@ -2,8 +2,6 @@ import axios from "@/api/axios";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import toast from "react-hot-toast";
 
-
-
 export const getCourses = createAsyncThunk(
   "/api/v1/course(get)",
   async (payload, { rejectWithValue }) => {
@@ -47,6 +45,7 @@ export const deleteCourse = createAsyncThunk(
   }
 );
 
+const token = localStorage.getItem("token");
 
 const courseSlice = createSlice({
   name: "course",
@@ -58,7 +57,6 @@ const courseSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     // Add user
-
 
     // Get internship
     builder.addCase(getCourses.pending, (state) => {
@@ -88,8 +86,6 @@ const courseSlice = createSlice({
       state.isLoading = false;
       toast.error(payload.message || "something went wrong");
     });
-
-
   },
 });
 
