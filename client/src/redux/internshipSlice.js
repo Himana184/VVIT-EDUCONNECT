@@ -25,7 +25,7 @@ export const getInternships = createAsyncThunk(
 );
 
 export const deleteInternship = createAsyncThunk(
-  "/api/v1/internship/internshipId(delete)",
+  "/api/v1/internship/:internshipId(delete)",
   async (payload, { rejectWithValue }) => {
     console.log("Delete certification payload : ", payload);
     try {

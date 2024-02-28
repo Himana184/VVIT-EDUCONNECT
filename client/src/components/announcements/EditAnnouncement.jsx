@@ -1,75 +1,64 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
-import { useEffect, useState } from "react"
-import { Dialog, DialogContent, DialogHeader, DialogTrigger, DialogTitle, DialogFooter } from "../ui/dialog"
-import { TfiAnnouncement } from "react-icons/tfi";
+/* eslint-disable react/prop-types */
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog'
+import { PencilSquareIcon } from '@heroicons/react/24/outline'
 import { useForm } from "react-hook-form"
-import { Label } from "../ui/label";
-import { Input } from "../ui/input";
-import { FormError } from "../common/FormError";
-import { Textarea } from "../ui/textarea";
-import { MultiSelect } from "react-multi-select-component";
-import { eligibleBranchesList } from "@/data/branches";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
-import { Loader2 } from "lucide-react";
-import { Button } from "../ui/button";
+import { Label } from '../ui/label';
+import { Input } from '../ui/input';
+import { FormError } from '../common/FormError';
+import { Select } from '@radix-ui/react-select';
+import { SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
+import { branches } from '@/data/branches';
+import { Button } from '../ui/button';
+import { Loader2 } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import toast from 'react-hot-toast';
-import { addAnnouncement } from "@/redux/adminAnnouncementSlice";
+import { updateAnnouncement } from '@/redux/adminAnnouncementSlice';
 
-const AddAnnouncement = () => {
-  const dispatch = useDispatch();
-  const { isLoading } = useSelector((state) => state["user"]);
- // const isLoading = false;
-  // State to handle dialog open and close
+const EditAnnouncement = ({ data }) => {
+  const { isLoading } = useSelector((state) => state["user"])
+  const [priority, setPriority] = useState(data.priority);
+  //const [category, setCategory] = useState(data.category);
   const [open, setOpen] = useState(false);
 
-  const [branches, setBranches] = useState([]);
-  const [description, setDescription] = useState(
-    () => EditorState.createEmpty())
+  const dispatch = useDispatch();
+
   //react hook form
-  const form = useForm();
-  const { register, handleSubmit, formState, clearErrors, reset } = form;
+  const form = useForm({
+    defaultValues: { ...data }
+  });
+
+  //destructure the values from the form
+  const { register, handleSubmit, clearErrors, reset, formState } = form;
+
+  //errros from the formstate
   const { errors } = formState;
 
-  const handleAddAnnouncement = async (data) => {
-    data.branches = JSON.parse(JSON.stringify(branches));
-    data.description = description
-
-    const announcementData = new FormData();
-    for (let key in Object.keys(data.files)) {
-      announcementData.append("files", data.files[key])
-    }
-    Object.keys(data).forEach((key) => {
-      if (key !== "files") {
-        jobData.append(key, data[key]);
-      }
-    });
-    const response = await dispatch(addAnnouncement(announcementData));
-    console.log("Response : ", response)
+  //function that will dispatch the edit details
+  const handleEditDetails = async (data) => {
+    data["priority"] = priority;
+    //data["category"] = category;
+    const response = await dispatch(updateAnnouncement({ data }))
     setOpen(false);
+
   }
 
-  //clear errors of the form based on the open and close of dialog
   useEffect(() => {
     clearErrors();
   }, [open])
-
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger>
-        <Button className="space-x-2">
-          <TfiAnnouncement size={20} />
-          <span>Add Announcement</span>
-        </Button>
+      <DialogTrigger asChild>
+        <PencilSquareIcon className="text-gray-700 cursor-pointer h-7 w-7 hover:text-primary" />
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[450px] max-h-[400px] lg:max-h-[600px] overflow-auto pb-10">
-        <DialogHeader>
-          <DialogTitle>
-            Fill the details of the announcement
-          </DialogTitle>
+      <DialogContent className="sm:max-w-[400px] max-h-[400px] lg:max-h-[600px] overflow-auto pb-10">
+        <DialogHeader className="mb-5">
+          <DialogTitle>Edit announcement details</DialogTitle>
         </DialogHeader>
-        <form className='space-y-6' onSubmit={handleSubmit(handleAddAnnouncement)}>
-          <div className='space-y-2'>
+        <form className='space-y-6' onSubmit={handleSubmit(handleEditDetails)}>
+
+        <div className='space-y-2'>
             <Label>Title</Label>
             <Input
               type="text"
@@ -83,12 +72,17 @@ const AddAnnouncement = () => {
           </div>
 
           <div className='space-y-2'>
-          <Label>Description</Label>
-            <Editor
-              editorState={description}
-              wrapperClassName="demo-wrapper"
-              editorClassName="demo-editor"
-              onEditorStateChange={setDescription} />
+            <Label>Description</Label>
+            <Textarea
+              type="text"
+              placeholder="Details of webinar"
+              {...register("description", {
+                required: {
+                  value: true,
+                  message: "Announcement description is required"
+                },
+              })} />
+            {errors["description"] && <FormError message={errors["description"].message} />}
           </div>
 
           <div className='space-y-2'>
@@ -117,7 +111,7 @@ const AddAnnouncement = () => {
 
           <div className="space-y-2">
             <Label>Priority</Label>
-            <Select onValueChange={(e) => setPriority(e)}>
+            <Select defaultValue={data.branch} onValueChange={(e) => setPriority(e)} required>
               <SelectTrigger>
                 <SelectValue placeholder="Select announcement priority"></SelectValue>
               </SelectTrigger>
@@ -137,12 +131,7 @@ const AddAnnouncement = () => {
             <label className="block ">
               <span className="sr-only">Choose photo</span>
               <Input type="file"
-                {...register("files", {
-                  required: {
-                    value: true,
-                    message: "Coordinator image is required"
-                  }
-                })}
+                {...register("file", {})}
                 className="block w-full text-sm text-slate-500 file:mr-4 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-primary hover:file:bg-primary hover:file:text-white file:cursor-pointer " />
             </label>
           </div>
@@ -151,11 +140,11 @@ const AddAnnouncement = () => {
             <Button type="submit" className="w-full">
               {isLoading ? (
                 <>
-                  Adding announcement
+                  saving
                   <Loader2 className="w-4 h-4 ml-2 animate-spin font-semibold" />
                 </>
               ) : (
-                "Add announcement"
+                "Save changes"
               )}
             </Button>
           </DialogFooter>
@@ -164,5 +153,4 @@ const AddAnnouncement = () => {
     </Dialog>
   )
 }
-
-export default AddAnnouncement
+export default EditAnnouncement

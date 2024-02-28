@@ -2,32 +2,11 @@ import axios from "@/api/axios";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import toast from "react-hot-toast";
 
-
-
-export const getCourses = createAsyncThunk(
-  "/api/v1/course(get)",
+export const addAnnouncement = createAsyncThunk(
+  "/api/v1/announcement(post)",
   async (payload, { rejectWithValue }) => {
     try {
-      const response = await axios.get("/api/v1/course", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
-      console.log("Get courses response : ", response);
-      return response.data;
-    } catch (error) {
-      if (!error?.response) {
-        throw error;
-      }
-      return rejectWithValue(error?.response?.data);
-    }
-  }
-);
-export const addCourse = createAsyncThunk(
-  "/api/v1/course(post)",
-  async (payload, { rejectWithValue }) => {
-    try {
-      const response = await axios.post("/api/v1/course", payload, {
+      const response = await axios.post("/api/v1/announcement", payload, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -42,13 +21,53 @@ export const addCourse = createAsyncThunk(
   }
 );
 
-export const updateCourse = createAsyncThunk(
-  "/api/v1/course/:courseId(patch)",
+export const getAnnouncements = createAsyncThunk(
+  "/api/v1/announcement(get)",
   async (payload, { rejectWithValue }) => {
-    console.log("update course payload : ", payload);
+    try {
+      const response = await axios.get("/api/v1/announcement", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      console.log("Get announcement response : ", response);
+      return response.data;
+    } catch (error) {
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
+
+export const deleteAnnouncement = createAsyncThunk(
+  "/api/v1/announcement/:userId(delete)",
+  async (payload, { rejectWithValue }) => {
+    console.log("Delete announcement payload : ", payload);
+    try {
+      const response = await axios.delete(`/api/v1/announcement/:userId(delete)${payload.data._id}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      return response.data;
+    } catch (error) {
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
+
+export const updateAnnouncement = createAsyncThunk(
+  "/api/v1/announcement/:userId(patch)",
+  async (payload, { rejectWithValue }) => {
+    console.log("update announcement payload : ", payload);
     try {
       const response = await axios.patch(
-        `/api/v1/course/${payload.data._id}`,
+        `/api/v1/announcement/:userId(patch)${payload.data._id}`,
         payload.data,
         {
           headers: {
@@ -65,101 +84,73 @@ export const updateCourse = createAsyncThunk(
     }
   }
 );
-export const deleteCourse = createAsyncThunk(
-  "/api/v1/course/:courseId(delete)",
-  async (payload, { rejectWithValue }) => {
-    console.log("Delete course payload : ", payload);
-    try {
-      const response = await axios.delete(
-        `/api/v1/course/${payload.data._id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
-      return response.data;
-    } catch (error) {
-      if (!error?.response) {
-        throw error;
-      }
-      return rejectWithValue(error?.response?.data);
-    }
-  }
-);
+const token = localStorage.getItem("token");
 
-
-const courseSlice = createSlice({
-  name: "course",
+const adminAnnouncementSlice = createSlice({
+  name: "announcement",
   initialState: {
     isLoading: false,
-    courses: [],
-    token: token,
+    announcements: [],
+    
   },
   reducers: {},
   extraReducers: (builder) => {
-    // Add user
-
-
-    // Get internship
-    builder.addCase(getCourses.pending, (state) => {
+    // Add announcement
+    builder.addCase(addAnnouncement.pending, (state) => {
       state.isLoading = true;
     });
-    builder.addCase(getCourses.fulfilled, (state, { payload }) => {
+    builder.addCase(addAnnouncement.fulfilled, (state, { payload }) => {
       state.isLoading = false;
-      console.log("Payload : ", payload.data.courses.all);
-      state.courses = payload.data.courses.all;
+      state.users = payload.data.users;
       toast.success(payload.message);
     });
-    builder.addCase(getCourses.rejected, (state, { payload }) => {
+    builder.addCase(addAnnouncement.rejected, (state, { payload }) => {
       state.isLoading = false;
       toast.error(payload.message || "something went wrong");
     });
 
-    // Delete course
-    builder.addCase(deleteCourse.pending, (state) => {
+    // Get announcement
+    builder.addCase(getAnnouncements.pending, (state) => {
       state.isLoading = true;
     });
-    builder.addCase(deleteCourse.fulfilled, (state, { payload }) => {
+    builder.addCase(getAnnouncements.fulfilled, (state, { payload }) => {
       state.isLoading = false;
-      state.courses = payload.data.courses;
+      state.users = payload.data.users;
       toast.success(payload.message);
     });
-    builder.addCase(deleteCourse.rejected, (state, { payload }) => {
+    builder.addCase(getAnnouncements.rejected, (state, { payload }) => {
       state.isLoading = false;
       toast.error(payload.message || "something went wrong");
     });
 
-    //add course
-    builder.addCase(addCourse.pending, (state) => {
+    // Delete announcement
+    builder.addCase(deleteAnnouncement.pending, (state) => {
       state.isLoading = true;
     });
-    builder.addCase(addCourse.fulfilled, (state, { payload }) => {
+    builder.addCase(deleteAnnouncement.fulfilled, (state, { payload }) => {
       state.isLoading = false;
-      state.courses = payload.data.courses;
+      state.users = payload.data.users;
       toast.success(payload.message);
     });
-    builder.addCase(addCourse.rejected, (state, { payload }) => {
+    builder.addCase(deleteAnnouncement.rejected, (state, { payload }) => {
       state.isLoading = false;
       toast.error(payload.message || "something went wrong");
     });
 
-    //update course
-    builder.addCase(updateCourse.pending, (state) => {
+    // Update announcement
+    builder.addCase(updateAnnouncement.pending, (state) => {
       state.isLoading = true;
     });
-    builder.addCase(updateCourse.fulfilled, (state, { payload }) => {
+    builder.addCase(updateAnnouncement.fulfilled, (state, { payload }) => {
       state.isLoading = false;
-      state.courses = payload.data.courses;
+      state.users = payload.data.users;
       toast.success(payload.message);
     });
-    builder.addCase(updateCourse.rejected, (state, { payload }) => {
+    builder.addCase(updateAnnouncement.rejected, (state, { payload }) => {
       state.isLoading = false;
       toast.error(payload.message || "something went wrong");
     });
-
-
   },
 });
 
-export default courseSlice.reducer;
+export default adminAnnouncementSlice.reducer;
