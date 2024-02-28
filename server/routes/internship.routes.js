@@ -16,7 +16,8 @@ const router = express.Router();
 // actions can be performed by student, admin, coordinator
 router
   .route("/")
-  .get(getAllInternships)
+  .get(getAllInternships);
+router.route("/internshipId")
   .patch(handleUpdateInternship)
   .delete(handleDeleteInternship);
 

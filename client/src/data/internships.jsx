@@ -1,40 +1,11 @@
 import { Badge } from "@/components/ui/badge"
+import DeleteDialog from "@/components/common/DeleteDialog";
+//import EditCertification from "@/components/certifications/EditCertification";
+import { Switch } from "@/components/ui/switch";
+import { deleteInternship } from "@/redux/internshipSlice";
+import { useDispatch } from "react-redux";
+//import { Badge } from "@/components/ui/badge";
 
-export const internshipsData = [
-  {
-    companyName: "Accenture",
-    role: "Industry X Intern",
-    stipend: '15,000',
-    startDate: "02-02-2024",
-    endDate: "02-06-2024",
-    internshipDomain: "MERN, GCP, AWS, DEVOPS",
-    internshipType: "on-site",
-    branch: "CSE",
-    verificationStatus: "pending"
-  },
-  {
-    companyName: "capgemini",
-    role: "Software Intern",
-    stipend: '10,000',
-    startDate: "12-02-2024",
-    endDate: "22-06-2024",
-    internshipDomain: "MERN, DEVOPS",
-    internshipType: "remote",
-    branch: "CSE",
-    verificationStatus: "verified"
-  },
-  {
-    companyName: "coagnizant",
-    role: "GEN C Pro Intern",
-    stipend: '10,000',
-    startDate: "02-01-2024",
-    endDate: "02-04-2024",
-    internshipDomain: "MEAN, DEVOPS",
-    internshipType: "hybrid",
-    branch: "CSE",
-    verificationStatus: "pending"
-  }
-]
 
 export const internshipTableColumns = [
   {
@@ -83,5 +54,27 @@ export const internshipTableColumns = [
         </div>
       )
     }
-  }
+  },
+  {
+    header: "Delete",
+    id: "DeleteAction",
+    enableHiding: false,
+    cell: ({ row }) => {
+      const internship = row.original;
+      return (
+        <div className="flex">
+          <DeleteDialog
+            type="internship"
+            dialogTitle={"Are you sure to delete internship details"}
+            data={internship}
+            dialogDescription={
+              "This action is irreversible click delete to delete the details permanently"
+            }
+            handleDelete={deleteInternship}
+          />
+        </div>
+      );
+    },
+  },
+
 ]

@@ -26,7 +26,7 @@ const StudentInternships = () => {
           <Label>Table View</Label>
         </div>
         {
-          view == "table" ? <TanstackTable tableData={internshipsData} columns={internshipTableColumns} /> : <InternshipCard />
+          view == "table" ? <TanstackTable tableData={[]} columns={internshipTableColumns} /> : <InternshipCard />
         }
       </div>
     </div>
