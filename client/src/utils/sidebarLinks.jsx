@@ -42,7 +42,12 @@ export const sidebarLinks = {
       icon: <MdOutlineHelp size={24} />,
       text: "Queries",
       href: "queries"
-    }
+    },
+    {
+      icon: <PiStack size={24} />,
+      text: "courses",
+      href: "stucourses"
+    },
   ],
   coordinator: [
     {

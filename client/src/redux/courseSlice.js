@@ -4,16 +4,16 @@ import toast from "react-hot-toast";
 
 
 
-export const getInternships = createAsyncThunk(
-  "/api/v1/internship(get)",
+export const getCourses = createAsyncThunk(
+  "/api/v1/course(get)",
   async (payload, { rejectWithValue }) => {
     try {
-      const response = await axios.get("/api/v1/internship", {
+      const response = await axios.get("/api/v1/course", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
-      console.log("Get certifications response : ", response);
+      console.log("Get courses response : ", response);
       return response.data;
     } catch (error) {
       if (!error?.response) {
@@ -24,13 +24,13 @@ export const getInternships = createAsyncThunk(
   }
 );
 
-export const deleteInternship = createAsyncThunk(
-  "/api/v1/internship/internshipId(delete)",
+export const deleteCourse = createAsyncThunk(
+  "/api/v1/course/courseId(delete)",
   async (payload, { rejectWithValue }) => {
-    console.log("Delete certification payload : ", payload);
+    console.log("Delete course payload : ", payload);
     try {
       const response = await axios.delete(
-        `/api/v1/internship/${payload.data._id}`,
+        `/api/v1/course/${payload.data._id}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -48,11 +48,11 @@ export const deleteInternship = createAsyncThunk(
 );
 
 
-const internshipSlice = createSlice({
-  name: "internship",
+const courseSlice = createSlice({
+  name: "course",
   initialState: {
     isLoading: false,
-    internships: [],
+    courses: [],
     token: token,
   },
   reducers: {},
@@ -61,30 +61,30 @@ const internshipSlice = createSlice({
 
 
     // Get internship
-    builder.addCase(getInternships.pending, (state) => {
+    builder.addCase(getCourses.pending, (state) => {
       state.isLoading = true;
     });
-    builder.addCase(getInternships.fulfilled, (state, { payload }) => {
+    builder.addCase(getCourses.fulfilled, (state, { payload }) => {
       state.isLoading = false;
-      console.log("Payload : ", payload.data.internships.all);
-      state.internships = payload.data.internships.all;
+      console.log("Payload : ", payload.data.courses.all);
+      state.courses = payload.data.courses.all;
       toast.success(payload.message);
     });
-    builder.addCase(getInternships.rejected, (state, { payload }) => {
+    builder.addCase(getCourses.rejected, (state, { payload }) => {
       state.isLoading = false;
       toast.error(payload.message || "something went wrong");
     });
 
     // Delete user
-    builder.addCase(deleteInternship.pending, (state) => {
+    builder.addCase(deleteCourse.pending, (state) => {
       state.isLoading = true;
     });
-    builder.addCase(deleteInternship.fulfilled, (state, { payload }) => {
+    builder.addCase(deleteCourse.fulfilled, (state, { payload }) => {
       state.isLoading = false;
-      state.internships = payload.data.internships;
+      state.courses = payload.data.courses;
       toast.success(payload.message);
     });
-    builder.addCase(deleteInternship.rejected, (state, { payload }) => {
+    builder.addCase(deleteCourse.rejected, (state, { payload }) => {
       state.isLoading = false;
       toast.error(payload.message || "something went wrong");
     });
@@ -93,4 +93,4 @@ const internshipSlice = createSlice({
   },
 });
 
-export default internshipSlice.reducer;
+export default courseSlice.reducer;

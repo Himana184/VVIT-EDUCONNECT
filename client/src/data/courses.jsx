@@ -2,6 +2,12 @@
 import { Badge } from "@/components/ui/badge";
 import { PencilSquareIcon } from "@heroicons/react/24/outline";
 import { DeleteIcon, Edit2Icon, Edit3Icon, Trash2Icon } from "lucide-react";
+import DeleteDialog from "@/components/common/DeleteDialog";
+import EditCertification from "@/components/certifications/EditCertification";
+import { Switch } from "@/components/ui/switch";
+import { deleteCourse } from "@/redux/courseSlice";
+import { useDispatch } from "react-redux";
+
 
 export const coursesData = [
   {
@@ -119,5 +125,26 @@ export const courseTableColumns = [
         </div>
       )
     }
-  }
+  },
+  {
+    header: "Delete",
+    id: "DeleteAction",
+    enableHiding: false,
+    cell: ({ row }) => {
+      const course = row.original;
+      return (
+        <div className="flex">
+          <DeleteDialog
+            type="course"
+            dialogTitle={"Are you sure to delete course details"}
+            data={course}
+            dialogDescription={
+              "This action is irreversible click delete to delete the details permanently"
+            }
+            handleDelete={deleteCourse}
+          />
+        </div>
+      );
+    },
+  },
 ];

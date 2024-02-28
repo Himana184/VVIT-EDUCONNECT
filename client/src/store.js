@@ -5,6 +5,7 @@ import studentReducer from "./redux/studentSlice";
 import jobReducer from "./redux/jobSlice";
 import certificationReducer from "./redux/certificationSlice"
 import internshipReducer from "./redux/internshipSlice"
+import courseReducer from "./redux/courseSlice"
 const store = configureStore({
   reducer: {
     auth: authReducer,
@@ -12,7 +13,8 @@ const store = configureStore({
     student: studentReducer,
     job: jobReducer,
     certification: certificationReducer,
-    internship: internshipReducer
+    internship: internshipReducer,
+    course: courseReducer
   },
 });
 
