@@ -105,8 +105,8 @@ const courseSlice = createSlice({
     });
     builder.addCase(getCourses.fulfilled, (state, { payload }) => {
       state.isLoading = false;
-      console.log("Payload : ", payload.data.courses.all);
-      state.courses = payload.data.courses.all;
+      console.log("Payload : ", payload.data.courses);
+      state.courses = payload.data.courses;
       toast.success(payload.message);
     });
     builder.addCase(getCourses.rejected, (state, { payload }) => {

@@ -23,14 +23,14 @@ export const handleAddCourse = async (req, res) => {
 
   //set the branch of the user so that it is easy to filter the courses based on branch
   req.body.branch = req.user.branch;
-  const fileType = req.file.originalname.split(".")[1]
+  const fileType = req.file.originalname.split(".")[1];
   //upload the image of the course certificate to cloud.
   const uploadResponse = await uploadSingleFile(
     req.file,
     "coursecertificate-images",
-    req.body.courseName.replace(/\s+/g, "")+"."+fileType
+    req.body.courseName.replace(/\s+/g, "") + "." + fileType
   );
-  
+
   if (!uploadResponse.status) {
     throw new ApiError(
       StatusCodes.INTERNAL_SERVER_ERROR,
@@ -109,13 +109,11 @@ export const getStudentCourses = async (req, res) => {
 };
 
 export const getAllCourses = async (req, res) => {
-  const courses = await getCoursesByRole(req.user.role);
+  const courses = await getCoursesByRole(req);
 
   return res
     .status(StatusCodes.OK)
-    .json(
-      new ApiResponse(StatusCodes.OK, { courses }, "courses data sent")
-    );
+    .json(new ApiResponse(StatusCodes.OK, { courses }, "courses data sent"));
 };
 
 export const handleDeleteCourse = async (req, res) => {
@@ -140,7 +138,7 @@ export const handleDeleteCourse = async (req, res) => {
     );
 };
 
-export const getCoursesByRole = async (role) => {
+export const getCoursesByRole = async (req, res) => {
   let courses = [];
   if (req.user.role === "admin") {
     courses = await Course.find({})
@@ -168,5 +166,6 @@ export const getCoursesByRole = async (role) => {
     });
   }
 
+  console.log("courses : ", courses);
   return courses;
 };
