@@ -127,6 +127,36 @@ const courseSlice = createSlice({
       state.isLoading = false;
       toast.error(payload.message || "something went wrong");
     });
+
+    //add course
+    builder.addCase(addCourse.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(addCourse.fulfilled, (state, { payload }) => {
+      state.isLoading = false;
+      state.courses = payload.data.courses;
+      toast.success(payload.message);
+    });
+    builder.addCase(addCourse.rejected, (state, { payload }) => {
+      state.isLoading = false;
+      toast.error(payload.message || "something went wrong");
+    });
+
+    //update course
+    builder.addCase(updateCourse.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(updateCourse.fulfilled, (state, { payload }) => {
+      state.isLoading = false;
+      state.courses = payload.data.courses;
+      toast.success(payload.message);
+    });
+    builder.addCase(updateCourse.rejected, (state, { payload }) => {
+      state.isLoading = false;
+      toast.error(payload.message || "something went wrong");
+    });
+
+
   },
 });
 
