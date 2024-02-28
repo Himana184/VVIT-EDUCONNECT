@@ -46,7 +46,7 @@ export const sidebarLinks = {
     {
       icon: <PiStack size={24} />,
       text: "courses",
-      href: "stucourses"
+      href: "courses"
     },
   ],
   coordinator: [

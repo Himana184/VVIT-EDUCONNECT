@@ -17,6 +17,7 @@ import RegisterPage from "./pages/auth/RegisterPage"
 import StudentJobs from "./pages/student/StudentJobs"
 import StudentCourses from "./pages/student/StudentCourses"
 import StudentQueries from "./pages/student/StudentQueries"
+import Courses from "./pages/admin/Courses";
 
 const App = () => {
   return (
@@ -51,6 +52,7 @@ const App = () => {
           <Route path="detail" element={<JobDetail />} />
           <Route path="announcements" element={<Announcements />}></Route>
           <Route path="internships" element={<Internships />}></Route>
+          <Route path="courses" element={<Courses />}></Route>
         </Route>
 
         {/* all routes of coordinator */}
