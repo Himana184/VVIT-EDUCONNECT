@@ -59,7 +59,7 @@ const EditCertification = ({ data }) => {
         </DialogHeader>
 
 
-        <form className='space-y-6' onSubmit={handleSubmit()}>
+        <form className='space-y-6' onSubmit={handleSubmit(handleEditDetails)}>
           <div className='space-y-2'>
             <Label>Name</Label>
             <Input
