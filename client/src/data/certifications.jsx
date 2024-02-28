@@ -94,7 +94,7 @@ export const certificationTableColumns = [
               "This action is irreversible click delete to delete the details permanently"
             }
             handleDelete={deleteCertification}
-          />s
+          />
         </div>
       );
     },
