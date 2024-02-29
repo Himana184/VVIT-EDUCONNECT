@@ -37,10 +37,12 @@ const AnnouncementCard = ({ announcement }) => {
       </CardContent>
       <CardFooter className="w-full flex justify-between items-center">
         {/* If file exists there will be download button */}
-        <Button variant="outline" className="border-primary/50 space-x-2 flex items-center">
-          <Download />
-          <p>Download</p>
-        </Button>
+        <a href="https://storage.googleapis.com/educonnect-testing-1/logo.png" target='_blank' rel="noreferrer">
+          <Button variant="outline" className="border-primary/50 space-x-2 flex items-center">
+            <Download />
+            <p>Download</p>
+          </Button>
+        </a>
 
         {/* Edit and delete options for admin */}
         <div className='flex items-center justify-between space-x-4'>

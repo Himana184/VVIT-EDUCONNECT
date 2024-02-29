@@ -4,6 +4,7 @@ import { Banknote, Briefcase, CalendarSearch, MapPin } from "lucide-react";
 import { Badge } from "../ui/badge"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../ui/card"
 import { Button } from "../ui/button";
+import { Link } from "react-router-dom";
 
 const JobCard = ({ job }) => {
 
@@ -51,9 +52,10 @@ const JobCard = ({ job }) => {
             <p className="text-xs font-medium">Last Date</p>
           </div>
         </div>
-        <Button>
-          View More
-        </Button>
+        <Link to={"/admin/detail"}>
+          <Button>
+            View More
+          </Button></Link>
       </CardFooter>
     </Card>
   )

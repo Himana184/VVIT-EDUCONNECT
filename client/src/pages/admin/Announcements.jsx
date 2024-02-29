@@ -23,7 +23,7 @@ const Announcements = () => {
             announcements.map((announcement, index) => {
               return <AnnouncementCard key={index} announcement={announcement} />
             })
-          ) : <p>Nothing to display</p>
+          ) : <AnnouncementCard />
         }
       </div>
     </div>

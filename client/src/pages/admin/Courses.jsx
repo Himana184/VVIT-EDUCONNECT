@@ -1,11 +1,11 @@
 import TanstackTable from "@/components/table/TanstackTable";
-import { courseTableColumns } from "@/data/courses";
+import { courseTableColumns, courses } from "@/data/courses";
 import { getCourses } from "@/redux/courseSlice";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 const Courses = () => {
-  const { courses } = useSelector((state) => state["course"]);
+  // const { courses } = useSelector((state) => state["course"]);
   console.log("courses : ", courses);
   const dispatch = useDispatch();
   useEffect(() => {

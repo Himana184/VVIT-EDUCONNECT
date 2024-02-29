@@ -11,7 +11,7 @@ export const certificationTableColumns = [
       return (
 
         <img
-          src={row.original.issuer ||
+          src={row.original.link ||
             "https://cdn.iconscout.com/icon/free/png-256/free-google-160-189824.png"
           }
           alt={row.original.issuer}
@@ -33,7 +33,7 @@ export const certificationTableColumns = [
     header: "Student name",
     cell: ({ row }) => {
       return (
-        <p>{row.original.student.name}</p>
+        <p>{row.original.student.name || "Arjun"}</p>
       )
     }
   },
@@ -41,7 +41,7 @@ export const certificationTableColumns = [
     header: "Roll No",
     cell: ({ row }) => {
       return (
-        <p>{row.original.student.rollNumber}</p>
+        <p>{row.original.student.rollNumber || "21BQ1A05O0"}</p>
       )
     }
   },
@@ -100,3 +100,30 @@ export const certificationTableColumns = [
     },
   },
 ];
+
+export const certifications = [
+  {
+    name: "React Developer Certification",
+    issuer: "React University",
+    certificateId: "REACT123",
+    student: "student_id_1",
+    branch: "CSE",
+    issueDate: new Date("2023-06-15"),
+    expiryDate: new Date("2025-06-15"),
+    tags: ["React", "Frontend", "JavaScript"],
+    link: "https://storage.googleapis.com/filesharingapplication/react-logo.png",
+  },
+  {
+    name: "AWS Certified Solutions Architect - Associate",
+    issuer: "Amazon Web Services",
+    certificateId: "AWSARCH123",
+    student: "student_id_2",
+    branch: "CSE",
+    issueDate: new Date("2023-07-20"),
+    expiryDate: new Date("2026-07-20"),
+    tags: ["AWS", "Cloud Computing", "Architecture"],
+    link: "https://storage.googleapis.com/filesharingapplication/aws.png",
+  }
+];
+
+

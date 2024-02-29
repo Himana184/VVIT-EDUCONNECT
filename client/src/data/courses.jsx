@@ -8,7 +8,7 @@ import { Switch } from "@/components/ui/switch";
 import { deleteCourse } from "@/redux/courseSlice";
 import { useDispatch } from "react-redux";
 
-export const coursesData = [
+export const courses = [
   {
     courseName: "JavaScript Basics",
     coursePlatform: "Codecademy",
@@ -35,7 +35,7 @@ export const coursesData = [
     startDate: "2023-05-10",
     completionStatus: "completed",
     tags: "Web Development, Programming, Bootcamp,Rust,Kubernetes",
-    certificate: "https://www.codecademy.com/certificates/javascript-basics",
+    certificate: "https://cdn.iconscout.com/icon/free/png-256/free-google-160-189824.png",
   },
   {
     courseName: "Python Fundamentals",
@@ -63,7 +63,9 @@ export const coursesData = [
     startDate: "2023-07-20",
     completionStatus: "completed",
     tags: "Web Development, Programming, Bootcamp,Rust,Kubernetes",
-    certificate: "https://www.coursera.org/certificates/python-fundamentals",
+    certificate:
+      "https://storage.googleapis.com/filesharingapplication/aws.png",
+
   },
   {
     courseName: "Data Science Specialization",
@@ -92,7 +94,7 @@ export const coursesData = [
     completionStatus: "completed",
     tags: "Web Development, Programming, Bootcamp,Rust,Kubernetes",
     certificate:
-      "https://www.udacity.com/course/data-science-nanodegree--nd025",
+      "https://cdn.iconscout.com/icon/free/png-256/free-google-160-189824.png",
   },
   {
     courseName: "Web Development Bootcamp",
@@ -120,23 +122,18 @@ export const coursesData = [
     startDate: "2023-11-28",
     completionStatus: "completed",
     tags: "Web Development, Programming, Bootcamp,Rust,Kubernetes",
-    certificate:
-      "https://www.freecodecamp.org/certification/yourusername/full-stack",
+    certificate: "https://storage.googleapis.com/filesharingapplication/react-logo.png",
   },
 ];
 
 export const courseTableColumns = [
-  {
-    header: "Course Name",
-    accessorKey: "courseName",
-  },
-
   {
     header: "Course Platform",
     cell: ({ row }) => {
       return (
         <img
           src={
+            row.original.certificate ||
             "https://cdn.iconscout.com/icon/free/png-256/free-google-160-189824.png"
           }
           alt={row.original.coursePlatform}
@@ -145,6 +142,12 @@ export const courseTableColumns = [
       );
     },
   },
+  {
+    header: "Course Name",
+    accessorKey: "courseName",
+  },
+
+
   {
     header: "Completion Status",
     accessorKey: "completionStatus",
@@ -175,17 +178,6 @@ export const courseTableColumns = [
         <a href={row.original.certificate} target="_blank" rel="noreferrer">
           <Badge>View</Badge>
         </a>
-      );
-    },
-  },
-  {
-    header: "Actions",
-    cell: ({ row }) => {
-      return (
-        <div className="flex space-x-4">
-          <Edit3Icon size={25} className="cursor-pointer" />
-          <Trash2Icon size={25} className="cursor-pointer" />
-        </div>
       );
     },
   },

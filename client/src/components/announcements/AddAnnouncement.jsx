@@ -25,7 +25,7 @@ const AddAnnouncement = () => {
 
   const [branches, setBranches] = useState([]);
   const [description, setDescription] = useState(
-    () =>" EditorState.createEmpty()")
+    () => "")
   //react hook form
   const form = useForm();
   const { register, handleSubmit, formState, clearErrors, reset } = form;
@@ -82,7 +82,7 @@ const AddAnnouncement = () => {
             {errors["title"] && <FormError message={errors["title"].message} />}
           </div>
 
-          <div className='space-y-2'>
+          <div className='space-y-2 border border-primary/50 p-1'>
             <Label>Description</Label>
             <Editor
               editorState={description}
