@@ -18,6 +18,7 @@ import StudentJobs from "./pages/student/StudentJobs"
 import StudentCourses from "./pages/student/StudentCourses"
 import StudentQueries from "./pages/student/StudentQueries"
 import Courses from "./pages/admin/Courses";
+import Dashboard from "./pages/admin/Dashboard";
 
 const App = () => {
   return (
@@ -45,6 +46,7 @@ const App = () => {
 
         {/* all routes of admin */}
         <Route path="/admin" element={<AdminLayout />}>
+          <Route index element={<Dashboard />} />
           <Route path="students" index element={<Students />}></Route>
           <Route path="coordinators" index element={<Coordinators />}></Route>
           <Route path="jobs" element={<Jobs />} ></Route>

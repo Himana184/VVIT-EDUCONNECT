@@ -50,6 +50,7 @@ const internshipSchema = new mongoose.Schema(
     },
     verificationStatus: {
       type: String,
+      default : "pending",
       enum: ["pending", "verified", "rejected"],
     },
     comment: {

@@ -154,7 +154,7 @@ export const getAllInternships = async (req, res) => {
   const internships = await getInternshipsByRole(req);
 
   const groupedInternships = await groupData(internships, "verificationStatus");
-
+  // console.log(groupedInternships);
   return res
     .status(StatusCodes.OK)
     .json(

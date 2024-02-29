@@ -17,7 +17,8 @@ const router = express.Router();
 router
   .route("/")
   .get(getAllInternships);
-router.route("/internshipId")
+
+router.route("/:internshipId")
   .patch(handleUpdateInternship)
   .delete(handleDeleteInternship);
 

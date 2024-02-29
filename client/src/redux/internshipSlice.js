@@ -21,7 +21,6 @@ export const addInternship = createAsyncThunk(
   }
 );
 
-
 export const getInternships = createAsyncThunk(
   "/api/v1/internship(get)",
   async (payload, { rejectWithValue }) => {
@@ -88,15 +87,21 @@ export const updateInternship = createAsyncThunk(
   }
 );
 
-const token = localStorage.getItem("token")
+const token = localStorage.getItem("token");
 const internshipSlice = createSlice({
   name: "internship",
   initialState: {
     isLoading: false,
+    allInternships: [],
     internships: [],
     token: token,
   },
-  reducers: {},
+  reducers: {
+    handleFilter: (state, { payload }) => {
+      state.internships = state.allInternships[payload.status];
+      console.log(state.internships);
+    },
+  },
   extraReducers: (builder) => {
     //add internship
     builder.addCase(addInternship.pending, (state) => {
@@ -112,15 +117,13 @@ const internshipSlice = createSlice({
       toast.error(payload.message || "something went wrong");
     });
 
-
-
-
     // Get internship
     builder.addCase(getInternships.pending, (state) => {
       state.isLoading = true;
     });
     builder.addCase(getInternships.fulfilled, (state, { payload }) => {
       state.isLoading = false;
+      state.allInternships = payload.data.internships;
       console.log("Payload : ", payload.data.internships.all);
       state.internships = payload.data.internships.all;
       toast.success(payload.message);
@@ -136,7 +139,8 @@ const internshipSlice = createSlice({
     });
     builder.addCase(deleteInternship.fulfilled, (state, { payload }) => {
       state.isLoading = false;
-      state.internships = payload.data.internships;
+      state.allInternships = payload.data.internships;
+      state.internships = payload.data.internships.all;
       toast.success(payload.message);
     });
     builder.addCase(deleteInternship.rejected, (state, { payload }) => {
@@ -156,9 +160,8 @@ const internshipSlice = createSlice({
       state.isLoading = false;
       toast.error(payload.message || "something went wrong");
     });
-
-
   },
 });
 
 export default internshipSlice.reducer;
+export const { handleFilter } = internshipSlice.actions;
