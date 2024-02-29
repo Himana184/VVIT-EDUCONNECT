@@ -14,9 +14,9 @@ import { Loader2 } from "lucide-react";
 import { Button } from "../ui/button";
 import { useDispatch, useSelector } from 'react-redux';
 import toast from 'react-hot-toast';
-import { addInternship } from "@/redux/internshipSlice";
+import { updateInternship } from "@/redux/internshipSlice";
 
-const AddInternship = () => {
+const EditInternship = () => {
   //const isLoading = false;
   const dispatch = useDispatch();
   const { isLoading } = useSelector((state) => state["internship"]);
@@ -29,45 +29,15 @@ const AddInternship = () => {
   const form = useForm();
   const { register, handleSubmit, formState, clearErrors, reset } = form;
   const { errors } = formState;
-  const handleAddInternship = async (data) => {
-    if (companyName == "") {
-      toast.error("company name is required");
-      return;
-    }
+  const handleEditDetails = async (data) => {
+
     data["companyName"] = companyName
-    const internshipData = new FormData();
-    internshipData.append("offerLetter", data.offerLetter[0])
-    Object.keys(data).forEach((key) => {
-      if (key !== "offerLetter") {
-        internshipData.append(key, data[key]);
-      }
-    });
 
 
-
-    const response = await dispatch(addInternship(internshipData));
+    const response = await dispatch(updateInternship(data));
     setOpen(false)
   }
-  const internshipsData = new FormData();
-  
 
-  //function to preview the image of the coordinator
-
-
-  const handleFileUpload = (event, fieldName) => {
-    const file = event.target.files[0];
-  
-    if (file) {
-      internshipsData.append(fieldName, file);
-  
-      const output = document.getElementById(`${fieldName}_preview_img`);
-      output.src = URL.createObjectURL(file);
-  
-      output.onload = function () {
-        URL.revokeObjectURL(output.src); // free memory
-      };
-    }
-  };
   
 
   //clear errors of the form based on the open and close of dialog
@@ -77,19 +47,14 @@ const AddInternship = () => {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger>
-        <Button className="space-x-2">
-          <FolderKanban size={20} />
-          <span>Add Internship</span>
-        </Button>
+      <DialogTrigger asChild>
+        <PencilSquareIcon className="text-gray-700 cursor-pointer h-7 w-7 hover:text-primary" />
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[450px] max-h-[400px] lg:max-h-[600px] overflow-auto pb-10">
-        <DialogHeader>
-          <DialogTitle>
-            Fill the details of the internship
-          </DialogTitle>
+      <DialogContent className="sm:max-w-[400px] max-h-[400px] lg:max-h-[600px] overflow-auto pb-10">
+        <DialogHeader className="mb-5">
+          <DialogTitle>Edit internship details</DialogTitle>
         </DialogHeader>
-        <form className='space-y-6' onSubmit={handleSubmit(handleAddInternship)}>
+        <form className='space-y-6' onSubmit={handleSubmit(handleEditDetails)}>
           <div className='space-y-2'>
             <Label>Company Name</Label>
             <Input
@@ -99,7 +64,7 @@ const AddInternship = () => {
                   value: true,
                   message: "Company name is required"
                 }
-              })}onValueChange={(e) => setName(e)} />
+              })} />
             {errors["companyName"] && <FormError message={errors["companyName"].message} />}
           </div>
 
@@ -196,47 +161,17 @@ const AddInternship = () => {
             {errors["endDate"] && <FormError message={errors["endDate"].message} />}
           </div>
 
-          <div className="flex flex-col items-center space-y-2">
-            <div className="flex items-center space-x-4 shrink-0">
-              <img id='preview_img' className="object-cover w-16 h-16 rounded-full" src="https://vconnectglobe.s3.ap-south-1.amazonaws.com/mentorimage.jpg" alt="User Image" />
-              <label className="block ">
-                <span className="sr-only">Choose photo</span>
-                <input type="file" {...register("offerLetter", {
-                  required: {
-                    value: true,
-                    message: "offer letter is required"
-                  }
-                })} onChange={handleFileUpload} className="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 " />
-              </label>
-            </div>
-            <div className="w-full">{errors["offerLetter"] && <FormError message={errors["offerLetter"].message} />}</div>
-          </div>
-          <div className="flex flex-col items-center space-y-2">
-            <div className="flex items-center space-x-4 shrink-0">
-              <img id='preview_img' className="object-cover w-16 h-16 rounded-full" src="https://vconnectglobe.s3.ap-south-1.amazonaws.com/mentorimage.jpg" alt="User Image" />
-              <label className="block ">
-                <span className="sr-only">Choose photo</span>
-                <input type="file" {...register("completionCertificate", {
-                  required: {
-                    value: true,
-                    message: "completion certificate is required"
-                  }
-                })} onChange={handleFileUpload} className="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 " />
-              </label>
-            </div>
-            <div className="w-full">{errors["completionCertificate"] && <FormError message={errors["completionCertiicate"].message} />}</div>
-          </div>
-          
+
 
           <DialogFooter>
             <Button type="submit" className="w-full">
               {isLoading ? (
                 <>
-                  Adding internship
+                  saving
                   <Loader2 className="w-4 h-4 ml-2 animate-spin font-semibold" />
                 </>
               ) : (
-                "Add Internship"
+                "Save changes"
               )}
             </Button>
           </DialogFooter>
@@ -246,4 +181,4 @@ const AddInternship = () => {
   )
 }
 
-export default AddInternship
+export default EditInternship

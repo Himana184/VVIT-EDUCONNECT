@@ -16,18 +16,51 @@ import { useDispatch, useSelector } from 'react-redux';
 import toast from 'react-hot-toast';
 //import { addCertification } from "@/redux/certificationSlice";
 import React from "react";
+import { addCourse } from "@/redux/courseSlice";
 
 const AddCourse = () => {
-  const isLoading = false;
+  const dispatch = useDispatch();
+  const { isLoading } = useSelector((state) => state["course"]);
   // State to handle dialog open and close
   const [open, setOpen] = useState(false);
 
-  const [name, setName] = useState("");
+  const [courseName, setName] = useState("");
   //const [branches, setBranches] = useState([]);
   //react hook form
   const form = useForm();
   const { register, handleSubmit, formState, clearErrors, reset } = form;
   const { errors } = formState;
+  const handleAddCourse = async (data) => {
+    if (courseName == "") {
+      toast.error("course name required");
+      return;
+    }
+    data["courseName"]=courseName;
+    const courseData = new FormData();
+    courseData.append("certificate", data.userImage[0])
+    Object.keys(data).forEach((key) => {
+      if (key !== "userImage") {
+        userData.append(key, data[key]);
+      }
+    });
+
+    const response = await dispatch(addCourse(courseData));
+    setOpen(false)
+
+  }
+
+  //formdata instance containing the coordinator details
+  const coursesData = new FormData();
+
+  //function to preview the image of the coordinator
+  const handlePhotoUpload = (event) => {
+    coursesData.append('certificate', event.target.files[0])
+    var output = document.getElementById('preview_img');
+    output.src = URL.createObjectURL(event.target.files[0]);
+    output.onload = function () {
+      URL.revokeObjectURL(output.src) // free memory
+    }
+  }
 
  
 
@@ -50,7 +83,7 @@ const AddCourse = () => {
             Fill the details of the course
           </DialogTitle>
         </DialogHeader>
-        <form className='space-y-6' onSubmit={handleSubmit()}>
+        <form className='space-y-6' onSubmit={handleSubmit(handleAddCourse)}>
           <div className='space-y-2'>
             <Label>Course Name</Label>
             <Input
@@ -108,19 +141,20 @@ const AddCourse = () => {
 
           
 
-          <div>
-            <label className="block ">
-                <Label>Course Certificate</Label>
-              <span className="sr-only">Upload certification</span>
-              <Input type="file"
-                {...register("link", {
+          <div className="flex flex-col items-center space-y-2">
+            <div className="flex items-center space-x-4 shrink-0">
+              <img id='preview_img' className="object-cover w-16 h-16 rounded-full" src="https://vconnectglobe.s3.ap-south-1.amazonaws.com/mentorimage.jpg" alt="User Image" />
+              <label className="block ">
+                <span className="sr-only">Choose photo</span>
+                <input type="file" {...register("certificate", {
                   required: {
                     value: true,
-                    message: "Course certificate is required"
+                    message: "course certificate is required"
                   }
-                })}
-                className="block w-full text-sm text-slate-500 file:mr-4 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-primary hover:file:bg-primary hover:file:text-white file:cursor-pointer " />
-            </label>
+                })} onChange={handlePhotoUpload} className="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 " />
+              </label>
+            </div>
+            <div className="w-full">{errors["certificate"] && <FormError message={errors["certificate"].message} />}</div>
           </div>
 
           <DialogFooter>
