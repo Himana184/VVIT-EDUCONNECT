@@ -15,17 +15,17 @@ import { Button } from "../ui/button";
 import { useDispatch, useSelector } from 'react-redux';
 import toast from 'react-hot-toast';
 import { addAnnouncement } from "@/redux/adminAnnouncementSlice";
-
+import { Editor, EditorState } from "react-draft-wysiwyg"
 const AddAnnouncement = () => {
   const dispatch = useDispatch();
   const { isLoading } = useSelector((state) => state["announcement"]);
- // const isLoading = false;
+  // const isLoading = false;
   // State to handle dialog open and close
   const [open, setOpen] = useState(false);
 
   const [branches, setBranches] = useState([]);
   const [description, setDescription] = useState(
-    () => EditorState.createEmpty())
+    () =>" EditorState.createEmpty()")
   //react hook form
   const form = useForm();
   const { register, handleSubmit, formState, clearErrors, reset } = form;
@@ -83,7 +83,7 @@ const AddAnnouncement = () => {
           </div>
 
           <div className='space-y-2'>
-          <Label>Description</Label>
+            <Label>Description</Label>
             <Editor
               editorState={description}
               wrapperClassName="demo-wrapper"
