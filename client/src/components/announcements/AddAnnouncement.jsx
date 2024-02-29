@@ -18,7 +18,7 @@ import { addAnnouncement } from "@/redux/adminAnnouncementSlice";
 
 const AddAnnouncement = () => {
   const dispatch = useDispatch();
-  const { isLoading } = useSelector((state) => state["user"]);
+  const { isLoading } = useSelector((state) => state["announcement"]);
  // const isLoading = false;
   // State to handle dialog open and close
   const [open, setOpen] = useState(false);
