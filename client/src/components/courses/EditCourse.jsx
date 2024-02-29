@@ -8,28 +8,36 @@ import { Input } from "../ui/input";
 import { FormError } from "../common/FormError";
 import { Textarea } from "../ui/textarea";
 import { MultiSelect } from "react-multi-select-component";
-import { eligibleBranchesList } from "@/data/branches";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import { Loader2 } from "lucide-react";
 import { Button } from "../ui/button";
 import { useDispatch, useSelector } from 'react-redux';
+
+import { updateCourse } from "@/redux/courseSlice";
 import toast from 'react-hot-toast';
 //import { addCertification } from "@/redux/certificationSlice";
 import React from "react";
 
-const AddCourse = () => {
+const EditCourse = () => {
   const isLoading = false;
   // State to handle dialog open and close
   const [open, setOpen] = useState(false);
 
-  const [name, setName] = useState("");
+  const [courseName, setName] = useState("");
+  const dispatch = useDispatch();
   //const [branches, setBranches] = useState([]);
   //react hook form
   const form = useForm();
   const { register, handleSubmit, formState, clearErrors, reset } = form;
   const { errors } = formState;
 
- 
+  const handleEditDetails = async (data) => {
+    data["courseName"] = courseName;
+
+    const response = await dispatch(updateCourse({ data }))
+    setOpen(false);
+
+  }
 
   //clear errors of the form based on the open and close of dialog
   useEffect(() => {
@@ -38,19 +46,14 @@ const AddCourse = () => {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger>
-        <Button className="space-x-2">
-          <PiStack size={20} />
-          <span>Add Course</span>
-        </Button>
+      <DialogTrigger asChild>
+        <PencilSquareIcon className="text-gray-700 cursor-pointer h-7 w-7 hover:text-primary" />
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[450px] max-h-[400px] lg:max-h-[600px] overflow-auto pb-10">
-        <DialogHeader>
-          <DialogTitle>
-            Fill the details of the course
-          </DialogTitle>
+      <DialogContent className="sm:max-w-[400px] max-h-[400px] lg:max-h-[600px] overflow-auto pb-10">
+        <DialogHeader className="mb-5">
+          <DialogTitle>Edit course details</DialogTitle>
         </DialogHeader>
-        <form className='space-y-6' onSubmit={handleSubmit()}>
+        <form className='space-y-6' onSubmit={handleSubmit(handleEditDetails)}>
           <div className='space-y-2'>
             <Label>Course Name</Label>
             <Input
@@ -108,30 +111,17 @@ const AddCourse = () => {
 
           
 
-          <div>
-            <label className="block ">
-                <Label>Course Certificate</Label>
-              <span className="sr-only">Upload certification</span>
-              <Input type="file"
-                {...register("link", {
-                  required: {
-                    value: true,
-                    message: "Course certificate is required"
-                  }
-                })}
-                className="block w-full text-sm text-slate-500 file:mr-4 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-primary hover:file:bg-primary hover:file:text-white file:cursor-pointer " />
-            </label>
-          </div>
+
 
           <DialogFooter>
             <Button type="submit" className="w-full">
               {isLoading ? (
                 <>
-                  Adding course
+                  saving
                   <Loader2 className="w-4 h-4 ml-2 animate-spin font-semibold" />
                 </>
               ) : (
-                "Add course"
+                "Save changes"
               )}
             </Button>
           </DialogFooter>
@@ -141,4 +131,4 @@ const AddCourse = () => {
   )
 }
 
-export default AddCourse
+export default EditCourse

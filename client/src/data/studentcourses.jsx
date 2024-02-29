@@ -7,6 +7,7 @@ import EditCertification from "@/components/certifications/EditCertification";
 import { Switch } from "@/components/ui/switch";
 import { deleteCourse } from "@/redux/courseSlice";
 import { useDispatch } from "react-redux";
+import EditCourse from "@/components/courses/EditCourse";
 
 export const coursesData = [
   {
@@ -179,14 +180,13 @@ export const courseTableColumns = [
     },
   },
   {
-    header: "Actions",
+    header: "Edit",
+    id: "EditAction",
+    enableHiding: false,
     cell: ({ row }) => {
-      return (
-        <div className="flex space-x-4">
-          <Edit3Icon size={25} className="cursor-pointer" />
-          <Trash2Icon size={25} className="cursor-pointer" />
-        </div>
-      );
+
+      const course = row.original;
+      return <EditCourse data={course} />;
     },
   },
   {
