@@ -2,6 +2,24 @@ import axios from "@/api/axios";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import toast from "react-hot-toast";
 
+export const addInternship = createAsyncThunk(
+  "/api/v1/internship(post)",
+  async (payload, { rejectWithValue }) => {
+    try {
+      const response = await axios.post("/api/v1/internship", payload, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      return response.data;
+    } catch (error) {
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
 
 
 export const getInternships = createAsyncThunk(
@@ -46,6 +64,29 @@ export const deleteInternship = createAsyncThunk(
     }
   }
 );
+export const updateInternship = createAsyncThunk(
+  "/api/v1/internship/:internshipId(patch)",
+  async (payload, { rejectWithValue }) => {
+    console.log("update user payload : ", payload);
+    try {
+      const response = await axios.patch(
+        `/api/v1/internship/${payload.data._id}`,
+        payload.data,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
 
 const token = localStorage.getItem("token")
 const internshipSlice = createSlice({
@@ -57,7 +98,21 @@ const internshipSlice = createSlice({
   },
   reducers: {},
   extraReducers: (builder) => {
-    // Add user
+    //add internship
+    builder.addCase(addInternship.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(addInternship.fulfilled, (state, { payload }) => {
+      state.isLoading = false;
+      state.internships = payload.data.internships;
+      toast.success(payload.message);
+    });
+    builder.addCase(addInternship.rejected, (state, { payload }) => {
+      state.isLoading = false;
+      toast.error(payload.message || "something went wrong");
+    });
+
+
 
 
     // Get internship
@@ -85,6 +140,19 @@ const internshipSlice = createSlice({
       toast.success(payload.message);
     });
     builder.addCase(deleteInternship.rejected, (state, { payload }) => {
+      state.isLoading = false;
+      toast.error(payload.message || "something went wrong");
+    });
+    //update internship
+    builder.addCase(updateInternship.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(updateInternship.fulfilled, (state, { payload }) => {
+      state.isLoading = false;
+      state.internships = payload.data.internships;
+      toast.success(payload.message);
+    });
+    builder.addCase(updateInternship.rejected, (state, { payload }) => {
       state.isLoading = false;
       toast.error(payload.message || "something went wrong");
     });
