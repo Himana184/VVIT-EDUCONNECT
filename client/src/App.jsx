@@ -21,6 +21,7 @@ import Courses from "./pages/admin/Courses";
 import Dashboard from "./pages/admin/Dashboard";
 import AddAnnouncement from "./components/announcements/AddAnnouncement";
 import EditAnnouncement from "./components/announcements/EditAnnouncement";
+import AddJobDrive from "./components/jobs/AddJobDrive";
 
 const App = () => {
   return (
@@ -59,6 +60,7 @@ const App = () => {
           <Route path="courses" element={<Courses />}></Route>
           <Route path="addAnnouncement" element={<AddAnnouncement />} />
           <Route path="editAnnouncement" element={<EditAnnouncement />} />
+          <Route path="addJobDrive" element={<AddJobDrive />} />
         </Route>
 
         {/* all routes of coordinator */}

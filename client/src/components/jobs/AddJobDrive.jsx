@@ -1,20 +1,18 @@
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog'
 import { Button } from '../ui/button'
 import { useForm } from 'react-hook-form'
-import { useEffect, useState } from 'react'
+import { useRef, useState } from 'react'
 import { Label } from '../ui/label'
 import { Input } from '../ui/input'
 import { FormError } from '../common/FormError'
 import { TagsInput } from "react-tag-input-component";
 import { MultiSelect } from "react-multi-select-component";
 import { eligibleBranchesList } from '@/data/branches'
-import { Editor } from "react-draft-wysiwyg";
-import { convertToHTML } from 'draft-convert';
-import { EditorState } from 'draft-js';
-import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { useDispatch, useSelector } from 'react-redux'
 import { handleAddJobDrive } from '@/redux/jobSlice'
 import { Loader2 } from 'lucide-react'
+import JoditEditor from 'jodit-react'
+import { useNavigate } from 'react-router-dom'
+
 const jobCategories = [
   {
     label: "Internship",
@@ -29,37 +27,34 @@ const jobCategories = [
     value: "Internship + Full Time"
   }
 ];
+
 const AddJobDrive = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const editor = useRef(null);
+  const [content, setContent] = useState('');
   const { isLoading } = useSelector((state) => state["job"])
-  // state to maintain close and open of dialog
-  const [open, setOpen] = useState(false)
   const [eligibleBranches, setEligibleBranches] = useState([]);
-  const [description, setDescription] = useState(
-    () => EditorState.createEmpty())
-  // roles offered by the company
   const [roles, setRoles] = useState([]);
   const [skills, setSkills] = useState([]);
-  //selected job cateogories
-  const [categories, setCategories] = useState([])
-  // react hook form
+  const [categories, setCategories] = useState([]);
   const form = useForm()
 
-  //destructure values from the react form
-  const { register, handleSubmit, formState, clearErrors, reset } = form;
-
-  //errors from the formstate
+  const { register, handleSubmit, formState } = form;
   const { errors } = formState;
 
-  //function which handles job drive
   const handleAddJob = async (data) => {
-    data.roles = roles;
-    console.log(Object.keys(eligibleBranches[0].value))
-    data.eligibleBranches = JSON.parse(JSON.stringify(eligibleBranches));
-    data.skills = skills;
-    data.description = description
-    data.categories = categories;
-    data.content = content;
+    data.roles = Object.values(roles);
+    data.categories = categories.map((category) => {
+      return category.value;
+    })
+    console.log(data.categories)
+    data.skills = Object.values(skills);
+    data.eligibleBranches = eligibleBranches.map((branch) => {
+      return branch.value;
+    })
+    data.description = content;
+
     const jobData = new FormData();
     for (let key in Object.keys(data.files)) {
       jobData.append("files", data.files[key])
@@ -69,33 +64,25 @@ const AddJobDrive = () => {
         jobData.append(key, data[key]);
       }
     });
+
     const response = await dispatch(handleAddJobDrive(jobData));
-    console.log("Response : ", response)
-    setOpen(false);
+    console.log(response);
+    if (response.meta.requestStatus == "fulfilled") {
+      navigate("/admin/jobs", { replace: true });
+    }
   }
 
-  const [content, setContent] = useState("");
-  useEffect(() => {
-    let html = convertToHTML(description.getCurrentContent());
-    setContent(html);
-  }, [description]);
-  useEffect(() => {
-    clearErrors();
-  }, [])
+
+
 
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger>
-        <Button>
-          Add Job Drive
-        </Button>
-      </DialogTrigger>
-      <DialogContent className="sm:max-w-[450px] lg:max-w-[50%] max-h-[400px] lg:max-h-[600px] overflow-auto pb-10">
-        <DialogHeader>
-          <DialogTitle>Enter job drive details</DialogTitle>
-        </DialogHeader>
-        <form onSubmit={handleSubmit(handleAddJob)} className='space-y-6'>
+    <div className=''>
+      <div className='space-y-4'>
+        <div>
+          <h1 className='font-semibold text-xl text-center'>Enter job drive details</h1>
+        </div>
+        <form onSubmit={handleSubmit(handleAddJob)} className='gap-10 grid grid-cols-1 md:grid-cols-2 items-center justify-center'>
           <div className='space-y-3'>
             <Label>Company name</Label>
             <Input
@@ -191,23 +178,24 @@ const AddJobDrive = () => {
             />
           </div>
 
-          <div className='space-y-3 border border-primary p-1'>
+          <div className='space-y-3 border border-primary p-1 md:col-span-2'>
             <Label>Description</Label>
-            <Editor
-              editorState={description}
-              wrapperClassName="demo-wrapper"
-              editorClassName="demo-editor"
-              onEditorStateChange={setDescription} />
+            <JoditEditor
+              ref={editor}
+              value={content}
+              tabIndex={1} // tabIndex of textarea
+              onBlur={newContent => setContent(newContent)}
+            />
 
 
           </div>
 
-          <div className='space-y-3'>
+          <div className='space-y-3 md:col-span-2'>
             <Input type="file" multiple className="block w-full text-sm text-slate-500 file:mr-4  file:px-4 file:rounded-full file:border-0 file:text-sm file:cursor-pointer file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 " {...register("files")} />
           </div>
 
-          <DialogFooter>
-            <Button type="submit" className="w-full">
+          <div className='justify-self-center md:col-span-2'>
+            <Button type="submit" className="w-fit">
               {isLoading ? (
                 <>
                   Adding job drive
@@ -217,10 +205,10 @@ const AddJobDrive = () => {
                 "Add Job Drive"
               )}
             </Button>
-          </DialogFooter>
+          </div>
         </form>
-      </DialogContent>
-    </Dialog>
+      </div>
+    </div>
   )
 }
 

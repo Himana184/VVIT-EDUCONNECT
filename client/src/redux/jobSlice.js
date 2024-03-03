@@ -70,7 +70,7 @@ const jobSlice = createSlice({
     });
     builder.addCase(getJobDrives.fulfilled, (state, { payload }) => {
       state.isLoading = false;
-      state.jobs = payload.data.jobs;
+      state.jobs = payload.data.jobDrives;
       toast.success(payload.message);
     });
     builder.addCase(getJobDrives.rejected, (state, { payload }) => {

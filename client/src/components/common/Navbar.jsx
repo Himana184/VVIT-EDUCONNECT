@@ -37,7 +37,7 @@ export function Navbar() {
                 <GiHamburgerMenu size={30} className="cursor-pointer" />
               </SheetTrigger>
               <SheetContent className="w-32 pt-12">
-                <Sidebar show={true} />
+                <Sidebar show={false} />
               </SheetContent>
             </Sheet>
           </div>

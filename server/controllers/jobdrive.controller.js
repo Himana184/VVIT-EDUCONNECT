@@ -54,7 +54,7 @@ export const handleAddJobDrive = async (req, res) => {
 };
 
 export const getAllJobDrives = async (req, res) => {
-  const jobDrives = await getJobdrivesByRole(req.user.role);
+  const jobDrives = await JobDrive.find({}).sort({ createdAt: -1 });
 
   return res
     .status(StatusCodes.OK)
@@ -71,7 +71,7 @@ export const handleDeleteJobDrive = async (req, res) => {
   }
   const response = await JobDrive.findOneAndDelete(jobDriveId);
   //fetch all jobdrives
-  const jobDrives = await getJobdrivesByRole(eq.user.role);
+  const jobDrives = await JobDrive.find({}).sort({createdAt : -1});
   return res
     .status(StatusCodes.OK)
     .json(
@@ -82,42 +82,4 @@ export const handleDeleteJobDrive = async (req, res) => {
       )
     );
 };
-export const getJobdrivesByRole = async (role) => {
-  let jobdrives = [];
-  if (req.user.role === "admin") {
-    jobdrives = await JobDrive.find({})
-      .sort({ createdAt: -1 })
-      .populate([
-        "salary",
-        "eligibleBranches",
-        "companyName",
-        "category",
-        "roles",
-        "offerType",
-        "lastDate",
-        "description",
-        "jobLocation",
-        "skills",
-      ]);
-  } else if (req.user.role === "coordinator") {
-    jobdrives = await JobDrive.find({
-      eligibleBranches: { $in: [req.user.branch] },
-    })
-      .sort({
-        createdAt: -1,
-      })
-      .populate([
-        "salary",
-        "eligibleBranches",
-        "companyName",
-        "category",
-        "roles",
-        "offerType",
-        "lastDate",
-        "description",
-        "jobLocation",
-        "skills",
-      ]);
-  }
-  return jobdrives;
-};
+

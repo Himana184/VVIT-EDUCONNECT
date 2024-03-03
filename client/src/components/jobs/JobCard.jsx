@@ -5,9 +5,11 @@ import { Badge } from "../ui/badge"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../ui/card"
 import { Button } from "../ui/button";
 import { Link } from "react-router-dom";
+import { formatDate } from "@/utils/formatDate";
+import { useSelector } from "react-redux";
 
 const JobCard = ({ job }) => {
-
+  const { user, role } = useSelector((state) => state["auth"])
   return (
     <Card className="max-w-sm">
       <CardHeader className="flex flex-row justify-between">
@@ -17,9 +19,16 @@ const JobCard = ({ job }) => {
           <CardTitle>{job?.companyName || "Accenture"}</CardTitle>
           <CardDescription>{job?.roles?.join(",") || "Associate Software Engineer, AASE"}</CardDescription>
         </div>
-        <div>
-          <Badge variant={'secondary'} className={"text-white"}>{job?.appliedStatus || "Not Applied"}</Badge>
-        </div>
+        {
+          role == "admin" &&
+          (
+            job.optedStudents.includes(user._id) ? <div>
+              <Badge variant={'secondary'} className={"text-white"}>{"Applied"}</Badge>
+            </div> : <div>
+              <Badge>{"Not Applied"}</Badge>
+            </div>
+          )
+        }
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="flex items-center space-x-2">
@@ -34,21 +43,38 @@ const JobCard = ({ job }) => {
           <Banknote size={20} className="text-primary" />
           <p className="text-lg font-medium"><span>&#8377;</span>{job?.salary || "4,00,000 to 8,00,000"} <span className="text-xs">LPA</span></p>
         </div>
-        <div className="space-x-2">
-          {
-            ["MERN", "GCP", "Linux", "AWS", "DEVOPS"].map((skill, index) => {
-              return (
-                <Badge key={index}>{skill}</Badge>
-              )
-            })
-          }
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="space-y-2">
+            <p className="block w-full font-medium text-lg">Skills</p>
+            <div className="flex flex-wrap gap-2">
+              {
+                job.skills["0"].split(",").map((skill, index) => {
+                  return (
+                    <Badge key={index} variant={"outline"}>{skill}</Badge>
+                  )
+                })
+              }
+            </div>
+          </div>
+          <div className="space-y-2">
+            <p className="block w-full font-medium text-lg">Branches</p>
+            <div className="flex flex-wrap gap-2">
+              {
+                job.eligibleBranches["0"].split(",").map((skill, index) => {
+                  return (
+                    <Badge key={index} variant={"outline"}>{skill}</Badge>
+                  )
+                })
+              }
+            </div>
+          </div>
         </div>
       </CardContent>
       <CardFooter className="flex flex-row items-center justify-between">
         <div className="flex items-center space-x-2">
           <CalendarSearch size={20} className="text-primary" />
           <div>
-            <p className="font-semibold">{job?.lastDate || "29-02-2024"}</p>
+            <p className="font-semibold">{formatDate(job?.lastDate)}</p>
             <p className="text-xs font-medium">Last Date</p>
           </div>
         </div>
