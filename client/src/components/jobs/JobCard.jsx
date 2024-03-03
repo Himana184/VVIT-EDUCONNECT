@@ -20,7 +20,7 @@ const JobCard = ({ job }) => {
           <CardDescription>{job?.roles?.join(",") || "Associate Software Engineer, AASE"}</CardDescription>
         </div>
         {
-          role == "admin" &&
+          role == "student" &&
           (
             job.optedStudents.includes(user._id) ? <div>
               <Badge variant={'secondary'} className={"text-white"}>{"Applied"}</Badge>
@@ -43,30 +43,29 @@ const JobCard = ({ job }) => {
           <Banknote size={20} className="text-primary" />
           <p className="text-lg font-medium"><span>&#8377;</span>{job?.salary || "4,00,000 to 8,00,000"} <span className="text-xs">LPA</span></p>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="space-y-2">
-            <p className="block w-full font-medium text-lg">Skills</p>
-            <div className="flex flex-wrap gap-2">
-              {
-                job.skills["0"].split(",").map((skill, index) => {
-                  return (
-                    <Badge key={index} variant={"outline"}>{skill}</Badge>
-                  )
-                })
-              }
-            </div>
+
+        <div className="space-y-2">
+          <p className="block w-full font-medium text-lg">Skills</p>
+          <div className="flex flex-wrap gap-2">
+            {
+              job.skills["0"].split(",").map((skill, index) => {
+                return (
+                  <Badge key={index} variant={"outline"}>{skill}</Badge>
+                )
+              })
+            }
           </div>
-          <div className="space-y-2">
-            <p className="block w-full font-medium text-lg">Branches</p>
-            <div className="flex flex-wrap gap-2">
-              {
-                job.eligibleBranches["0"].split(",").map((skill, index) => {
-                  return (
-                    <Badge key={index} variant={"outline"}>{skill}</Badge>
-                  )
-                })
-              }
-            </div>
+        </div>
+        <div className="space-y-2">
+          <p className="block w-full font-medium text-lg">Branches</p>
+          <div className="flex flex-wrap gap-2">
+            {
+              job.eligibleBranches["0"].split(",").map((skill, index) => {
+                return (
+                  <Badge key={index} variant={"outline"}>{skill}</Badge>
+                )
+              })
+            }
           </div>
         </div>
       </CardContent>
