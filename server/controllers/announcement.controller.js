@@ -71,6 +71,15 @@ export const handleUpdateAnnouncement = async (req, res) => {
   if (!announcement) {
     throw new ApiError("Announcement not found", StatusCodes.NOT_FOUND);
   }
+
+  if(req.file){
+    const fileUploadResponse = await uploadSingleFile(req.file);
+    if(!fileUploadResponse.status){
+      throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR,"Unable to upload files");
+    }else{
+      req.body.file = fileUploadResponse.url;
+    }
+  }
   const response = await Announcement.findByIdAndUpdate(
     announcementId,
     req.body,

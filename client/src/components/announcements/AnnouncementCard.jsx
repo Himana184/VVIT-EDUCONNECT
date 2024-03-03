@@ -8,7 +8,8 @@ import { CloudArrowDownIcon } from '@heroicons/react/24/outline'
 import { Delete, Download, PenBoxIcon, Trash2Icon } from 'lucide-react'
 import HTMLReactParser from 'html-react-parser'
 import { useDispatch, useSelector } from 'react-redux'
-import { deleteAnnouncement } from '@/redux/adminAnnouncementSlice'
+import { deleteAnnouncement, setAnnouncement } from '@/redux/adminAnnouncementSlice'
+import { Link } from 'react-router-dom'
 
 const AnnouncementCard = ({ announcement }) => {
   const dispatch = useDispatch();
@@ -56,7 +57,9 @@ const AnnouncementCard = ({ announcement }) => {
         {/* Edit and delete options for admin */}
         {
           role === "admin" && <div className='flex items-center justify-between space-x-4'>
-            <PenBoxIcon className='cursor-pointer' />
+            <Link to={"/admin/editAnnouncement"}>
+              <PenBoxIcon className='cursor-pointer' onClick={() => dispatch(setAnnouncement({ announcement }))} />
+            </Link>
             <Trash2Icon className='text-primary hover:text-red-500 hover:scale-105 transition-all duration-200 cursor-pointer'
               onClick={() => dispatch(deleteAnnouncement({ _id: announcement._id }))} />
           </div>

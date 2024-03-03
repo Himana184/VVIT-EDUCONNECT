@@ -1,67 +1,71 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog'
-import { PencilSquareIcon } from '@heroicons/react/24/outline'
+/* eslint-disable no-unused-vars */
+import { useEffect, useRef, useState } from "react"
+import { TfiAnnouncement } from "react-icons/tfi";
 import { useForm } from "react-hook-form"
-import { Label } from '../ui/label';
-import { Input } from '../ui/input';
-import { FormError } from '../common/FormError';
-import { Select } from '@radix-ui/react-select';
-import { SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
-import { branches } from '@/data/branches';
-import { Button } from '../ui/button';
-import { Loader2 } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { Label } from "../ui/label";
+import { Input } from "../ui/input";
+import { FormError } from "../common/FormError";
+import { MultiSelect } from "react-multi-select-component";
+import { eligibleBranchesList } from "@/data/branches";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
+import { Loader2 } from "lucide-react";
+import { Button } from "../ui/button";
 import { useDispatch, useSelector } from 'react-redux';
-import { updateAnnouncement } from '@/redux/adminAnnouncementSlice';
+import JoditEditor from 'jodit-react';
+import { addAnnouncement, updateAnnouncement } from "@/redux/adminAnnouncementSlice";
+import { useNavigate } from "react-router-dom";
 
-const EditAnnouncement = ({ data }) => {
-  const { isLoading } = useSelector((state) => state["user"])
-  const [priority, setPriority] = useState(data.priority);
-  //const [category, setCategory] = useState(data.category);
+const EditAnnouncement = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const form = useForm();
+  const editor = useRef(null);
+  const { announcement } = useSelector((state) => state["announcement"])
+  const [branches, setBranches] = useState([]);
+  const [priority, setPriority] = useState("");
+  const [content, setContent] = useState('');
+
+  const { isLoading } = useSelector((state) => state["announcement"])
   const [open, setOpen] = useState(false);
 
-  const dispatch = useDispatch();
-
-  //react hook form
-  const form = useForm({
-    defaultValues: { ...data }
-  });
-
-  //destructure the values from the form
-  const { register, handleSubmit, clearErrors, reset, formState } = form;
-
-  //errros from the formstate
+  const { register, handleSubmit, formState, clearErrors, reset } = form;
   const { errors } = formState;
+  const selectedBranches = branches.map((branch) => {
+    return branch.value;
+  })
+  const handleAddAnnouncement = async (data) => {
+    const announcementData = new FormData();
+    announcementData.append("announcementFile", data.files[0]);
+    data.branches = selectedBranches;
+    data.priority = priority;
+    data.description = content;
+    Object.keys(data).forEach((key) => {
+      if (key !== "files") {
+        announcementData.append(key, data[key]);
+      }
+    });
 
-  //function that will dispatch the edit details
-  const handleEditDetails = async (data) => {
-    data["priority"] = priority;
-    //data["category"] = category;
-    const response = await dispatch(updateAnnouncement({ data }))
-    setOpen(false);
-
+    const response = await dispatch(updateAnnouncement({data:announcementData,_id : announcement._id}));
+    if (response.meta.requestStatus == "fulfilled") {
+      navigate("/admin/announcements");
+    }
   }
 
-  useEffect(() => {
-    clearErrors();
-  }, [open])
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <PencilSquareIcon className="text-gray-700 cursor-pointer h-7 w-7 hover:text-primary" />
-      </DialogTrigger>
-      <DialogContent className="sm:max-w-[400px] max-h-[400px] lg:max-h-[600px] overflow-auto pb-10">
-        <DialogHeader className="mb-5">
-          <DialogTitle>Edit announcement details</DialogTitle>
-        </DialogHeader>
-        <form className='space-y-6' onSubmit={handleSubmit(handleEditDetails)}>
-
-        <div className='space-y-2'>
+    <div className="flex items-center justify-center">
+      <div className=" max-w-xl">
+        <div>
+          <h1 className="font-semibold text-lg text-center">
+            Fill the details of the announcement
+          </h1>
+        </div>
+        <form className='space-y-6' onSubmit={handleSubmit(handleAddAnnouncement)}>
+          <div className='space-y-2'>
             <Label>Title</Label>
             <Input
               type="text"
+              defaultValue={announcement?.title}
               placeholder="Webinar announcement" {...register("title", {
                 required: {
                   value: true,
@@ -71,24 +75,22 @@ const EditAnnouncement = ({ data }) => {
             {errors["title"] && <FormError message={errors["title"].message} />}
           </div>
 
-          <div className='space-y-2'>
+          <div className='space-y-2 border border-primary/50 p-1'>
             <Label>Description</Label>
-            <Textarea
-              type="text"
-              placeholder="Details of webinar"
-              {...register("description", {
-                required: {
-                  value: true,
-                  message: "Announcement description is required"
-                },
-              })} />
-            {errors["description"] && <FormError message={errors["description"].message} />}
+            <JoditEditor
+              ref={editor}
+              value={announcement?.description}
+              tabIndex={1} // tabIndex of textarea
+              onBlur={newContent => setContent(newContent)} // preferred to use only this option to update the content for performance reasons
+            // onChange={newContent => setContent(newContent)}
+            />
           </div>
 
           <div className='space-y-2'>
             <Label>Category</Label>
             <Input
               type="text"
+              defaultValue={announcement?.category}
               placeholder="Exams, Webinars, Events"
               {...register("category", {
                 required: {
@@ -99,19 +101,11 @@ const EditAnnouncement = ({ data }) => {
             {errors["category"] && <FormError message={errors["category"].message} />}
           </div>
 
-          <div className='space-y-2'>
-            <Label>Branches</Label>
-            <MultiSelect
-              options={eligibleBranchesList}
-              value={branches}
-              onChange={setBranches}
-              labelledBy="Select"
-            />
-          </div>
+
 
           <div className="space-y-2">
             <Label>Priority</Label>
-            <Select defaultValue={data.branch} onValueChange={(e) => setPriority(e)} required>
+            <Select onValueChange={(e) => setPriority(e)} defaultValue={announcement?.priority}>
               <SelectTrigger>
                 <SelectValue placeholder="Select announcement priority"></SelectValue>
               </SelectTrigger>
@@ -127,30 +121,46 @@ const EditAnnouncement = ({ data }) => {
             </Select>
           </div>
 
+          <div className='space-y-2'>
+            <Label>Branches</Label>
+            <MultiSelect
+              options={eligibleBranchesList}
+              value={branches}
+              onChange={setBranches}
+              labelledBy="Select"
+            />
+          </div>
+
           <div>
             <label className="block ">
               <span className="sr-only">Choose photo</span>
               <Input type="file"
-                {...register("file", {})}
+                {...register("files", {
+                  required: {
+                    value: true,
+                    message: "Coordinator image is required"
+                  }
+                })}
                 className="block w-full text-sm text-slate-500 file:mr-4 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-primary hover:file:bg-primary hover:file:text-white file:cursor-pointer " />
             </label>
           </div>
 
-          <DialogFooter>
+          <div>
             <Button type="submit" className="w-full">
               {isLoading ? (
                 <>
-                  saving
+                  Updating announcement
                   <Loader2 className="w-4 h-4 ml-2 animate-spin font-semibold" />
                 </>
               ) : (
-                "Save changes"
+                "Update announcement"
               )}
             </Button>
-          </DialogFooter>
+          </div>
         </form>
-      </DialogContent>
-    </Dialog>
+      </div>
+    </div>
   )
 }
+
 export default EditAnnouncement

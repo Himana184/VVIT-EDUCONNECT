@@ -42,7 +42,7 @@ export const getAnnouncements = createAsyncThunk(
 );
 
 export const deleteAnnouncement = createAsyncThunk(
-  "/api/v1/announcement/:userId(delete)",
+  "/api/v1/announcement/:announcementId(delete)",
   async (payload, { rejectWithValue }) => {
     console.log("Delete announcement payload : ", payload);
     try {
@@ -65,12 +65,12 @@ export const deleteAnnouncement = createAsyncThunk(
 );
 
 export const updateAnnouncement = createAsyncThunk(
-  "/api/v1/announcement/:userId(patch)",
+  "/api/v1/announcement/:announcementId(patch)",
   async (payload, { rejectWithValue }) => {
     console.log("update announcement payload : ", payload);
     try {
       const response = await axios.patch(
-        `/api/v1/announcement/:userId(patch)${payload.data._id}`,
+        `/api/v1/announcement/${payload._id}`,
         payload.data,
         {
           headers: {
@@ -94,8 +94,13 @@ const adminAnnouncementSlice = createSlice({
   initialState: {
     isLoading: false,
     announcements: [],
+    announcement: {},
   },
-  reducers: {},
+  reducers: {
+    setAnnouncement: (state, { payload }) => {
+      state.announcement = payload.announcement;
+    },
+  },
   extraReducers: (builder) => {
     // Add announcement
     builder.addCase(addAnnouncement.pending, (state) => {
@@ -145,7 +150,7 @@ const adminAnnouncementSlice = createSlice({
     });
     builder.addCase(updateAnnouncement.fulfilled, (state, { payload }) => {
       state.isLoading = false;
-      state.users = payload.data.users;
+      state.announcements = payload.data.announcements;
       toast.success(payload.message);
     });
     builder.addCase(updateAnnouncement.rejected, (state, { payload }) => {
@@ -155,4 +160,5 @@ const adminAnnouncementSlice = createSlice({
   },
 });
 
+export const { setAnnouncement } = adminAnnouncementSlice.actions;
 export default adminAnnouncementSlice.reducer;
