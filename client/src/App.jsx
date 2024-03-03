@@ -19,6 +19,7 @@ import StudentCourses from "./pages/student/StudentCourses"
 import StudentQueries from "./pages/student/StudentQueries"
 import Courses from "./pages/admin/Courses";
 import Dashboard from "./pages/admin/Dashboard";
+import AddAnnouncement from "./components/announcements/AddAnnouncement";
 
 const App = () => {
   return (
@@ -55,6 +56,7 @@ const App = () => {
           <Route path="announcements" element={<Announcements />}></Route>
           <Route path="internships" element={<Internships />}></Route>
           <Route path="courses" element={<Courses />}></Route>
+          <Route path="addAnnouncement" element={<AddAnnouncement />} />
         </Route>
 
         {/* all routes of coordinator */}

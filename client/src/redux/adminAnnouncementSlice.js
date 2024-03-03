@@ -46,11 +46,14 @@ export const deleteAnnouncement = createAsyncThunk(
   async (payload, { rejectWithValue }) => {
     console.log("Delete announcement payload : ", payload);
     try {
-      const response = await axios.delete(`/api/v1/announcement/:userId(delete)${payload.data._id}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
+      const response = await axios.delete(
+        `/api/v1/announcement/${payload._id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
       return response.data;
     } catch (error) {
       if (!error?.response) {
@@ -91,7 +94,6 @@ const adminAnnouncementSlice = createSlice({
   initialState: {
     isLoading: false,
     announcements: [],
-    
   },
   reducers: {},
   extraReducers: (builder) => {
@@ -115,7 +117,7 @@ const adminAnnouncementSlice = createSlice({
     });
     builder.addCase(getAnnouncements.fulfilled, (state, { payload }) => {
       state.isLoading = false;
-      state.users = payload.data.users;
+      state.announcements = payload.data.announcements;
       toast.success(payload.message);
     });
     builder.addCase(getAnnouncements.rejected, (state, { payload }) => {
@@ -129,7 +131,7 @@ const adminAnnouncementSlice = createSlice({
     });
     builder.addCase(deleteAnnouncement.fulfilled, (state, { payload }) => {
       state.isLoading = false;
-      state.users = payload.data.users;
+      state.announcements = payload.data.users;
       toast.success(payload.message);
     });
     builder.addCase(deleteAnnouncement.rejected, (state, { payload }) => {

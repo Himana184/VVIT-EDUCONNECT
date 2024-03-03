@@ -19,11 +19,9 @@ const announcementSchema = new mongoose.Schema({
       required: [true, "select the branches for announcement"],
     },
   ],
-  files: [
-    {
-      type: String,
-    },
-  ],
+  file: {
+    type: String,
+  },
   priority: {
     type: String,
     required: [true, "announcement priority is required"],

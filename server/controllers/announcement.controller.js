@@ -5,6 +5,7 @@ import { announcementRequiredFields } from "./constants.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import Announcement from "../models/announcement.model.js";
 import mongoose from "mongoose";
+import uploadSingleFile from "../utils/uploadToCloud.js";
 
 export const handleAddAnnouncement = async (req, res) => {
   //check whether all the required fields have been received or not
@@ -19,6 +20,17 @@ export const handleAddAnnouncement = async (req, res) => {
     throw new ApiError(StatusCodes.BAD_REQUEST, message);
   }
 
+  if (req.file) {
+    const fileUploadResponse = await uploadSingleFile(req.file);
+    if (!fileUploadResponse.status) {
+      throw new ApiError(
+        StatusCodes.INTERNAL_SERVER_ERROR,
+        "Unable to uplaod file"
+      );
+    } else {
+      req.body.file = fileUploadResponse.url;
+    }
+  }
   const newAnnouncement = await Announcement.create(req.body);
 
   const announcements = await Announcement.find({});
@@ -81,8 +93,8 @@ export const handleUpdateAnnouncement = async (req, res) => {
 };
 
 export const handleDeleteAnnouncement = async (req, res) => {
-  const announcementId = req.params.announceId;
-
+  const { announcementId } = req.params;
+  console.log(announcementId);
   //check whether it is a valid announcement id or not
   if (!mongoose.isValidObjectId(announcementId)) {
     throw new ApiError(StatusCodes.BAD_REQUEST, "Not a valid Announcement Id");
@@ -91,7 +103,7 @@ export const handleDeleteAnnouncement = async (req, res) => {
   const response = await Announcement.findOneAndDelete(announcementId);
 
   //fetch all anouncements
-  const announcements = await announcements.find({}).sort({ createdAt: -1 });
+const announcements = await Announcement.find({}).sort({ createdAt: -1 });
 
   return res
     .status(StatusCodes.OK)

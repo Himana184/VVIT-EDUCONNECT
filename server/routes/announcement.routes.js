@@ -13,11 +13,9 @@ const router = express.Router();
 router
   .route("/")
   .get(getAllAnnouncements);
-router.route("/:userId").patch(handleUpdateAnnouncement).delete(handleDeleteAnnouncement);
-router.use(filesPayloadExists);
-router.use(
-  fileExtLimiter([".JPG", ".PNG", ".JPEG", ".jpg", ".png", ".jpeg", ".pdf"])
-);
-router.use(fileSizeLimiter);
+router
+  .route("/:announcementId")
+  .patch(handleUpdateAnnouncement)
+  .delete(handleDeleteAnnouncement);
 router.route("/").post(handleAddAnnouncement);
 export default router;

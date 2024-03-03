@@ -1,5 +1,6 @@
 import axios from "@/api/axios";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { jwtDecode } from "jwt-decode";
 import toast from "react-hot-toast";
 
 export const studentLogin = createAsyncThunk(
@@ -44,10 +45,7 @@ export const studentRegisteration = createAsyncThunk(
   "/api/v1/auth/student/register",
   async (payload, { rejectWithValue }) => {
     try {
-      const response = await axios.post(
-        "/api/v1/student/register",
-        payload
-      );
+      const response = await axios.post("/api/v1/student/register", payload);
       return response.data;
     } catch (error) {
       if (!error?.response) {
@@ -64,9 +62,14 @@ const authSlice = createSlice({
   initialState: {
     isLoading: false,
     user: {},
+    role: "",
     token: token,
   },
-  reducers: {},
+  reducers: {
+    setRole: (state, { payload }) => {
+      state.role = payload.role;
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(studentLogin.pending, (state) => {
       state.isLoading = true;
@@ -90,6 +93,8 @@ const authSlice = createSlice({
       state.isLoading = false;
       console.log(payload);
       state.user = payload.data.user;
+      const decodedData = jwtDecode(payload.data.accessToken);
+      state.role = decodedData.user.role;
       localStorage.setItem("token", payload.data.accessToken);
       toast.success(payload.message);
     });
@@ -113,5 +118,5 @@ const authSlice = createSlice({
   },
 });
 
-export const { logout } = authSlice.actions;
+export const { logout ,setRole} = authSlice.actions;
 export default authSlice.reducer;
