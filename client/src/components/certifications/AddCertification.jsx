@@ -154,7 +154,7 @@ const AddCertification = () => {
             <Button type="submit" className="w-full">
               {isLoading ? (
                 <>
-                  Adding announcement
+                  Adding certification
                   <Loader2 className="w-4 h-4 ml-2 animate-spin font-semibold" />
                 </>
               ) : (

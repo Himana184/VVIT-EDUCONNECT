@@ -39,7 +39,7 @@ const AddCourse = () => {
     const courseData = new FormData();
     courseData.append("certificate", data.userImage[0])
     Object.keys(data).forEach((key) => {
-      if (key !== "userImage") {
+      if (key !== "certificate") {
         userData.append(key, data[key]);
       }
     });
