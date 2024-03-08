@@ -23,9 +23,8 @@ const EditAnnouncement = () => {
   const editor = useRef(null);
   const { announcement } = useSelector((state) => state["announcement"])
   const [branches, setBranches] = useState([]);
-  const [priority, setPriority] = useState("");
-  const [content, setContent] = useState('');
-
+  const [priority, setPriority] = useState(announcement?.priority);
+  const [content, setContent] = useState(announcement?.description);
   const { isLoading } = useSelector((state) => state["announcement"])
   const [open, setOpen] = useState(false);
 

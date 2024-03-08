@@ -32,9 +32,12 @@ const Announcements = () => {
       }
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
         {
-          announcements.map((announcement, index) => {
+          announcements?.map((announcement, index) => {
             return <AnnouncementCard key={index} announcement={announcement} />
           })
+        }
+        {
+          announcements.length == 0 && <p>No Announcements to display</p>
         }
       </div>
     </div>

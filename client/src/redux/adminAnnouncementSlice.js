@@ -136,7 +136,7 @@ const adminAnnouncementSlice = createSlice({
     });
     builder.addCase(deleteAnnouncement.fulfilled, (state, { payload }) => {
       state.isLoading = false;
-      state.announcements = payload.data.users;
+      state.announcements = payload.data.announcements;
       toast.success(payload.message);
     });
     builder.addCase(deleteAnnouncement.rejected, (state, { payload }) => {
