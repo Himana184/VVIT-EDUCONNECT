@@ -21,7 +21,12 @@ export const handleAddAnnouncement = async (req, res) => {
   }
 
   if (req.file) {
-    const fileUploadResponse = await uploadSingleFile(req.file);
+    const fileType = req.file.originalname.split(".")[1];
+    const fileUploadResponse = await uploadSingleFile(
+      req.file,
+      "announcement-files",
+      req.body.title.replace(/\s+/g, "") + "." + fileType
+    );
     if (!fileUploadResponse.status) {
       throw new ApiError(
         StatusCodes.INTERNAL_SERVER_ERROR,
@@ -72,11 +77,20 @@ export const handleUpdateAnnouncement = async (req, res) => {
     throw new ApiError("Announcement not found", StatusCodes.NOT_FOUND);
   }
 
-  if(req.file){
-    const fileUploadResponse = await uploadSingleFile(req.file);
-    if(!fileUploadResponse.status){
-      throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR,"Unable to upload files");
-    }else{
+  if (req.file) {
+    const fileType = req.file.originalname.split(".")[1];
+    const fileUploadResponse = await uploadSingleFile(
+      req.file,
+      "announcement-files",
+      req.body.title.replace(/\s+/g, "") + "." + fileType
+    );
+    console.log(fileUploadResponse);
+    if (!fileUploadResponse.status) {
+      throw new ApiError(
+        StatusCodes.INTERNAL_SERVER_ERROR,
+        "Unable to upload files"
+      );
+    } else {
       req.body.file = fileUploadResponse.url;
     }
   }
@@ -89,7 +103,7 @@ export const handleUpdateAnnouncement = async (req, res) => {
     }
   );
   const announcements = await Announcement.find({}).sort({ createdAt: -1 });
-
+  console.log(announcements);
   return res
     .status(StatusCodes.OK)
     .json(
@@ -109,10 +123,10 @@ export const handleDeleteAnnouncement = async (req, res) => {
     throw new ApiError(StatusCodes.BAD_REQUEST, "Not a valid Announcement Id");
   }
 
-  const response = await Announcement.findOneAndDelete(announcementId);
+  const response = await Announcement.findByIdAndDelete(announcementId);
 
   //fetch all anouncements
-const announcements = await Announcement.find({}).sort({ createdAt: -1 });
+  const announcements = await Announcement.find({}).sort({ createdAt: -1 });
 
   return res
     .status(StatusCodes.OK)

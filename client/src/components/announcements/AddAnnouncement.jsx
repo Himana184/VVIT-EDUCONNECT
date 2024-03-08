@@ -46,7 +46,7 @@ const AddAnnouncement = () => {
     });
 
     const response = await dispatch(addAnnouncement(announcementData));
-    if(response.meta.requestStatus == "fulfilled"){
+    if (response.meta.requestStatus == "fulfilled") {
       navigate("/admin/announcements");
     }
   }

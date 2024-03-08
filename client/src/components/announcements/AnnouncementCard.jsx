@@ -47,7 +47,7 @@ const AnnouncementCard = ({ announcement }) => {
       </CardContent>
       <CardFooter className="w-full flex justify-between items-center">
         {/* If file exists there will be download button */}
-        <a href="https://storage.googleapis.com/educonnect-testing-1/logo.png" target='_blank' rel="noreferrer">
+        <a href={announcement?.file || "https://storage.googleapis.com/educonnect-testing-1/logo.png"} target='_blank' rel="noreferrer">
           <Button variant="outline" className="border-primary/50 space-x-2 flex items-center">
             <Download />
             <p>Download</p>
@@ -64,7 +64,6 @@ const AnnouncementCard = ({ announcement }) => {
               onClick={() => dispatch(deleteAnnouncement({ _id: announcement._id }))} />
           </div>
         }
-
       </CardFooter>
     </Card>
   )
