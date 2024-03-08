@@ -14,7 +14,7 @@ const JobCard = ({ job }) => {
     <Card className="max-w-sm">
       <CardHeader className="flex flex-row justify-between">
         <div className="space-y-2">
-          <img src="https://www.forgerock.com/sites/default/files/dam-assets/accenture-partner-tp-logo.png"
+          <img src={job?.companyLogo || "https://www.forgerock.com/sites/default/files/dam-assets/accenture-partner-tp-logo.png"}
             className="h-16 w-16 rounded-full border border-gray-200" />
           <CardTitle>{job?.companyName || "Accenture"}</CardTitle>
           <CardDescription>{job?.roles?.join(",") || "Associate Software Engineer, AASE"}</CardDescription>

@@ -190,8 +190,20 @@ const AddJobDrive = () => {
 
           </div>
 
-          <div className='space-y-3 md:col-span-2'>
-            <Input type="file" multiple className="block w-full text-sm text-slate-500 file:mr-4  file:px-4 file:rounded-full file:border-0 file:text-sm file:cursor-pointer file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 " {...register("files")} />
+          <div className='space-y-3'>
+            <Label>Files</Label>
+            <Input type="file" multiple className=" text-sm text-slate-500 file:mr-4  file:px-4 file:rounded-full file:border-0 file:text-sm file:cursor-pointer file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 " {...register("files")} />
+          </div>
+
+
+          <div className='space-y-3'>
+            <Label>Company Logo</Label>
+            <Input type="url" name="companyLogo" placeholder="https://www.logo.com" {...register("companyLogo", {
+              required: {
+                value: true,
+                message: "Company Logo is required"
+              }
+            })} />
           </div>
 
           <div className='justify-self-center md:col-span-2'>

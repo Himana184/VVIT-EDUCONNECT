@@ -76,7 +76,8 @@ export const jobDriveRequiredFields = [
   "salary",
   "skills",
   "eligibleBranches",
-  "description"
+  "description",
+  "companyLogo"
 ];
 
 export const cookieOptions = {

@@ -6,6 +6,10 @@ const jobDrive = new mongoose.Schema(
       type: String,
       required: [true, "Company name is required"],
     },
+    companyLogo: {
+      type: String,
+      required: [true, "Company Logo is required"],
+    },
     roles: [
       {
         type: String,
