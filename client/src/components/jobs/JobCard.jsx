@@ -77,10 +77,11 @@ const JobCard = ({ job }) => {
             <p className="text-xs font-medium">Last Date</p>
           </div>
         </div>
-        <Link to={"/admin/detail"}>
+        <Link to={`/${role}/jobs/${job._id}`}>
           <Button>
             View More
-          </Button></Link>
+          </Button>
+        </Link>
       </CardFooter>
     </Card>
   )

@@ -28,7 +28,9 @@ const Jobs = () => {
             )
           })
         }
-
+        {
+          jobs.length == 0 && <p>No Job Drives</p>
+        }
       </div>
     </div>
   )

@@ -63,7 +63,13 @@ export const certificationTableColumns = [
     cell: ({ row }) => {
       return (
         <div className="flex flex-wrap gap-x-2 gap-y-1 justify-start ">
-          {JSON.stringify(row.original.tags)}
+          {
+            row.original.tags.map((tag, index) => {
+              return (
+                <Badge key={index} variant={"outline"}>{tag}</Badge>
+              )
+            })
+          }
         </div>
       )
     }

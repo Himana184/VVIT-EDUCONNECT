@@ -52,7 +52,6 @@ export const uploadMultipleFiles = async (files, folderName) => {
   const status = results.every((result) => result.status === true);
 
   const urls = results.map((result) => result.url);
-
   return { status, files: urls };
 };
 

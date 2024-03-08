@@ -1,19 +1,23 @@
+/* eslint-disable react/prop-types */
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Label } from "@/components/ui/label"
 import { branches } from "@/data/branches"
+import HTMLReactParser from "html-react-parser"
 
-const DriveDescription = () => {
+const DriveDescription = ({ job }) => {
   return (
     <Card>
-      <CardHeader>
+      <CardHeader className="space-y-4">
         <CardTitle>{"Drive Description"}</CardTitle>
-        <CardDescription>Find more details about the drive below</CardDescription>
+        <CardDescription className="text-black overflow-auto h-[300px]">
+          {
+            HTMLReactParser(job?.description || "<p>Loading</p>")
+          }
+        </CardDescription>
       </CardHeader>
       <CardContent>
         <div className='flex items-center space-x-4'>
-          <Label>Eligible Branches</Label>
-          <div className='space-x-2'>
+          <div className='flex flex-wrap gap-2'>
             {
               branches.map((branch, index) => {
                 return (

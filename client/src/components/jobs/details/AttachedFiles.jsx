@@ -2,7 +2,9 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { DownloadCloud } from "lucide-react"
-const AttachedFiles = () => {
+import { useSelector } from "react-redux"
+const AttachedFiles = ({ job }) => {
+  
   return (
     <Card >
       <CardHeader>
@@ -11,18 +13,19 @@ const AttachedFiles = () => {
       </CardHeader>
       <CardContent className="flex space-x-5 overflow-auto">
         {
-          Array.from({ length: 4 }).map((item, index) => {
+          job?.files?.map((item, index) => {
             return (
-              <div key={index} className='border border-primary p-2 rounded-md'>
+              <a key={index} href={item} target="_blank" rel="noreferrer" className='border border-primary p-2 rounded-md cursor-pointer'>
                 <img src='https://data.unhcr.org/images/documents/big_441d7f43ead31df601a2dc864f5d8ec564d2e7ae.jpg' className='h-36 w-40' />
-                <div className='ml-4 space-y-2'>
-                  <p>{"Job Description"}</p>
-                  <Button variant="outline" className="space-x-2">
+
+                <Button variant="outline" className="w-full">
+                  <a href={item} target="_blank" rel="noreferrer" className="flex space-x-2">
                     <DownloadCloud size={20} />
                     <p>Download</p>
-                  </Button>
-                </div>
-              </div>
+                  </a>
+                </Button>
+
+              </a>
             )
           })
         }

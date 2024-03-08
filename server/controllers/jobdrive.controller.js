@@ -6,6 +6,7 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import JobDrive from "../models/jobdrive.model.js";
 import mongoose from "mongoose";
 import { uploadMultipleFiles } from "../utils/uploadToCloud.js";
+import jobdriveModel from "../models/jobdrive.model.js";
 //const currentYear = new Date().getFullYear();
 
 export const handleAddJobDrive = async (req, res) => {
@@ -34,8 +35,8 @@ export const handleAddJobDrive = async (req, res) => {
     );
   }
 
-  req.body.files = uploadFilesResponse.url;
-
+  req.body.files = uploadFilesResponse.files;
+  console.log(req.body)
   //create a new job drive with given details
   const newJobDrive = await JobDrive.create(req.body);
 
@@ -53,6 +54,26 @@ export const handleAddJobDrive = async (req, res) => {
     );
 };
 
+export const getJobDriveDetails = async (req, res) => {
+  const { jobId } = req.params;
+  if (!mongoose.isValidObjectId(jobId)) {
+    throw new ApiError(StatusCodes.BAD_REQUEST, "Not a valid job Id");
+  }
+  const jobDrive = await JobDrive.findById(jobId);
+  if (!jobDrive) {
+    throw new ApiError(StatusCodes.NOT_FOUND, "Job Drive details not found");
+  }
+  return res
+    .status(StatusCodes.OK)
+    .json(
+      new ApiResponse(
+        StatusCodes.OK,
+        { job: jobDrive },
+        "Job drive details fetched"
+      )
+    );
+};
+
 export const getAllJobDrives = async (req, res) => {
   const jobDrives = await JobDrive.find({}).sort({ createdAt: -1 });
 
@@ -64,14 +85,15 @@ export const getAllJobDrives = async (req, res) => {
 };
 
 export const handleDeleteJobDrive = async (req, res) => {
-  const jobDriveId = req.params.jobdriveId;
+  const jobDriveId = req.params.jobId;
 
   if (!mongoose.isValidObjectId(jobDriveId)) {
     throw new ApiError(StatusCodes.BAD_REQUEST, "Not a valid Job Drive Id");
   }
   const response = await JobDrive.findOneAndDelete(jobDriveId);
   //fetch all jobdrives
-  const jobDrives = await JobDrive.find({}).sort({createdAt : -1});
+  
+  const jobDrives = await JobDrive.find({}).sort({ createdAt: -1 });
   return res
     .status(StatusCodes.OK)
     .json(
@@ -82,4 +104,3 @@ export const handleDeleteJobDrive = async (req, res) => {
       )
     );
 };
-

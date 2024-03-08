@@ -39,11 +39,50 @@ export const getJobDrives = createAsyncThunk(
     }
   }
 );
+
+export const getJobDriveDetails = createAsyncThunk(
+  "/api/v1/jobdrive/:jobId",
+  async (payload, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(`/api/v1/jobDrive/${payload.id}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      return response.data;
+    } catch (error) {
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
+
+export const deleteJobDrive = createAsyncThunk(
+  "/api/v1/jobdrive/:jobId(delete)",
+  async (payload, { rejectWithValue }) => {
+    try {
+      const response = await axios.delete(`/api/v1/jobDrive/${payload.id}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      return response.data;
+    } catch (error) {
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
 const jobSlice = createSlice({
   name: "job",
   initialState: {
     isLoading: false,
     jobs: [],
+    job: {},
   },
   reducers: {},
   extraReducers: (builder) => {
@@ -74,6 +113,33 @@ const jobSlice = createSlice({
       toast.success(payload.message);
     });
     builder.addCase(getJobDrives.rejected, (state, { payload }) => {
+      state.isLoading = false;
+      toast.error(payload.message || "something went wrong");
+    });
+
+    //get jobdrive
+    builder.addCase(getJobDriveDetails.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(getJobDriveDetails.fulfilled, (state, { payload }) => {
+      state.isLoading = false;
+      state.job = payload.data.job;
+      toast.success(payload.message);
+    });
+    builder.addCase(getJobDriveDetails.rejected, (state, { payload }) => {
+      state.isLoading = false;
+      toast.error(payload.message || "something went wrong");
+    });
+
+    builder.addCase(deleteJobDrive.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(deleteJobDrive.fulfilled, (state, { payload }) => {
+      state.isLoading = false;
+      state.jobs = payload.data.jobDrives;
+      toast.success(payload.message);
+    });
+    builder.addCase(deleteJobDrive.rejected, (state, { payload }) => {
       state.isLoading = false;
       toast.error(payload.message || "something went wrong");
     });
