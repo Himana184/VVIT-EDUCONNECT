@@ -141,7 +141,7 @@ studentSchema.methods.generateAccessToken = async function () {
         branch: this.branch,
       },
     },
-    process.env.STUDENT_ACCESS_SECRET,
+    process.env.ACCESS_TOKEN_SECRET,
     {
       expiresIn: "1d",
     }

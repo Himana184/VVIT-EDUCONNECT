@@ -14,6 +14,7 @@ import { isAuthenticated } from "../middleware/verifyJWT.js";
 
 const router = express.Router();
 
+router.route("/register").post(handleStudentRegisteration);
 router.use(isAuthenticated)
 router.route("/all").get(getAllStudents);
 router
@@ -29,5 +30,4 @@ router.use(filesPayloadExists);
 router.use(fileExtLimiter([".JPG", ".PNG", ".JPEG", ".jpg", ".png", ".jpeg"]));
 router.use(fileSizeLimiter);
 
-router.route("/register").post(handleStudentRegisteration);
 export default router;

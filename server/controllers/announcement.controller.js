@@ -52,7 +52,11 @@ export const handleAddAnnouncement = async (req, res) => {
 };
 
 export const getAllAnnouncements = async (req, res) => {
-  const announcements = await Announcement.find({}).sort({ createdAt: -1 });
+  const announcements = await Announcement.find({}).sort({
+    createdAt: -1,
+  });
+
+  console.log(announcements)
   return res
     .status(StatusCodes.OK)
     .json(
