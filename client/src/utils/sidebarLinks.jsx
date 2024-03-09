@@ -102,7 +102,7 @@ export const sidebarLinks = {
     {
       icon: <FolderKanban size={24} />,
       text: "Internships",
-      href: "stuinternships"
+      href: "internships"
     },
     {
       icon: <PiStack size={24} />,

@@ -5,7 +5,7 @@ export const groupData = (arr, key) => {
     acc[group] = acc[group] || [];
     acc[group].push(obj);
     // Add the object to the "all" group
-    acc.all = acc.all || arr; // Initialize "all" key with the arr parameter
+    acc.All = acc.All || arr; // Initialize "all" key with the arr parameter
     return acc;
   }, {});
 };

@@ -10,15 +10,16 @@ import {
 import { filesPayloadExists } from "../middleware/filePayloadExists.js";
 import { fileSizeLimiter } from "../middleware/fileSizeLimiter.js";
 import { fileExtLimiter } from "../middleware/fileExtLimiter.js";
+import { isAuthenticated } from "../middleware/verifyJWT.js";
 
 const router = express.Router();
 
+router.use(isAuthenticated);
 // actions can be performed by student, admin, coordinator
-router
-  .route("/")
-  .get(getAllInternships);
+router.route("/").get(getAllInternships);
 
-router.route("/:internshipId")
+router
+  .route("/:internshipId")
   .patch(handleUpdateInternship)
   .delete(handleDeleteInternship);
 

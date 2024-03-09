@@ -8,8 +8,7 @@ import Jobs from "./pages/Jobs"
 import JobDetail from "./components/jobs/JobDetail"
 import Certifications from "./pages/Certifications"
 import Announcements from "./pages/Announcements";
-import Internships from "./pages/admin/Internships"
-import StudentInternships from "./pages/student/StudentInternships"
+import Internships from "./pages/Internships"
 import LoginPage from "./pages/auth/LoginPage"
 import RegisterPage from "./pages/auth/RegisterPage"
 import StudentCourses from "./pages/student/StudentCourses"
@@ -39,7 +38,7 @@ const App = () => {
           <Route path="announcements" element={<Announcements />}></Route>
           <Route path="jobs" element={<Jobs />}></Route>
           <Route path="jobs/:jobId" element={<JobDetail />}></Route>
-          <Route path="internships" element={<StudentInternships />}></Route>
+          <Route path="internships" element={<Internships />}></Route>
           <Route path="courses" element={<StudentCourses />}></Route>
           <Route path="queries" element={<StudentQueries />}></Route>
           <Route path="certifications" element={<Certifications />}></Route>

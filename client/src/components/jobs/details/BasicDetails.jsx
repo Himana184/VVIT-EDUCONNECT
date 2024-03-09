@@ -1,4 +1,5 @@
 /* eslint-disable react/prop-types */
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
@@ -23,8 +24,11 @@ const BasicDetails = ({ job }) => {
     <Card className="w-full flex flex-col justify-between">
       <CardHeader className="flex flex-row justify-between">
         <div className="space-y-2">
-          <img src={job.companyLogo || "https://www.forgerock.com/sites/default/files/dam-assets/accenture-partner-tp-logo.png"}
-            className="h-16 w-16 rounded-full border border-gray-200" />
+          <Avatar>
+            <AvatarImage src={job?.companyLogo} alt={job?.companyName} />
+            <AvatarFallback>{job?.companyName?.charAt(0).toUpperCase()}</AvatarFallback>
+          </Avatar>
+
           <CardTitle>{job?.companyName || "Company Name"}</CardTitle>
           <CardDescription>{job?.roles?.join(",") || "Hiring for roles"}</CardDescription>
         </div>

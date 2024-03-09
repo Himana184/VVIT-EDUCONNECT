@@ -6,6 +6,7 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import Internship from "../models/internship.model.js";
 import mongoose from "mongoose";
 import { groupData } from "../utils/groupdata.js";
+import uploadSingleFile from "../utils/uploadToCloud.js";
 const currentYear = new Date().getFullYear();
 
 // TODO: Google Cloud Integration for storing internship offer and completion certificaton
@@ -27,6 +28,21 @@ export const handleAddInternship = async (req, res) => {
 
   //set the branch of the user so that it is easy to filter the internships based on branch
   req.body.branch = req.user.branch;
+  req.body.student = req.user.userId;
+  const fileType = req.file.originalname.split(".")[1];
+  const fileUploadResponse = await uploadSingleFile(
+    req.file,
+    "internship-offerLetters",
+    req.body.companyName.replace(/\s+/g, "") + req.user.userId + "." + fileType
+  );
+  if (!fileUploadResponse.status) {
+    throw new ApiError(
+      StatusCodes.INTERNAL_SERVER_ERROR,
+      "Unable to upload file"
+    );
+  } else {
+    req.body.offerLetter = fileUploadResponse.url;
+  }
 
   const newInternship = await Internship.create(req.body);
 
@@ -34,7 +50,7 @@ export const handleAddInternship = async (req, res) => {
   const internships = await getInternshipsByRole(req);
 
   //group the internships based on the verification status this will be helpful to filter in the frontend
-  groupedInternships = groupData(internships, "verificationStatus");
+  const groupedInternships = groupData(internships, "verificationStatus");
 
   return res
     .status(StatusCodes.OK)

@@ -1,6 +1,7 @@
 import DeleteDialog from "@/components/common/DeleteDialog";
 import { deleteCertification } from "@/redux/certificationSlice";
 import { Badge } from "@/components/ui/badge";
+import { formatDate } from "@/utils/formatDate";
 
 export const adminCertificationTableColumns = [
 
@@ -104,7 +105,15 @@ export const studentCertificationTableColumns = [
     header: "Certification Name",
     accessorKey: "name",
   },
-
+  {
+    header: "Issue Date",
+    accessorKey: "issueDate",
+    cell: ({ row }) => {
+      return (
+        <p>{formatDate(row.original.issueDate)}</p>
+      )
+    }
+  },
   {
     header: "Tags",
     accessorKey: "tags",
@@ -155,6 +164,3 @@ export const studentCertificationTableColumns = [
     },
   },
 ];
-
-
-

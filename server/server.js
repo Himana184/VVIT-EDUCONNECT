@@ -29,11 +29,7 @@ app.use(cors())
 //routes
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/student", upload.single("studentImage"), studentRouter);
-app.use(
-  "/api/v1/internship",
-  upload.array("internshipFiles"),
-  internshipRouter
-);
+app.use("/api/v1/internship", upload.single("offerLetter"), internshipRouter);
 app.use(
   "/api/v1/certification",
   upload.single("certification-file"),

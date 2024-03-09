@@ -41,17 +41,15 @@ const internshipSchema = new mongoose.Schema(
     },
     internshipType: {
       type: String,
-      enum: ["remote", "hybrid", "on-site"],
       required: [true, "internship type is required"],
     },
     completionCertificate: {
       type: String,
-      required: [true, "internship completion certificate is required"],
     },
     verificationStatus: {
       type: String,
-      default : "pending",
-      enum: ["pending", "verified", "rejected"],
+      default : "Pending",
+      enum: ["Pending", "Verified", "Rejected"],
     },
     comment: {
       type: String,

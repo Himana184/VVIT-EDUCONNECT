@@ -18,12 +18,9 @@ export const certificationRequiredFields = [
 
 export const internshipRequiredFields = [
   "companyName",
-  "student",
   "internshipDomain",
-  "branch",
   "role",
   "stipend",
-  "offerLetter",
   "startDate",
   "endDate",
   "internshipType",

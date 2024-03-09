@@ -30,7 +30,7 @@ export const getInternships = createAsyncThunk(
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
-      console.log("Get certifications response : ", response);
+      console.log("Get Internships response : ", response);
       return response.data;
     } catch (error) {
       if (!error?.response) {
@@ -124,8 +124,7 @@ const internshipSlice = createSlice({
     builder.addCase(getInternships.fulfilled, (state, { payload }) => {
       state.isLoading = false;
       state.allInternships = payload.data.internships;
-      console.log("Payload : ", payload.data.internships.all);
-      state.internships = payload.data.internships.all;
+      state.internships = payload.data.internships.All || [];
       toast.success(payload.message);
     });
     builder.addCase(getInternships.rejected, (state, { payload }) => {
