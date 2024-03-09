@@ -82,7 +82,7 @@ export const sidebarLinks = {
     {
       icon: <TfiAnnouncement size={24} />,
       text: "Announcements",
-      href: "stuannouncements",
+      href: "announcements",
     },
     {
       icon: <BriefcaseIcon size={24} />,

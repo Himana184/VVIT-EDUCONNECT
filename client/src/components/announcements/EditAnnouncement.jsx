@@ -13,7 +13,7 @@ import { Loader2 } from "lucide-react";
 import { Button } from "../ui/button";
 import { useDispatch, useSelector } from 'react-redux';
 import JoditEditor from 'jodit-react';
-import { addAnnouncement, updateAnnouncement } from "@/redux/adminAnnouncementSlice";
+import { addAnnouncement, updateAnnouncement } from "@/redux/announcementSlice";
 import { useNavigate } from "react-router-dom";
 
 const EditAnnouncement = () => {
@@ -45,7 +45,7 @@ const EditAnnouncement = () => {
       }
     });
 
-    const response = await dispatch(updateAnnouncement({data:announcementData,_id : announcement._id}));
+    const response = await dispatch(updateAnnouncement({ data: announcementData, _id: announcement._id }));
     if (response.meta.requestStatus == "fulfilled") {
       navigate("/admin/announcements");
     }

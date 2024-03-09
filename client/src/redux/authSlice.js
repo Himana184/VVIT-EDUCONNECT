@@ -57,11 +57,12 @@ export const studentRegisteration = createAsyncThunk(
 );
 
 const token = localStorage.getItem("token");
+const user = JSON.parse(localStorage.getItem("user"));
 const authSlice = createSlice({
   name: "auth",
   initialState: {
     isLoading: false,
-    user: {},
+    user: user,
     role: "",
     token: token,
   },
@@ -77,6 +78,9 @@ const authSlice = createSlice({
     builder.addCase(studentLogin.fulfilled, (state, { payload }) => {
       state.isLoading = false;
       state.user = payload.data.student;
+      const decodedData = jwtDecode(payload.data.accessToken);
+      state.role = decodedData.user.role;
+      localStorage.setItem("user", JSON.stringify(payload.data.student));
       localStorage.setItem("token", payload.data.accessToken);
       toast.success(payload.message);
     });
@@ -91,10 +95,10 @@ const authSlice = createSlice({
     });
     builder.addCase(userLogin.fulfilled, (state, { payload }) => {
       state.isLoading = false;
-      console.log(payload);
       state.user = payload.data.user;
       const decodedData = jwtDecode(payload.data.accessToken);
       state.role = decodedData.user.role;
+      localStorage.setItem("user", JSON.stringify(payload.data.user));
       localStorage.setItem("token", payload.data.accessToken);
       toast.success(payload.message);
     });
@@ -118,5 +122,5 @@ const authSlice = createSlice({
   },
 });
 
-export const { logout ,setRole} = authSlice.actions;
+export const { logout, setRole } = authSlice.actions;
 export default authSlice.reducer;

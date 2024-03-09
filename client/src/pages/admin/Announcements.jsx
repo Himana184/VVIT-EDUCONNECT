@@ -1,12 +1,12 @@
-
-import AnnouncementCard from "@/components/announcements/AnnouncementCard"
+import DispalyAnnouncements from "@/components/announcements/DispalyAnnouncements"
 import Loading from "@/components/common/Loading"
 import { Button } from "@/components/ui/button"
-import { getAnnouncements } from "@/redux/adminAnnouncementSlice"
+import { getAnnouncements } from "@/redux/announcementSlice"
 import { useEffect } from "react"
 import { TfiAnnouncement } from "react-icons/tfi"
 import { useDispatch, useSelector } from "react-redux"
 import { Link } from "react-router-dom"
+
 const Announcements = () => {
   const { announcements, isLoading } = useSelector((state) => state["announcement"]);
   const { role } = useSelector((state) => state["auth"]);
@@ -17,6 +17,7 @@ const Announcements = () => {
   if (isLoading) {
     return <Loading />
   }
+
   return (
     <div className="flex flex-col space-y-6">
       {
@@ -31,18 +32,8 @@ const Announcements = () => {
             </Link>
           </div>
         )
-
       }
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-        {
-          announcements?.map((announcement, index) => {
-            return <AnnouncementCard key={index} announcement={announcement} />
-          })
-        }
-        {
-          announcements.length == 0 && <p>No Announcements to display</p>
-        }
-      </div>
+      <DispalyAnnouncements announcements={announcements} />
     </div>
   )
 }

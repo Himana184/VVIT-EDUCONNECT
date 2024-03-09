@@ -12,8 +12,9 @@ import { Loader2 } from "lucide-react";
 import { Button } from "../ui/button";
 import { useDispatch, useSelector } from 'react-redux';
 import JoditEditor from 'jodit-react';
-import { addAnnouncement } from "@/redux/adminAnnouncementSlice";
+import { addAnnouncement } from "@/redux/announcementSlice";
 import { useNavigate } from "react-router-dom";
+import { announcementPriorities } from "@/utils/announcement";
 
 const AddAnnouncement = () => {
   const navigate = useNavigate();
@@ -116,9 +117,9 @@ const AddAnnouncement = () => {
               </SelectTrigger>
               <SelectContent>
                 {
-                  ["High", "Moderate", "Low"].map((item, index) => {
+                  announcementPriorities.slice(1,).map((item, index) => {
                     return (
-                      <SelectItem value={item} key={index}>{item}</SelectItem>
+                      <SelectItem value={item.value} key={index}>{item.name}</SelectItem>
                     )
                   })
                 }
