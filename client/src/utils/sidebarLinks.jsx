@@ -92,7 +92,7 @@ export const sidebarLinks = {
     {
       icon: <PiCertificateFill size={24} />,
       text: "Certifications",
-      href: "stucertifications",
+      href: "certifications",
     },
     {
       icon: <MdOutlineHelp size={24} />,

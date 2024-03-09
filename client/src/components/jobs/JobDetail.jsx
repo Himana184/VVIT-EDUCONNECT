@@ -22,6 +22,7 @@ const JobDetail = () => {
   useEffect(() => {
     const fetchJob = async () => {
       const response = await dispatch(getJobDriveDetails({ id: jobId }))
+      console.log(response)
     }
     fetchJob();
   }, [jobId])
@@ -30,7 +31,7 @@ const JobDetail = () => {
     return <Loading />
   }
   return (
-    job && <div className='space-y-6'>
+    <div className='space-y-6'>
       <div className='grid grid-cols-1 lg:grid-cols-2 gap-10'>
         {/* Basic overview of details */}
         <BasicDetails job={job} />
@@ -47,7 +48,9 @@ const JobDetail = () => {
             <CardDescription>Below are the students who have shown interest in the job drive</CardDescription>
           </CardHeader>
           <CardContent>
-            <OptedStudents students={job?.optedStudents} />
+            {
+              job?.optedStudents?.length > 0 && <OptedStudents students={job?.optedStudents} />
+            }
           </CardContent>
         </Card>
       }

@@ -169,6 +169,7 @@ const jobSlice = createSlice({
     });
     builder.addCase(getJobDriveDetails.fulfilled, (state, { payload }) => {
       state.isLoading = false;
+      console.log(payload);
       state.job = payload.data.job;
       toast.success(payload.message);
     });

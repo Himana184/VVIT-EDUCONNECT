@@ -31,10 +31,7 @@ const BasicDetails = ({ job }) => {
         {/* only for student opt in and status of application */}
         {
           role == "student" && <div className='flex flex-col space-y-3'>
-            {
-              console.log(job?.optedStudents.find(student => student._id === user._id))
-            }
-            {job?.optedStudents.find(student => student._id === user._id) ? (
+            {job?.optedStudents?.includes(user._id) ? (
               <Button onClick={() => dispatch(handleOptOutDrive({ id: job._id }))}>
                 Opt out
               </Button>
@@ -43,7 +40,6 @@ const BasicDetails = ({ job }) => {
                 Opt-in
               </Button>
             )}
-
           </div>
         }
         {/* Delete job drive only for admin */}
