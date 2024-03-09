@@ -31,7 +31,7 @@ export const handleAddCertification = async (req, res) => {
   //upload the image of the student to cloud.
   const uploadResponse = await uploadSingleFile(
     req.file,
-    "certification-images",
+    "certification-files",
     req.body.name.replace(/\s+/g, "")+"."+fileType
   );
   
@@ -43,7 +43,7 @@ export const handleAddCertification = async (req, res) => {
   }
   //set the link value to the response url from the upload.
   req.body.link = uploadResponse.url;
-
+  req.body.student = req.user.userId;
   const newCertification = await Certification.create(req.body);
 
   //return all the certifications of the student
@@ -189,7 +189,7 @@ export const getCertificationsByRole = async (req) => {
       student: req.user.userId,
     }).sort({
       createdAt: -1,
-    });
+    }).populate("student");
   }
 
   return certifications;

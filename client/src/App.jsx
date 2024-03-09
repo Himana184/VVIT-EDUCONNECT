@@ -6,8 +6,7 @@ import Students from "./pages/admin/Students"
 import Coordinators from "./pages/admin/Coordinators"
 import Jobs from "./pages/Jobs"
 import JobDetail from "./components/jobs/JobDetail"
-import Certifications from "./pages/admin/Certifications"
-import StuCertifications from "./pages/student/StuCertifications"
+import Certifications from "./pages/Certifications"
 import Announcements from "./pages/Announcements";
 import Internships from "./pages/admin/Internships"
 import StudentInternships from "./pages/student/StudentInternships"
@@ -43,7 +42,7 @@ const App = () => {
           <Route path="internships" element={<StudentInternships />}></Route>
           <Route path="courses" element={<StudentCourses />}></Route>
           <Route path="queries" element={<StudentQueries />}></Route>
-          <Route path="certifications" element={<StuCertifications />}></Route>
+          <Route path="certifications" element={<Certifications />}></Route>
         </Route>
 
         {/* all routes of admin */}

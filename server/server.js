@@ -36,7 +36,7 @@ app.use(
 );
 app.use(
   "/api/v1/certification",
-  upload.single("certificationFile"),
+  upload.single("certification-file"),
   certificationRouter
 );
 app.use("/api/v1/course", upload.single("courseFile"), courseRouter);

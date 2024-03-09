@@ -1,8 +1,6 @@
 import DeleteDialog from "@/components/common/DeleteDialog";
 import EditCertification from "@/components/certifications/EditCertification";
-import { Switch } from "@/components/ui/switch";
 import { deleteCertification } from "@/redux/certificationSlice";
-import { useDispatch } from "react-redux";
 
 import { Badge } from "@/components/ui/badge";
 export const certificationTableColumns = [

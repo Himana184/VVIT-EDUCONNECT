@@ -12,10 +12,8 @@ export const certificationRequiredFields = [
   "name",
   "issuer",
   "certificateId",
-  "student",
   "issueDate",
   "tags",
-  
 ];
 
 export const internshipRequiredFields = [
@@ -29,7 +27,6 @@ export const internshipRequiredFields = [
   "startDate",
   "endDate",
   "internshipType",
-
 ];
 
 export const courseRequiredFields = [
@@ -77,7 +74,7 @@ export const jobDriveRequiredFields = [
   "skills",
   "eligibleBranches",
   "description",
-  "companyLogo"
+  "companyLogo",
 ];
 
 export const cookieOptions = {
