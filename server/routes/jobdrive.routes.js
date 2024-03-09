@@ -3,6 +3,7 @@ import {
   handleAddJobDrive,
   getAllJobDrives,
   handleDeleteJobDrive,
+  getJobDriveDetails,
 } from '../controllers/jobdrive.controller.js';
 
 
@@ -12,6 +13,6 @@ router
  .route("/")
  .get(getAllJobDrives)
  .post(handleAddJobDrive)
- .delete(handleDeleteJobDrive);
 
+router.route("/:jobId").get(getJobDriveDetails).delete(handleDeleteJobDrive);
 export default router;

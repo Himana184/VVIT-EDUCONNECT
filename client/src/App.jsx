@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
-
+import { Toaster } from 'react-hot-toast';
 import StudentAnnouncements from "./pages/student/StudentAnnouncements"
 import AdminLayout from "./components/layouts/AdminLayout"
 import StudentLayout from "./components/layouts/StudentLayout"
@@ -17,6 +17,11 @@ import RegisterPage from "./pages/auth/RegisterPage"
 import StudentJobs from "./pages/student/StudentJobs"
 import StudentCourses from "./pages/student/StudentCourses"
 import StudentQueries from "./pages/student/StudentQueries"
+import Courses from "./pages/admin/Courses";
+import Dashboard from "./pages/admin/Dashboard";
+import AddAnnouncement from "./components/announcements/AddAnnouncement";
+import EditAnnouncement from "./components/announcements/EditAnnouncement";
+import AddJobDrive from "./components/jobs/AddJobDrive";
 
 const App = () => {
   return (
@@ -38,19 +43,25 @@ const App = () => {
           <Route path="stujobs" element={<StudentJobs />}></Route>
           <Route path="stuinternships" element={<StudentInternships />}></Route>
           <Route path="stucourses" element={<StudentCourses />}></Route>
-          <Route path="stuqueries" element={<StudentQueries />}></Route>         
+          <Route path="stuqueries" element={<StudentQueries />}></Route>
           <Route path="stucertifications" element={<StuCertifications />}></Route>
         </Route>
 
         {/* all routes of admin */}
         <Route path="/admin" element={<AdminLayout />}>
+          <Route index element={<Dashboard />} />
           <Route path="students" index element={<Students />}></Route>
           <Route path="coordinators" index element={<Coordinators />}></Route>
           <Route path="jobs" element={<Jobs />} ></Route>
+          <Route path="jobs/:jobId" element={<JobDetail />}></Route>
           <Route path="certifications" element={<Certifications />}></Route>
           <Route path="detail" element={<JobDetail />} />
           <Route path="announcements" element={<Announcements />}></Route>
           <Route path="internships" element={<Internships />}></Route>
+          <Route path="courses" element={<Courses />}></Route>
+          <Route path="addAnnouncement" element={<AddAnnouncement />} />
+          <Route path="editAnnouncement" element={<EditAnnouncement />} />
+          <Route path="addJobDrive" element={<AddJobDrive />} />
         </Route>
 
         {/* all routes of coordinator */}
@@ -59,6 +70,7 @@ const App = () => {
         {/* all routes of faculty */}
         <Route path="/faculty"></Route>
       </Routes>
+      <Toaster />
     </Router>
   )
 }

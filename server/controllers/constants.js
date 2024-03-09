@@ -3,7 +3,6 @@ export const adminRequiredFields = [
   "email",
   "password",
   "contact",
-  "image",
   "role",
 ];
 
@@ -69,16 +68,16 @@ export const queryRequiredFields = [
   "branch",
 ];
 export const jobDriveRequiredFields = [
-  "salary",
-  "eligibleBranches",
   "companyName",
-  "category",
   "roles",
-  "offerType",
-  "lastDate",
-  "description",
+  "categories",
   "jobLocation",
+  "lastDate",
+  "salary",
   "skills",
+  "eligibleBranches",
+  "description",
+  "companyLogo"
 ];
 
 export const cookieOptions = {

@@ -21,15 +21,16 @@ import { useDispatch, useSelector } from "react-redux"
 import { Loader2 } from "lucide-react"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select"
 import { branches } from "@/data/branches"
+// import { generateYears } from "@/utils/generateyears"
 
 const EditStudent = ({ data }) => {
-  const isLoading = true;
+  const isLoading = false;
   const dispatch = useDispatch();
   const form = useForm();
   const { register, handleSubmit, formState, clearErrors, reset } = form;
   const { errors } = formState;
   const [open, setOpen] = useState(false);
-  const handleEditMentorDetails = async (newData) => {
+  const handleEditStudentDetails = async (newData) => {
     newData = JSON.parse(JSON.stringify(newData));
     console.log(newData)
     const response = await dispatch(({ ...newData, _id: data._id }));
@@ -57,7 +58,7 @@ const EditStudent = ({ data }) => {
             Make changes to the students details here
           </DialogDescription>
         </DialogHeader>
-        <form className="space-y-4" onSubmit={handleSubmit(handleEditMentorDetails)}>
+        <form className="space-y-4" onSubmit={handleSubmit(handleEditStudentDetails)}>
           <div className="space-y-2">
             <Label>Student name</Label>
             <Input type="text"
@@ -150,72 +151,44 @@ const EditStudent = ({ data }) => {
             {errors["contact"] && <FormError message={errors["contact"].message} />}
           </div>
 
-          {/* Students Count */}
-          <div className="space-y-2">
-            <Label>Students Count</Label>
-            <Input
-              defaultValue={data?.studentsCount}
-              type="text"
-              placeholder="10"
-              {...register("studentsCount", {
-                required: {
-                  value: true,
-                  message: "Students count Name is required",
-                },
-                validate: {
-                  isValidNumber: (fieldValue) => {
-                    return Number(fieldValue) || "Enter a valid student count";
-                  },
-                },
-              })}
-
-            />
-            {errors["studentsCount"] && (
-              <FormError message={errors["studentsCount"].message} />
-            )}
-          </div>
-          {/* Rating */}
-          <div className="space-y-2">
-            <Label>Rating</Label>
-            <Input
-              type="text"
-              placeholder="5"
-              defaultValue={data?.rating}
-              {...register("rating", {
-                required: {
-                  value: true,
-                  message: "Rating is required",
-                },
-                validate: {
-                  isValidNumber: (fieldValue) => {
-                    return Number(fieldValue) || "Enter a valid rating";
-                  },
-                },
-              })}
-            />
-            {errors["rating"] && (
-              <FormError message={errors["rating"].message} />
-            )}
-          </div>
-
-          {/* Appointment Link */}
-          <div className="space-y-2">
-            <Label>Appointment Link</Label>
-            <Input
-              defaultValue={data?.appointmentLink}
-              type="text"
-              placeholder="https://www.vconnectglobe.com/booking/"
-              {...register("appointmentLink", {
-                required: {
-                  value: true,
-                  message: "Appointment Link is required",
+          {/* Branch */}
+          {/* <div className="space-y-2">
+            <Label>Branch</Label>
+            <Select defaultValue={data?.branch}>
+              <SelectTrigger>
+                <SelectValue placeholder={"Select student branch"} />
+              </SelectTrigger>
+              <SelectContent>
+                {
+                  branches.map((branch, index) => {
+                    return (
+                      <SelectItem value={branch} key={index}>{branch}</SelectItem>
+                    )
+                  })
                 }
-              })}
-            />
-            {errors["appointmentLink"] && (
-              <FormError message={errors["appointmentLink"].message} />
-            )}
-          </div>
+              </SelectContent>
+            </Select>
+          </div> */}
+
+          {/* Section */}
+          {/* <div className="space-y-2">
+            <Label>Section</Label>
+            <Select defaultValue={data?.section}>
+              <SelectTrigger>
+                <SelectValue placeholder={"Select student section"} />
+              </SelectTrigger>
+              <SelectContent>
+                {
+                  ["A", "B", "C", "D"].map((section, index) => {
+                    return (
+                      <SelectItem key={index} value={section}>{section}</SelectItem>
+                    )
+                  })
+                }
+              </SelectContent>
+            </Select>
+          </div> */}
+
           <div className="flex justify-end">
             <Button type="submit">{isLoading ? (
               <>

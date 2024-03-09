@@ -1,55 +1,9 @@
-/* eslint-disable no-unused-vars */
+import DeleteDialog from "@/components/common/DeleteDialog";
+import EditCertification from "@/components/certifications/EditCertification";
+import { Switch } from "@/components/ui/switch";
+import { deleteCertification } from "@/redux/certificationSlice";
+import { useDispatch } from "react-redux";
 import { Badge } from "@/components/ui/badge";
-import { PencilSquareIcon } from "@heroicons/react/24/outline";
-import { DeleteIcon, Edit2Icon, Edit3Icon, Trash2Icon } from "lucide-react";
-
-export const certificationsData = [
-  {
-    name: "JavaScript Basics",
-    issuer: "Codecademy",
-    certificateId: "CC123456",
-    student: { "_id": { "$oid": "65b75a58170348a2aca61fea" }, "name": "chandra", "rollNumber": "20bq1a05p2", "collegeMail": "20bq1a05p2@vvit.net", "personalMail": "gnanachandra2003@gmail.com", "password": "$2a$10$MhpoqrntiXMWzS/ozfFf9uKD4CCqweaV.g5wl4nY/Fee4ur1V9/kG", "contact": "7702663224", "branch": "CSE", "section": "D", "image": "https://storage.googleapis.com/filesharingapplication/gnanachandra_photo.jpg", "passoutYear": { "$numberInt": "2024" }, "isActive": true, "deviceTokens": [], "role": "student", "createdAt": { "$date": { "$numberLong": "1706515032991" } }, "updatedAt": { "$date": { "$numberLong": "1706515032991" } }, "__v": { "$numberInt": "0" } },
-    issueDate: "2023-05-10",
-    expiryDate: "2025-05-10",
-    branch: "MECH",
-    tags: "Web Development,Javascript,Programming, Bootcamp",
-    link: "https://www.codecademy.com/certificates/javascript-basics",
-  },
-  {
-    name: "Python Fundamentals",
-    issuer: "Coursera",
-    certificateId: "CRA789012",
-    student: { "_id": { "$oid": "65b75a58170348a2aca61fea" }, "name": "chandra", "rollNumber": "20bq1a05p2", "collegeMail": "20bq1a05p2@vvit.net", "personalMail": "gnanachandra2003@gmail.com", "password": "$2a$10$MhpoqrntiXMWzS/ozfFf9uKD4CCqweaV.g5wl4nY/Fee4ur1V9/kG", "contact": "7702663224", "branch": "CSE", "section": "D", "image": "https://storage.googleapis.com/filesharingapplication/gnanachandra_photo.jpg", "passoutYear": { "$numberInt": "2024" }, "isActive": true, "deviceTokens": [], "role": "student", "createdAt": { "$date": { "$numberLong": "1706515032991" } }, "updatedAt": { "$date": { "$numberLong": "1706515032991" } }, "__v": { "$numberInt": "0" } },
-    issueDate: "2023-07-20",
-    expiryDate: "2025-07-20",
-    branch: "CSO",
-    tags: "Python, Programming, Fundamentals",
-    link: "https://www.coursera.org/certificates/python-fundamentals",
-  },
-  {
-    name: "Data Science Specialization",
-    issuer: "Udacity",
-    certificateId: "UD456789",
-    student: { "_id": { "$oid": "65b75a58170348a2aca61fea" }, "name": "chandra", "rollNumber": "20bq1a05p2", "collegeMail": "20bq1a05p2@vvit.net", "personalMail": "gnanachandra2003@gmail.com", "password": "$2a$10$MhpoqrntiXMWzS/ozfFf9uKD4CCqweaV.g5wl4nY/Fee4ur1V9/kG", "contact": "7702663224", "branch": "CSE", "section": "D", "image": "https://storage.googleapis.com/filesharingapplication/gnanachandra_photo.jpg", "passoutYear": { "$numberInt": "2024" }, "isActive": true, "deviceTokens": [], "role": "student", "createdAt": { "$date": { "$numberLong": "1706515032991" } }, "updatedAt": { "$date": { "$numberLong": "1706515032991" } }, "__v": { "$numberInt": "0" } },
-    issueDate: "2023-09-15",
-    expiryDate: "2025-09-15",
-    branch: "CSE",
-    tags: "Data Science, Machine Learning, Specialization",
-    link: "https://www.udacity.com/course/data-science-nanodegree--nd025",
-  },
-  {
-    name: "Web Development Bootcamp",
-    issuer: "FreeCodeCamp",
-    certificateId: "FCC123ABC",
-    student: { "_id": { "$oid": "65b75a58170348a2aca61fea" }, "name": "chandra", "rollNumber": "20bq1a05p2", "collegeMail": "20bq1a05p2@vvit.net", "personalMail": "gnanachandra2003@gmail.com", "password": "$2a$10$MhpoqrntiXMWzS/ozfFf9uKD4CCqweaV.g5wl4nY/Fee4ur1V9/kG", "contact": "7702663224", "branch": "CSE", "section": "D", "image": "https://storage.googleapis.com/filesharingapplication/gnanachandra_photo.jpg", "passoutYear": { "$numberInt": "2024" }, "isActive": true, "deviceTokens": [], "role": "student", "createdAt": { "$date": { "$numberLong": "1706515032991" } }, "updatedAt": { "$date": { "$numberLong": "1706515032991" } }, "__v": { "$numberInt": "0" } },
-    issueDate: "2023-11-28",
-    expiryDate: "2025-11-28",
-    branch: "IT",
-    tags: "Web Development, Programming, Bootcamp,Rust,Kubernetes",
-    link: "https://www.freecodecamp.org/certification/yourusername/full-stack",
-  },
-];
-
 export const certificationTableColumns = [
   {
     header: "Issuer",
@@ -57,7 +11,7 @@ export const certificationTableColumns = [
       return (
 
         <img
-          src={
+          src={row.original.link ||
             "https://cdn.iconscout.com/icon/free/png-256/free-google-160-189824.png"
           }
           alt={row.original.issuer}
@@ -79,7 +33,7 @@ export const certificationTableColumns = [
     header: "Student name",
     cell: ({ row }) => {
       return (
-        <p>{row.original.student.name}</p>
+        <p>{row.original.student.name || "Arjun"}</p>
       )
     }
   },
@@ -87,7 +41,7 @@ export const certificationTableColumns = [
     header: "Roll No",
     cell: ({ row }) => {
       return (
-        <p>{row.original.student.rollNumber}</p>
+        <p>{row.original.student.rollNumber || "21BQ1A05O0"}</p>
       )
     }
   },
@@ -109,11 +63,13 @@ export const certificationTableColumns = [
     cell: ({ row }) => {
       return (
         <div className="flex flex-wrap gap-x-2 gap-y-1 justify-start ">
-          {row.original.tags.split(",").map((item, index) => {
-            return (
-              <Badge key={index} variant={"outline"}>{item}</Badge>
-            )
-          })}
+          {
+            row.original.tags.map((tag, index) => {
+              return (
+                <Badge key={index} variant={"outline"}>{tag}</Badge>
+              )
+            })
+          }
         </div>
       )
     }
@@ -129,14 +85,51 @@ export const certificationTableColumns = [
     },
   },
   {
-    header: "Actions",
+    header: "Delete",
+    id: "DeleteAction",
+    enableHiding: false,
     cell: ({ row }) => {
+      const certification = row.original;
       return (
-        <div className="flex space-x-4">
-          <Edit3Icon size={25} className="cursor-pointer" />
-          <Trash2Icon size={25} className="cursor-pointer" />
+        <div className="flex">
+          <DeleteDialog
+            type="certification"
+            dialogTitle={"Are you sure to delete user details"}
+            data={certification}
+            dialogDescription={
+              "This action is irreversible click delete to delete the details permanently"
+            }
+            handleDelete={deleteCertification}
+          />
         </div>
-      )
-    }
+      );
+    },
+  },
+];
+
+export const certifications = [
+  {
+    name: "React Developer Certification",
+    issuer: "React University",
+    certificateId: "REACT123",
+    student: "student_id_1",
+    branch: "CSE",
+    issueDate: new Date("2023-06-15"),
+    expiryDate: new Date("2025-06-15"),
+    tags: ["React", "Frontend", "JavaScript"],
+    link: "https://storage.googleapis.com/filesharingapplication/react-logo.png",
+  },
+  {
+    name: "AWS Certified Solutions Architect - Associate",
+    issuer: "Amazon Web Services",
+    certificateId: "AWSARCH123",
+    student: "student_id_2",
+    branch: "CSE",
+    issueDate: new Date("2023-07-20"),
+    expiryDate: new Date("2026-07-20"),
+    tags: ["AWS", "Cloud Computing", "Architecture"],
+    link: "https://storage.googleapis.com/filesharingapplication/aws.png",
   }
 ];
+
+

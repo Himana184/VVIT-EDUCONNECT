@@ -5,9 +5,12 @@ import { jobDriveRequiredFields } from "./constants.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import JobDrive from "../models/jobdrive.model.js";
 import mongoose from "mongoose";
+import { uploadMultipleFiles } from "../utils/uploadToCloud.js";
+import jobdriveModel from "../models/jobdrive.model.js";
 //const currentYear = new Date().getFullYear();
 
 export const handleAddJobDrive = async (req, res) => {
+  console.log(req.body);
   //check whether all the required fields have been received or not
   const requiredFieldsValidation = checkRequiredFields(
     req.body,
@@ -19,7 +22,21 @@ export const handleAddJobDrive = async (req, res) => {
     const { message } = requiredFieldsValidation;
     throw new ApiError(StatusCodes.BAD_REQUEST, message);
   }
+  console.log(req.files);
+  const uploadFilesResponse = await uploadMultipleFiles(
+    req.files,
+    "job-drive-files"
+  );
+  console.log(uploadFilesResponse);
+  if (!uploadFilesResponse.status) {
+    throw new ApiError(
+      StatusCodes.INTERNAL_SERVER_ERROR,
+      "Unable to upload files"
+    );
+  }
 
+  req.body.files = uploadFilesResponse.files;
+  console.log(req.body)
   //create a new job drive with given details
   const newJobDrive = await JobDrive.create(req.body);
 
@@ -37,8 +54,28 @@ export const handleAddJobDrive = async (req, res) => {
     );
 };
 
+export const getJobDriveDetails = async (req, res) => {
+  const { jobId } = req.params;
+  if (!mongoose.isValidObjectId(jobId)) {
+    throw new ApiError(StatusCodes.BAD_REQUEST, "Not a valid job Id");
+  }
+  const jobDrive = await JobDrive.findById(jobId);
+  if (!jobDrive) {
+    throw new ApiError(StatusCodes.NOT_FOUND, "Job Drive details not found");
+  }
+  return res
+    .status(StatusCodes.OK)
+    .json(
+      new ApiResponse(
+        StatusCodes.OK,
+        { job: jobDrive },
+        "Job drive details fetched"
+      )
+    );
+};
+
 export const getAllJobDrives = async (req, res) => {
-  const jobDrives = await getJobdrivesByRole(req.user.role);
+  const jobDrives = await JobDrive.find({}).sort({ createdAt: -1 });
 
   return res
     .status(StatusCodes.OK)
@@ -48,14 +85,15 @@ export const getAllJobDrives = async (req, res) => {
 };
 
 export const handleDeleteJobDrive = async (req, res) => {
-  const jobDriveId = req.params.jobdriveId;
+  const jobDriveId = req.params.jobId;
 
   if (!mongoose.isValidObjectId(jobDriveId)) {
     throw new ApiError(StatusCodes.BAD_REQUEST, "Not a valid Job Drive Id");
   }
   const response = await JobDrive.findOneAndDelete(jobDriveId);
   //fetch all jobdrives
-  const jobDrives = await getJobdrivesByRole(eq.user.role);
+  
+  const jobDrives = await JobDrive.find({}).sort({ createdAt: -1 });
   return res
     .status(StatusCodes.OK)
     .json(
@@ -65,19 +103,4 @@ export const handleDeleteJobDrive = async (req, res) => {
         `Job drive of ${response.companyName} has been deleted`
       )
     );
-};
-export const getJobdrivesByRole = async (role) => {
-  let jobdrives = [];
-  if (req.user.role === "admin") {
-    jobdrives = await JobDrive.find({})
-      .sort({ createdAt: -1 })
-      .populate(["salary","eligibleBranches","companyName","category","roles","offerType","lastDate","description","jobLocation","skills"]);
-  } else if (req.user.role === "coordinator") {
-    jobdrives = await JobDrive.find({ eligibleBranches: { $in: [req.user.branch] } })
-      .sort({
-        createdAt: -1,
-      })
-      .populate(["salary","eligibleBranches","companyName","category","roles","offerType","lastDate","description","jobLocation","skills"]);
-  } 
-  return jobdrives;
 };

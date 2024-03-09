@@ -7,9 +7,11 @@ import { Card, CardHeader, CardContent, CardTitle, CardFooter, } from "../ui/car
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { FormError } from "../common/FormError";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { studentLogin, userLogin } from "@/redux/authSlice";
 const LoginForm = () => {
+  const { user } = useSelector((state) => state["auth"])
   const [role, setRole] = useState("student")
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -26,10 +28,20 @@ const LoginForm = () => {
 
 
   const handleUserLogin = async (data) => {
-    const response = await dispatch(userLogin(data));
-    if (response.meta.requestStatus === "fulfilled") {
-      navigate("/admin", { replace: true })
+    let response;
+    if (role == "student") {
+      response = await dispatch(studentLogin(data));
+      if (response.meta.requestStatus == "fulfilled") {
+        navigate(`/${role}`, { replace: true })
+      }
+    } else {
+      response = await dispatch(userLogin(data));
+      if (response.meta.requestStatus == "fulfilled") {
+        navigate(`/${role}`, { replace: true })
+      }
     }
+
+
   }
 
 

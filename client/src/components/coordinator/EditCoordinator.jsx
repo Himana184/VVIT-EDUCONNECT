@@ -13,11 +13,16 @@ import { branches } from '@/data/branches';
 import { Button } from '../ui/button';
 import { Loader2 } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { updateUser } from '@/redux/userSlice';
 
 const EditCoordinator = ({ data }) => {
-  const isLoading = false;
+  const { isLoading } = useSelector((state) => state["user"])
+  const [department, setDepartment] = useState(data.branch);
+  const [role, setRole] = useState(data.role);
+  const [open, setOpen] = useState(false);
 
-  const [department, setDepartment] = useState(data.department);
+  const dispatch = useDispatch();
 
   //react hook form
   const form = useForm({
@@ -32,7 +37,11 @@ const EditCoordinator = ({ data }) => {
 
   //function that will dispatch the edit details
   const handleEditDetails = async (data) => {
-    console.log(data);
+    data["branch"] = department;
+    data["role"] = role;
+    const response = await dispatch(updateUser({ data }))
+    setOpen(false);
+
   }
 
   useEffect(() => {
@@ -40,7 +49,7 @@ const EditCoordinator = ({ data }) => {
   }, [open])
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <PencilSquareIcon className="text-gray-700 cursor-pointer h-7 w-7 hover:text-primary" />
       </DialogTrigger>
@@ -99,7 +108,7 @@ const EditCoordinator = ({ data }) => {
 
           <div className='space-y-2'>
             <Label>Department</Label>
-            <Select defaultValue={data.branch} onValueChange={(e) => setDepartment(e)}>
+            <Select defaultValue={data.branch} onValueChange={(e) => setDepartment(e)} required>
               <SelectTrigger>
                 <SelectValue placeholder="Choose Department" />
               </SelectTrigger>
@@ -111,7 +120,20 @@ const EditCoordinator = ({ data }) => {
                 }
               </SelectContent>
             </Select>
-            {errors["branch"] && <FormError message={errors["branch"].message} />}
+          </div>
+
+          <div className='space-y-2'>
+            <Label>Role</Label>
+            <Select defaultValue={data.role} onValueChange={(e) => setRole(e)} required>
+              <SelectTrigger>
+                <SelectValue placeholder="Choose role" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value={"admin"}>{"Admin"}</SelectItem>
+                <SelectItem value={"coordinator"}>{"Coordinator"}</SelectItem>
+              </SelectContent>
+            </Select>
+
           </div>
 
           <DialogFooter>

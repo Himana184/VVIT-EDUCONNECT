@@ -10,17 +10,21 @@ import { Input } from '../ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import { branches } from '@/data/branches';
 import { Loader2 } from 'lucide-react';
+import { useDispatch, useSelector } from 'react-redux';
+import toast from 'react-hot-toast';
+import { addUser } from '@/redux/userSlice';
 
 
 const AddCoordinator = () => {
+  const dispatch = useDispatch();
+  const { isLoading } = useSelector((state) => state["user"]);
 
-  const isLoading = false;
   // State to handle the open and close of dialog
   const [open, setOpen] = useState(false);
 
-
   // useState to store the department of the coordinator
   const [department, setDepartment] = useState("");
+  const [role, setRole] = useState("");
 
   //react hook form
   const form = useForm();
@@ -33,8 +37,23 @@ const AddCoordinator = () => {
 
   //function that handles the dispatch of coordinator add
   const handleAddCoordinator = async (data) => {
-    data["department"] = department
-    console.log("Coordinator Details:", data);
+    if (department == "" || role == "") {
+      toast.error("department and role are required");
+      return;
+    }
+    data["branch"] = department
+    data["role"] = role
+    const userData = new FormData();
+    userData.append("userImage", data.userImage[0])
+    Object.keys(data).forEach((key) => {
+      if (key !== "userImage") {
+        userData.append(key, data[key]);
+      }
+    });
+
+    const response = await dispatch(addUser(userData));
+    setOpen(false)
+
   }
 
   //formdata instance containing the coordinator details
@@ -68,24 +87,24 @@ const AddCoordinator = () => {
       <DialogContent className="sm:max-w-[400px] max-h-[400px] lg:max-h-[600px] overflow-auto pb-10">
         <DialogHeader>
           <DialogTitle>
-            Fill the details of the coordinator
+            Fill the details of the user
           </DialogTitle>
         </DialogHeader>
         <form className='space-y-6' onSubmit={handleSubmit(handleAddCoordinator)}>
           <div className="flex flex-col items-center space-y-2">
             <div className="flex items-center space-x-4 shrink-0">
-              <img id='preview_img' className="object-cover w-16 h-16 rounded-full" src="https://vconnectglobe.s3.ap-south-1.amazonaws.com/mentorimage.jpg" alt="Mentor Image" />
+              <img id='preview_img' className="object-cover w-16 h-16 rounded-full" src="https://vconnectglobe.s3.ap-south-1.amazonaws.com/mentorimage.jpg" alt="User Image" />
               <label className="block ">
                 <span className="sr-only">Choose photo</span>
-                <input type="file" {...register("coordinatorImage", {
+                <input type="file" {...register("userImage", {
                   required: {
                     value: true,
-                    message: "Coordinator image is required"
+                    message: "user image is required"
                   }
                 })} onChange={handlePhotoUpload} className="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 " />
               </label>
             </div>
-            <div className="w-full">{errors["coordinatorImage"] && <FormError message={errors["coordinatorImage"].message} />}</div>
+            <div className="w-full">{errors["userImage"] && <FormError message={errors["userImage"].message} />}</div>
           </div>
 
           <div className='space-y-2'>
@@ -142,6 +161,12 @@ const AddCoordinator = () => {
                 required: {
                   value: true,
                   message: "Coordinator contact is required"
+                },
+                valueAsNumber: true,
+                validate: {
+                  isValid: (fieldValue) => {
+                    return Number(fieldValue) || "Enter a valid number"
+                  }
                 }
               })} />
             {errors["contact"] && <FormError message={errors["contact"].message} />}
@@ -149,7 +174,7 @@ const AddCoordinator = () => {
 
           <div className='space-y-2'>
             <Label>Department</Label>
-            <Select onValueChange={(e) => setDepartment(e)}>
+            <Select onValueChange={(e) => setDepartment(e)} required>
               <SelectTrigger>
                 <SelectValue placeholder="Choose Department" />
               </SelectTrigger>
@@ -161,24 +186,31 @@ const AddCoordinator = () => {
                 }
               </SelectContent>
             </Select>
-            {errors["branch"] && <FormError message={errors["branch"].message} />}
           </div>
 
-          {/* <div className='flex items-center space-x-2'>
-            <Switch id="allowLogin" onCheckedChange={(e)=>console.log(e)}/>
-            <Label>Block Login</Label>
-          </div> */}
+          <div className='space-y-2'>
+            <Label>Role</Label>
+            <Select onValueChange={(e) => setRole(e)} required>
+              <SelectTrigger>
+                <SelectValue placeholder="Choose role" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value={"admin"}>{"Admin"}</SelectItem>
+                <SelectItem value={"coordinator"}>{"Coordinator"}</SelectItem>
+              </SelectContent>
+            </Select>
 
+          </div>
 
           <DialogFooter>
             <Button type="submit" className="w-full">
               {isLoading ? (
                 <>
-                  Adding mentor
+                  Adding {role}
                   <Loader2 className="w-4 h-4 ml-2 animate-spin font-semibold" />
                 </>
               ) : (
-                "Add mentor"
+                "Add user"
               )}
             </Button>
           </DialogFooter>

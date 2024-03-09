@@ -5,12 +5,17 @@ import {
     handleDeleteAnnouncement,
     handleUpdateAnnouncement,
   } from '../controllers/announcement.controller.js';
+import { filesPayloadExists } from "../middleware/filePayloadExists.js";
+import { fileSizeLimiter } from "../middleware/fileSizeLimiter.js";
+import { fileExtLimiter } from "../middleware/fileExtLimiter.js";
 const router = express.Router();
 // actions can be performed by  admin, coordinator
 router
   .route("/")
-  .get(getAllAnnouncements)
-  .post(handleAddAnnouncement)
-  .delete(handleDeleteAnnouncement)
-  .patch(handleUpdateAnnouncement);
+  .get(getAllAnnouncements);
+router
+  .route("/:announcementId")
+  .patch(handleUpdateAnnouncement)
+  .delete(handleDeleteAnnouncement);
+router.route("/").post(handleAddAnnouncement);
 export default router;

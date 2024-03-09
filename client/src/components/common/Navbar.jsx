@@ -21,9 +21,9 @@ export function Navbar() {
         <div className="inline-flex items-center space-x-2 cursor-pointer">
           <Link to={"/admin"}>
             <img
-              src="/logo.png"
+              src="https://storage.googleapis.com/educonnect-testing-1/logo.png"
               alt="logo"
-              className="w-44 lg:w-52"
+              className="w-24 h-16"
             />
           </Link>
         </div>
@@ -37,7 +37,7 @@ export function Navbar() {
                 <GiHamburgerMenu size={30} className="cursor-pointer" />
               </SheetTrigger>
               <SheetContent className="w-32 pt-12">
-                <Sidebar show={true} />
+                <Sidebar show={false} />
               </SheetContent>
             </Sheet>
           </div>

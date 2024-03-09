@@ -12,6 +12,7 @@ import { Input } from "../ui/input";
 
 const TanstackTable = ({ tableData, columns }) => {
 
+  console.log("Table data : ", tableData)
   // Memorizing the data using useMemo
   const data = useMemo(() => tableData, [tableData]);
 
@@ -32,7 +33,9 @@ const TanstackTable = ({ tableData, columns }) => {
     getSortedRowModel: getSortedRowModel()
   })
 
-
+  if (tableData?.length == 0) {
+    return <p>Nothing to display</p>
+  }
   return (
     <div>
 
@@ -63,7 +66,7 @@ const TanstackTable = ({ tableData, columns }) => {
       </div>
 
       {/* Table */}
-      <Table className="overflow-auto">
+      <Table className="overflow-auto mt-5">
         {
           table.getHeaderGroups().map((headerGroup, index) => (
             <TableRow key={index}>

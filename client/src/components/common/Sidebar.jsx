@@ -3,10 +3,10 @@ import { sidebarLinks } from "@/utils/sidebarLinks";
 import { Link } from "react-router-dom";
 
 const Sidebar = ({ show, role }) => {
-  
+
   return (
-    <aside className={` flex justify-center items-center fixed w-[26] lg:block h-screen px-2 bg-white border-r border-r-blue-gray-50 ${show ? "block" : "hidden"}`}>
-      {sidebarLinks[role].map((link, index) => (
+    <aside className={` flex flex-col justify-center items-center fixed w-[26] lg:block h-screen px-2 bg-white border-r border-r-blue-gray-50 hidden lg:block ${show ? "block" : "hidden"}`}>
+      {sidebarLinks[role]?.map((link, index) => (
         <Link
           key={index}
           to={`/${role}/${link.href}`}

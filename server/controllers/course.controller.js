@@ -7,14 +7,12 @@ import Course from "../models/course.model.js";
 import mongoose from "mongoose";
 import uploadSingleFile from "../utils/uploadToCloud.js";
 const currentYear = new Date().getFullYear();
-
 export const handleAddCourse = async (req, res) => {
   //check whether all the required fields have been received or not
   const requiredFieldsValidation = checkRequiredFields(
     req.body,
     courseRequiredFields
   );
-
   //if required fields are not present
   if (!requiredFieldsValidation.status) {
     const { message } = requiredFieldsValidation;
@@ -23,14 +21,14 @@ export const handleAddCourse = async (req, res) => {
 
   //set the branch of the user so that it is easy to filter the courses based on branch
   req.body.branch = req.user.branch;
-  const fileType = req.file.originalname.split(".")[1]
+  const fileType = req.file.originalname.split(".")[1];
   //upload the image of the course certificate to cloud.
   const uploadResponse = await uploadSingleFile(
     req.file,
     "coursecertificate-images",
-    req.body.courseName.replace(/\s+/g, "")+"."+fileType
+    req.body.courseName.replace(/\s+/g, "") + "." + fileType
   );
-  
+
   if (!uploadResponse.status) {
     throw new ApiError(
       StatusCodes.INTERNAL_SERVER_ERROR,
@@ -39,14 +37,11 @@ export const handleAddCourse = async (req, res) => {
   }
   //set the image value to the response url from the upload.
   req.body.certificate = uploadResponse.url;
-
   const newCourse = await Course.create(req.body);
-
   //return all the courses of the student
   const courses = await Course.find({ student: req.user.userId }).sort({
     createdAt: 1,
   });
-
   return res
     .status(StatusCodes.OK)
     .json(
@@ -57,27 +52,20 @@ export const handleAddCourse = async (req, res) => {
       )
     );
 };
-
 export const handleUpdateCourse = async (req, res) => {
   const { courseId } = req.params;
-
   if (!courseId || !mongoose.isValidObjectId(courseId)) {
     throw new ApiError(StatusCodes.BAD_REQUEST, "Not a valid course Id");
   }
-
   const course = await Course.findById(courseId);
-
   if (!course) {
     throw new ApiError(StatusCodes.NOT_FOUND, "course details not found");
   }
-
   const updatedCourse = await Course.findByIdAndUpdate(courseId, req.body, {
     runValidators: true,
     new: true,
   });
-
   const courses = await getCoursesByRole(req.user.role);
-
   return res.status(StatusCodes.OK).json(
     new ApiResponse(
       StatusCodes.OK,
@@ -88,15 +76,12 @@ export const handleUpdateCourse = async (req, res) => {
     )
   );
 };
-
 export const getStudentCourses = async (req, res) => {
   const { studentId } = req.params;
   if (!studentId || !mongoose.isValidObjectId(studentId)) {
     throw new ApiError(StatusCodes.BAD_REQUEST, "Not a valid student Id");
   }
-
   const courses = await Course.find({ student: studentId });
-
   return res
     .status(StatusCodes.OK)
     .json(
@@ -109,13 +94,11 @@ export const getStudentCourses = async (req, res) => {
 };
 
 export const getAllCourses = async (req, res) => {
-  const courses = await getCoursesByRole(req.user.role);
+  const courses = await getCoursesByRole(req);
 
   return res
     .status(StatusCodes.OK)
-    .json(
-      new ApiResponse(StatusCodes.OK, { courses }, "courses data sent")
-    );
+    .json(new ApiResponse(StatusCodes.OK, { courses }, "courses data sent"));
 };
 
 export const handleDeleteCourse = async (req, res) => {
@@ -123,12 +106,9 @@ export const handleDeleteCourse = async (req, res) => {
   if (!mongoose.isValidObjectId(courseId)) {
     throw new ApiError(StatusCodes.BAD_REQUEST, "Not a valid course Id");
   }
-
   const response = await Course.findByIdAndDelete(courseId);
-
   //get the courses by role if role is admin then return all the data, if coordinator return only branch students data else return student courses
   let courses = await getCoursesByRole(req.user.role);
-
   return res
     .status(StatusCodes.OK)
     .json(
@@ -140,7 +120,7 @@ export const handleDeleteCourse = async (req, res) => {
     );
 };
 
-export const getCoursesByRole = async (role) => {
+export const getCoursesByRole = async (req, res) => {
   let courses = [];
   if (req.user.role === "admin") {
     courses = await Course.find({})
@@ -164,9 +144,10 @@ export const getCoursesByRole = async (role) => {
       });
   } else {
     courses = await Course.find({ student: req.user.userId }).sort({
-      createdAt: -1,
+
     });
   }
 
+  console.log("courses : ", courses);
   return courses;
 };

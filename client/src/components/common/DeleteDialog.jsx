@@ -17,9 +17,8 @@ import { useDispatch, useSelector } from "react-redux"
 
 const DeleteDialog = ({ dialogTitle, dialogDescription, data, handleDelete, type }) => {
 
-  // destructing the loading state from the store
-  const isLoading = false
-  // const { isLoading } = useSelector((state) => state[type]);
+
+  const { isLoading } = useSelector((state) => state[type]);
 
   // State to maintain the close and opening of delete dialog
   const [open, setOpen] = useState(false);
@@ -30,6 +29,7 @@ const DeleteDialog = ({ dialogTitle, dialogDescription, data, handleDelete, type
   const handleDeleteAction = async () => {
     const response = await dispatch(handleDelete({ data }));
     console.log(response)
+    setOpen(false)
   }
 
   return (

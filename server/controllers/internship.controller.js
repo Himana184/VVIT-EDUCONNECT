@@ -31,7 +31,7 @@ export const handleAddInternship = async (req, res) => {
   const newInternship = await Internship.create(req.body);
 
   //fetch the internships based on role
-  const internships = await getInternshipsByRole(req.user.role);
+  const internships = await getInternshipsByRole(req);
 
   //group the internships based on the verification status this will be helpful to filter in the frontend
   groupedInternships = groupData(internships, "verificationStatus");
@@ -70,7 +70,7 @@ export const handleUpdateInternship = async (req, res) => {
     }
   );
 
-  const internships = await getInternshipsByRole(req.user.role);
+  const internships = await getInternshipsByRole(req);
 
   const groupedInternships = groupData(internships, "verificationStatus");
 
@@ -111,7 +111,7 @@ export const handleInternshipVerification = async (req, res) => {
   await internship.save();
 
   //fetch and group the internship based on verification status
-  const internships = await getInternshipsByRole(req.user.role);
+  const internships = await getInternshipsByRole(req);
 
   const groupedInternships = groupData(internships, "verificationStatus");
 
@@ -151,10 +151,10 @@ export const getStudentInternships = async (req, res) => {
 
 // Access permission - Admin, Coordinator, Student - based on their roles data will be sent back
 export const getAllInternships = async (req, res) => {
-  const internships = await getInternshipsByRole(req.user.role);
+  const internships = await getInternshipsByRole(req);
 
   const groupedInternships = await groupData(internships, "verificationStatus");
-
+  // console.log(groupedInternships);
   return res
     .status(StatusCodes.OK)
     .json(
@@ -178,7 +178,7 @@ export const handleDeleteInternship = async (req, res) => {
   const response = await Internship.findByIdAndDelete(internshipId);
 
   //fetch and group the internships based on verification status
-  const internships = await getInternshipsByRole(req.user.role);
+  const internships = await getInternshipsByRole(req);
   const groupedInternships = groupData(internships, "verificationStatus");
   return res
     .status(StatusCodes.OK)
@@ -192,7 +192,7 @@ export const handleDeleteInternship = async (req, res) => {
 };
 
 // Helper function to fetch data by role of the user and return it
-export const getInternshipsByRole = async (role) => {
+export const getInternshipsByRole = async (req) => {
   let internships = [];
   if (req.user.role === "admin") {
     internships = await Internship.find({})

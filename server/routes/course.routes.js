@@ -15,7 +15,9 @@ import { fileExtLimiter } from "../middleware/fileExtLimiter.js";
 const router = express.Router();
 router
   .route("/")
-  .get(getAllCourses)
+  .get(getAllCourses);
+router
+  .route("/courseId")
   .patch(handleUpdateCourse)
   .delete(handleDeleteCourse);
 
