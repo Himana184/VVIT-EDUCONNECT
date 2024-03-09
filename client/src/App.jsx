@@ -4,7 +4,7 @@ import AdminLayout from "./components/layouts/AdminLayout"
 import StudentLayout from "./components/layouts/StudentLayout"
 import Students from "./pages/admin/Students"
 import Coordinators from "./pages/admin/Coordinators"
-import Jobs from "./pages/admin/Jobs"
+import Jobs from "./pages/Jobs"
 import JobDetail from "./components/jobs/JobDetail"
 import Certifications from "./pages/admin/Certifications"
 import StuCertifications from "./pages/student/StuCertifications"
@@ -13,7 +13,6 @@ import Internships from "./pages/admin/Internships"
 import StudentInternships from "./pages/student/StudentInternships"
 import LoginPage from "./pages/auth/LoginPage"
 import RegisterPage from "./pages/auth/RegisterPage"
-import StudentJobs from "./pages/student/StudentJobs"
 import StudentCourses from "./pages/student/StudentCourses"
 import StudentQueries from "./pages/student/StudentQueries"
 import Courses from "./pages/admin/Courses";
@@ -39,11 +38,12 @@ const App = () => {
         {/* all routes of student */}
         <Route path="/student" element={<StudentLayout />}>
           <Route path="announcements" element={<Announcements />}></Route>
-          <Route path="stujobs" element={<StudentJobs />}></Route>
-          <Route path="stuinternships" element={<StudentInternships />}></Route>
-          <Route path="stucourses" element={<StudentCourses />}></Route>
-          <Route path="stuqueries" element={<StudentQueries />}></Route>
-          <Route path="stucertifications" element={<StuCertifications />}></Route>
+          <Route path="jobs" element={<Jobs />}></Route>
+          <Route path="jobs/:jobId" element={<JobDetail />}></Route>
+          <Route path="internships" element={<StudentInternships />}></Route>
+          <Route path="courses" element={<StudentCourses />}></Route>
+          <Route path="queries" element={<StudentQueries />}></Route>
+          <Route path="certifications" element={<StuCertifications />}></Route>
         </Route>
 
         {/* all routes of admin */}

@@ -1,9 +1,11 @@
-import { optedStudents, optedStudentsTableColumns } from '@/data/optedStudents'
+/* eslint-disable react/prop-types */
+import { optedStudentsTableColumns } from '@/data/optedStudents'
 import TanstackTable from '../table/TanstackTable'
 
-const OptedStudents = () => {
+const OptedStudents = ({ students }) => {
+
   return (
-    <TanstackTable tableData={optedStudents} columns={optedStudentsTableColumns} />
+    students?.length == 0 ? <p>No Details to dispaly</p> : <TanstackTable tableData={students} columns={optedStudentsTableColumns} />
   )
 }
 

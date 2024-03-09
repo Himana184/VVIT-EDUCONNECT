@@ -18,7 +18,7 @@ const JobDetail = () => {
   const dispatch = useDispatch();
   const { role } = useSelector((state) => state["auth"])
   const { job, isLoading } = useSelector((state) => state["job"]);
-
+  console.log(job)
   useEffect(() => {
     const fetchJob = async () => {
       const response = await dispatch(getJobDriveDetails({ id: jobId }))
@@ -30,7 +30,6 @@ const JobDetail = () => {
     return <Loading />
   }
   return (
-
     job && <div className='space-y-6'>
       <div className='grid grid-cols-1 lg:grid-cols-2 gap-10'>
         {/* Basic overview of details */}
@@ -42,13 +41,13 @@ const JobDetail = () => {
       <AttachedFiles job={job} />
       {/* Opted students - only for admin */}
       {
-        role == "student" && <Card>
+        role == "admin" && <Card>
           <CardHeader>
             <CardTitle>Details of Opted Students</CardTitle>
             <CardDescription>Below are the students who have shown interest in the job drive</CardDescription>
           </CardHeader>
           <CardContent>
-            <OptedStudents job={job} />
+            <OptedStudents students={job?.optedStudents} />
           </CardContent>
         </Card>
       }

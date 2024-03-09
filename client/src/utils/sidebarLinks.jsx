@@ -87,7 +87,7 @@ export const sidebarLinks = {
     {
       icon: <BriefcaseIcon size={24} />,
       text: "Jobs",
-      href: "stujobs"
+      href: "jobs"
     },
     {
       icon: <PiCertificateFill size={24} />,

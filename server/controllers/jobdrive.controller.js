@@ -36,7 +36,7 @@ export const handleAddJobDrive = async (req, res) => {
   }
 
   req.body.files = uploadFilesResponse.files;
-  console.log(req.body)
+  console.log(req.body);
   //create a new job drive with given details
   const newJobDrive = await JobDrive.create(req.body);
 
@@ -59,7 +59,7 @@ export const getJobDriveDetails = async (req, res) => {
   if (!mongoose.isValidObjectId(jobId)) {
     throw new ApiError(StatusCodes.BAD_REQUEST, "Not a valid job Id");
   }
-  const jobDrive = await JobDrive.findById(jobId);
+  const jobDrive = await JobDrive.findById(jobId).populate("optedStudents");
   if (!jobDrive) {
     throw new ApiError(StatusCodes.NOT_FOUND, "Job Drive details not found");
   }
@@ -92,7 +92,7 @@ export const handleDeleteJobDrive = async (req, res) => {
   }
   const response = await JobDrive.findOneAndDelete(jobDriveId);
   //fetch all jobdrives
-  
+
   const jobDrives = await JobDrive.find({}).sort({ createdAt: -1 });
   return res
     .status(StatusCodes.OK)
@@ -101,6 +101,66 @@ export const handleDeleteJobDrive = async (req, res) => {
         StatusCodes.OK,
         { jobDrives },
         `Job drive of ${response.companyName} has been deleted`
+      )
+    );
+};
+export const handleStudentOptIn = async (req, res) => {
+  const jobId = req.params.jobId;
+  const userId = req.user.userId;
+
+  if (!mongoose.isValidObjectId(jobId)) {
+    throw new ApiError(StatusCodes.BAD_REQUEST, "Not a valid job");
+  }
+
+  const job = await JobDrive.findById(jobId);
+  if (!job) {
+    throw new ApiError(StatusCodes.BAD_REQUEST, "Job Drive details not found");
+  }
+
+  const updatedJob = await JobDrive.findByIdAndUpdate(
+    jobId,
+    { $push: { optedStudents: userId } },
+    { new: true }
+  );
+
+  return res
+    .status(StatusCodes.OK)
+    .json(
+      new ApiResponse(
+        StatusCodes.OK,
+        { job: updatedJob },
+        `Opted in for ${updatedJob.companyName} drive`
+      )
+    );
+};
+
+export const handleStudentOptOut = async (req, res) => {
+  const jobId = req.params.jobId;
+  if (!mongoose.isValidObjectId(jobId)) {
+    throw new ApiError(StatusCodes.BAD_REQUEST, "Not a valid job");
+  }
+
+  const job = await JobDrive.findById(jobId);
+  if (!job) {
+    throw new ApiError(StatusCodes.BAD_REQUEST, "Job Drive details not found");
+  }
+
+  const userId = req.user.userId;
+  const updatedJob = await JobDrive.updateOne(
+    { _id: jobId },
+    { $pull: { optedStudents: userId } },
+    { new: true }
+  );
+
+  const updatedDetails = await JobDrive.findById(jobId);
+
+  return res
+    .status(StatusCodes.OK)
+    .json(
+      new ApiResponse(
+        StatusCodes.OK,
+        { job: updatedDetails },
+        `Opted out from ${job.companyName} drive`
       )
     );
 };
