@@ -90,7 +90,7 @@ export const handleDeleteJobDrive = async (req, res) => {
   if (!mongoose.isValidObjectId(jobDriveId)) {
     throw new ApiError(StatusCodes.BAD_REQUEST, "Not a valid Job Drive Id");
   }
-  const response = await JobDrive.findOneAndDelete(jobDriveId);
+  const response = await JobDrive.findById(jobDriveId);
   //fetch all jobdrives
 
   const jobDrives = await JobDrive.find({}).sort({ createdAt: -1 });
