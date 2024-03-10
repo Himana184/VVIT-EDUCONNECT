@@ -39,7 +39,25 @@ export const getStudentDetails = createAsyncThunk(
     }
   }
 );
-
+export const deleteStudent = createAsyncThunk(
+  "/api/v1/student/:id(delete)",
+  async (payload, { rejectWithValue }) => {
+    console.log("Delete student payload : ", payload);
+    try {
+      const response = await axios.delete(`/api/v1/student/${payload.data._id}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      return response.data;
+    } catch (error) {
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
 const authSlice = createSlice({
   name: "auth",
   initialState: {
@@ -73,6 +91,19 @@ const authSlice = createSlice({
     builder.addCase(getStudentDetails.rejected, (state, { payload }) => {
       state.isLoading = false;
       toast.error(payload?.message || "something went wrong");
+    });
+        // Delete student
+    builder.addCase(deleteStudent.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(deleteStudent.fulfilled, (state, { payload }) => {
+      state.isLoading = false;
+      state.student = payload.data.student;
+      toast.success(payload.message);
+    });
+    builder.addCase(deleteStudent.rejected, (state, { payload }) => {
+      state.isLoading = false;
+      toast.error(payload.message || "something went wrong");
     });
   },
 });

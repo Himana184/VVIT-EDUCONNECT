@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
-
+import DeleteDialog from "@/components/common/DeleteDialog";
+import { deleteStudent } from "@/redux/studentSlice";
 export const studentTableColumns = [
   {
     header: "Image",
@@ -41,6 +42,27 @@ export const studentTableColumns = [
   {
     header: "Passout Year",
     accessorKey: "passoutYear",
+  },
+  {
+    header: "Delete",
+    id: "DeleteAction",
+    enableHiding: false,
+    cell: ({ row }) => {
+      const student = row.original;
+      return (
+        <div className="flex">
+          <DeleteDialog
+            type="user"
+            dialogTitle={"Are you sure to delete student details"}
+            data={student}
+            dialogDescription={
+              "This action is irreversible click delete to delete the details permanently"
+            }
+            handleDelete={deleteStudent}
+          />
+        </div>
+      );
+    },
   },
 
   // {
