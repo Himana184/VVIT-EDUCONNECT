@@ -11,9 +11,8 @@ import Announcements from "./pages/Announcements";
 import Internships from "./pages/Internships"
 import LoginPage from "./pages/auth/LoginPage"
 import RegisterPage from "./pages/auth/RegisterPage"
-import StudentCourses from "./pages/student/StudentCourses"
 import StudentQueries from "./pages/student/StudentQueries"
-import Courses from "./pages/admin/Courses";
+import Courses from "./pages/Courses";
 import Dashboard from "./pages/admin/Dashboard";
 import AddAnnouncement from "./components/announcements/AddAnnouncement";
 import EditAnnouncement from "./components/announcements/EditAnnouncement";
@@ -39,7 +38,7 @@ const App = () => {
           <Route path="jobs" element={<Jobs />}></Route>
           <Route path="jobs/:jobId" element={<JobDetail />}></Route>
           <Route path="internships" element={<Internships />}></Route>
-          <Route path="courses" element={<StudentCourses />}></Route>
+          <Route path="courses" element={<Courses />}></Route>
           <Route path="queries" element={<StudentQueries />}></Route>
           <Route path="certifications" element={<Certifications />}></Route>
         </Route>
