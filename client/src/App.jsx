@@ -17,6 +17,8 @@ import Dashboard from "./pages/admin/Dashboard";
 import AddAnnouncement from "./components/announcements/AddAnnouncement";
 import EditAnnouncement from "./components/announcements/EditAnnouncement";
 import AddJobDrive from "./components/jobs/AddJobDrive";
+import Profile from "./components/student/Profile";
+import StudentInternships from "./pages/student/StudentInternships";
 
 const App = () => {
   return (
@@ -41,12 +43,19 @@ const App = () => {
           <Route path="courses" element={<Courses />}></Route>
           <Route path="queries" element={<StudentQueries />}></Route>
           <Route path="certifications" element={<Certifications />}></Route>
+
         </Route>
 
         {/* all routes of admin */}
         <Route path="/admin" element={<AdminLayout />}>
           <Route index element={<Dashboard />} />
           <Route path="students" index element={<Students />}></Route>
+          <Route path="students/:studentId" element={<Profile />}>
+            <Route path="certifications" element={<Certifications />}></Route>
+            <Route path="internships" element={<StudentInternships />}></Route>
+            <Route path="courses" element={<Internships />}></Route>
+            <Route path="internships" element={<Internships />}></Route>
+          </Route>
           <Route path="coordinators" index element={<Coordinators />}></Route>
           <Route path="jobs" element={<Jobs />} ></Route>
           <Route path="jobs/:jobId" element={<JobDetail />}></Route>

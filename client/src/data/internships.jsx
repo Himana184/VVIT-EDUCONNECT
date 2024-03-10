@@ -23,6 +23,7 @@ export const adminInternshipTableColumns = [
   {
     header: "Student Name",
     cell: ({ row }) => {
+      console.log(row.original)
       return (
         <p>{row.original.student?.name}</p>
       )
@@ -48,22 +49,31 @@ export const adminInternshipTableColumns = [
     accessorKey: "verificationStatus",
     cell: ({ row }) => {
       const status = row.original.verificationStatus;
-      console.log(status)
-      if (status == "Pending") {
-        return (
-          <Badge className={"bg-yellow-500 hover:bg-yellow-600"}>{status}</Badge>
-        )
-      } else if (status == "Verified") {
-        return (
-          <Badge className={"bg-green-500 hover:bg-green-600"}>{status}</Badge>
-        )
-      } else {
-        return (
-          <Badge className={"bg-red-500 hover:bg-red-600"}>{status}</Badge>
-        )
-      }
-
+      console.log(row.original);
+      return (
+        <>
+          {status === "Pending" && (
+            <Badge className={"bg-yellow-500 hover:bg-yellow-600"}>{status}</Badge>
+          )}
+          {status === "Verified" && (
+            <Badge className={"bg-green-500 hover:bg-green-600"}>{status}</Badge>
+          )}
+          {status === "Rejected" && status !== "Verified" && row.original.comment && (
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <p className={"bg-red-500 hover:bg-red-600 cursor-pointer text-white w-fit p-1 inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 "}>{status}</p>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>{row.original.comment}</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          )}
+        </>
+      );
     }
+
   },
   {
     header: "Documents",
@@ -108,18 +118,19 @@ export const adminInternshipTableColumns = [
     header: "Actions",
     cell: ({ row }) => {
       const internship = row.original;
+      console.log(internship.verificationStatus)
       return (
         <div className="flex items-center space-x-3">
           {
             internship.verificationStatus == "Pending" && <>
-              <InternshipVerificationDialog type="internship" dialogTitle={"Are you sure to approve this internship ?"} data={internship} dialogDescription={"Please verify the details correctly before approving"} handleAction={handleInternshipVerification} verificationType={"Verified"} />
-              <InternshipVerificationDialog type="internship" dialogTitle={"Are you sure to approve this internship ?"} data={internship} dialogDescription={"Please verify the details correctly before approving"} handleAction={handleInternshipVerification} verificationType={"Rejected"} /></>
+              <InternshipVerificationDialog type="internship" dialogTitle={"Are you sure to Approve this internship ?"} data={internship} dialogDescription={"Please verify the details correctly before approving"} handleAction={handleInternshipVerification} verificationType={"Verified"} />
+              <InternshipVerificationDialog type="internship" dialogTitle={"Are you sure to Reject this internship ?"} data={internship} dialogDescription={"Please verify the details correctly before rejecting"} handleAction={handleInternshipVerification} verificationType={"Rejected"} /></>
           }
           {
-            internship.verificationStatus == "Verified" && <InternshipVerificationDialog type="internship" dialogTitle={"Are you sure to approve this internship ?"} data={internship} dialogDescription={"Please verify the details correctly before approving"} handleAction={handleInternshipVerification} verificationType={"Rejected"} />
+            internship.verificationStatus == "Verified" && <InternshipVerificationDialog type="internship" dialogTitle={"Are you sure to Reject this internship ?"} data={internship} dialogDescription={"Please verify the details correctly before rejecting"} handleAction={handleInternshipVerification} verificationType={"Verified"} />
           }
           {
-            internship.verificationStatus == "Rejected" && <InternshipVerificationDialog type="internship" dialogTitle={"Are you sure to approve this internship ?"} data={internship} dialogDescription={"Please verify the details correctly before approving"} handleAction={handleInternshipVerification} verificationType={"Verified"} />
+            internship.verificationStatus == "Rejected" && <InternshipVerificationDialog type="internship" dialogTitle={"Are you sure to Approve this internship ?"} data={internship} dialogDescription={"Please verify the details correctly before approving"} handleAction={handleInternshipVerification} verificationType={"Rejected"} />
 
           }
 
@@ -230,7 +241,7 @@ export const studentInternshipTableColumns = [
           {status === "Verified" && (
             <Badge className={"bg-green-500 hover:bg-green-600"}>{status}</Badge>
           )}
-          {status !== "Pending" && status !== "Verified" && row.original.comment && (
+          {status === "Rejected" && status !== "Verified" && row.original.comment && (
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>

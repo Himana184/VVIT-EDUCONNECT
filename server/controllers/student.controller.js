@@ -71,9 +71,8 @@ export const handleStudentRegisteration = async (req, res) => {
     );
 };
 
-export const getStudentDetails = async (req, res) => {
+export const handleGetStudentDetails = async (req, res) => {
   const { studentId } = req.params;
-
   //check whether the student id is valid or not
   if (!studentId || !mongoose.isValidObjectId(studentId)) {
     throw new ApiError(StatusCodes.BAD_REQUEST, "Not a valid student Id");
@@ -81,9 +80,12 @@ export const getStudentDetails = async (req, res) => {
 
   //fetch the details of the student with the given id
   const student = await Student.findById(studentId).populate([
-    "internships",
-    "courses",
-    "certifications",
+    { path: "internships", populate: [{ path: "student", select: ["name"] }] },
+    { path: "courses", populate: [{ path: "student", select: ["name"] }] },
+    {
+      path: "certifications",
+      populate: [{ path: "student", select: ["name"] }],
+    },
   ]);
 
   //if no student is found

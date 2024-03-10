@@ -21,7 +21,7 @@ const AdminLayout = () => {
       <Navbar />
       <div className="pt-20">
         <AdminSidebar />
-        <main className="p-4 lg:ml-28">
+        <main className="p-4 lg:ml-24">
           <Outlet />
         </main>
       </div>

@@ -2,7 +2,7 @@ import express from "express";
 import {
   deleteStudent,
   getAllStudents,
-  getStudentDetails,
+  handleGetStudentDetails,
   handleStudentRegisteration,
   updateStudentDetails,
 } from "../controllers/student.controller.js";
@@ -19,7 +19,7 @@ router.use(isAuthenticated)
 router.route("/all").get(getAllStudents);
 router
   .route("/:studentId")
-  .get(getStudentDetails)
+  .get(handleGetStudentDetails)
   .patch(updateStudentDetails)
   .delete(deleteStudent);
 

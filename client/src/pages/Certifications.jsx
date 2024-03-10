@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux"
 
 const Certifications = () => {
 
-  const { certifications,isLoading } = useSelector((state) => state["certification"]);
+  const { certifications, isLoading } = useSelector((state) => state["certification"]);
   const { role } = useSelector((state) => state["auth"])
   const dispatch = useDispatch();
 

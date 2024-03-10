@@ -1,46 +1,4 @@
-import DeleteDialog from "@/components/common/DeleteDialog";
-import EditStudent from "@/components/student/EditStudent";
-import { generateYears } from "@/utils/generateyears";
-
-export const studentsData = [
-  {
-    name: "John Doe",
-    rollNumber: "2023001",
-    collegeMail: "john.doe@example.com",
-    personalMail: "john.doe.personal@example.com",
-    password: "hashedPassword",
-    contact: "1234567890",
-    branch: "EEE",
-    section: "A",
-    image: "https://example.com/john_doe_image.jpg",
-    passoutYear: 2023,
-    counsellor: "counsellor_id",
-    isActive: true,
-    internshipsCount: 1,
-    coursesCount: 10,
-    certificationsCount: 1,
-    role: "student",
-  },
-  {
-    name: "Jane Smith",
-    rollNumber: "2023002",
-    collegeMail: "jane.smith@example.com",
-    personalMail: "jane.smith.personal@example.com",
-    password: "hashedPassword",
-    contact: "9876543210",
-    branch: "Electrical Engineering",
-    section: "B",
-    image: "https://example.com/jane_smith_image.jpg",
-    passoutYear: 2022,
-    counsellor: "counsellor_id",
-    isActive: true,
-    internshipsCount: 2,
-    coursesCount: 10,
-    certificationsCount: 15,
-    role: "student",
-  },
-  // More student objects...
-];
+import { Link } from "react-router-dom";
 
 export const studentTableColumns = [
   {
@@ -53,7 +11,8 @@ export const studentTableColumns = [
     header: "Name",
     accessorKey: "name",
     cell: ({ row }) => {
-      return row.original.name;
+      return <Link to={`${row.original._id}`}>
+        {row.original.name}</Link>;
     },
   },
   {
@@ -105,3 +64,26 @@ export const studentTableColumns = [
   //   },
   // }
 ];
+
+export const studentProfileSidebarItems = [
+  {
+    title: "Profile",
+    href: "",
+  },
+  {
+    title: "Internships",
+    href: "internships"
+  },
+  {
+    title: "Certifications",
+    href: "certifications"
+  },
+  {
+    title: "Courses",
+    href: "courses"
+  },
+  {
+    title: "Opted Jobs",
+    href: ""
+  },
+]

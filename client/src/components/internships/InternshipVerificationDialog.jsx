@@ -33,7 +33,7 @@ const InternshipVerificationDialog = ({ dialogTitle, dialogDescription, data, ha
     console.log(values)
     // Internship ID
     values.id = data._id;
-    values.verificationStatus = verificationType
+    values.verificationStatus = verificationType === "Rejected" ? "Verified" : "Rejected"
 
     const response = await dispatch(handleAction(values));
     console.log(response)
@@ -44,7 +44,7 @@ const InternshipVerificationDialog = ({ dialogTitle, dialogDescription, data, ha
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         {
-          verificationType == "Verified" ? <CheckBadgeIcon size={20} className="h-8 border-green-500 text-green-500 cursor-pointer">Verify</CheckBadgeIcon> :
+          verificationType == "Rejected" ? <CheckBadgeIcon size={20} className="h-8 border-green-500 text-green-500 cursor-pointer">Verify</CheckBadgeIcon> :
             <XMarkIcon size={20} className="h-8 border-red-500 text-red-500 cursor-pointer">Reject</XMarkIcon>
         }
       </DialogTrigger>
@@ -57,7 +57,7 @@ const InternshipVerificationDialog = ({ dialogTitle, dialogDescription, data, ha
         </DialogHeader>
         <form onSubmit={handleSubmit(handleVerification)} className="space-y-5">
           {
-            verificationType == "Rejected" && <div className="space-y-3">
+            verificationType == "Verified" && <div className="space-y-3">
               <Label>Rejection Comment</Label>
               <Input type="text" {...register("comment", {
                 required: {
@@ -72,8 +72,8 @@ const InternshipVerificationDialog = ({ dialogTitle, dialogDescription, data, ha
           <DialogFooter>
             <Button
               type="submit"
-              className={`${verificationType == "Verified" && "bg-green-500 border-green-400 hover:bg-green-600"}`}
-              variant={verificationType == "Verified" ? "default" : "destructive"}
+              className={`${verificationType == "Rejected" && "bg-green-500 border-green-400 hover:bg-green-600"}`}
+              variant={verificationType == "Rejected" ? "default" : "destructive"}
               disabled={isLoading}
             >
               {isLoading ? (
@@ -82,7 +82,7 @@ const InternshipVerificationDialog = ({ dialogTitle, dialogDescription, data, ha
                   <Loader2 className="w-4 h-4 ml-2 animate-spin" />
                 </>
               ) : (
-                verificationType == "Verified" ? "Verify" : "Reject"
+                verificationType == "Rejected" ? "Verify" : "Reject"
               )}
             </Button>
 
