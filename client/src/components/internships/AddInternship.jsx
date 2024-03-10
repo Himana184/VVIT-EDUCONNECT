@@ -76,7 +76,7 @@ const AddInternship = () => {
                   value: true,
                   message: "Company name is required"
                 }
-              })} onValueChange={(e) => setName(e)} />
+              })} />
             {errors["companyName"] && <FormError message={errors["companyName"].message} />}
           </div>
 

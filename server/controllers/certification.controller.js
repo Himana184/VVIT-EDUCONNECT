@@ -32,7 +32,7 @@ export const handleAddCertification = async (req, res) => {
   const uploadResponse = await uploadSingleFile(
     req.file,
     "certification-files",
-    req.body.name.replace(/\s+/g, "")+"."+fileType
+    req.body.name.replace(/\s+/g, "")+req.body.user.userId+"."+fileType
   );
   
   if (!uploadResponse.status) {

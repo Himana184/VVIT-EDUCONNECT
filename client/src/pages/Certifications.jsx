@@ -1,4 +1,5 @@
 import AddCertification from "@/components/certifications/AddCertification"
+import Loading from "@/components/common/Loading"
 import TanstackTable from "@/components/table/TanstackTable"
 import { adminCertificationTableColumns, studentCertificationTableColumns } from "@/data/certifications"
 import { getCertifications } from "@/redux/certificationSlice"
@@ -7,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux"
 
 const Certifications = () => {
 
-  const { certifications } = useSelector((state) => state["certification"]);
+  const { certifications,isLoading } = useSelector((state) => state["certification"]);
   const { role } = useSelector((state) => state["auth"])
   const dispatch = useDispatch();
 
@@ -23,8 +24,8 @@ const Certifications = () => {
         </div>
       }
       {
-        role == "student" ? <TanstackTable tableData={certifications || []} columns={studentCertificationTableColumns} />
-          : <TanstackTable tableData={certifications || []} columns={adminCertificationTableColumns} />
+        !isLoading ? role == "student" ? <TanstackTable tableData={certifications || []} columns={studentCertificationTableColumns} />
+          : <TanstackTable tableData={certifications || []} columns={adminCertificationTableColumns} /> : <Loading />
       }
     </div>
   )

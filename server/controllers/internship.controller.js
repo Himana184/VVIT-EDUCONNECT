@@ -104,7 +104,7 @@ export const handleUpdateInternship = async (req, res) => {
 // Access permission - Admin, Coordinator of that branch
 export const handleInternshipVerification = async (req, res) => {
   const { internshipId } = req.params;
-
+  console.log(internshipId)
   if (!internshipId || !mongoose.isValidObjectId(internshipId)) {
     throw new ApiError(StatusCodes.BAD_REQUEST, "Not a valid Internship id");
   }
@@ -122,9 +122,13 @@ export const handleInternshipVerification = async (req, res) => {
       `Internship already ${verificationStatus}`
     );
   }
-  //save the verification status of the internship
-  internship.verificationStatus = req.body.verificationStatus;
-  await internship.save();
+  const updatedDetails = await Internship.findByIdAndUpdate(
+    internshipId,
+    req.body,
+    {
+      runValidators: true,
+    }
+  );
 
   //fetch and group the internship based on verification status
   const internships = await getInternshipsByRole(req);

@@ -87,6 +87,30 @@ export const updateInternship = createAsyncThunk(
   }
 );
 
+export const handleInternshipVerification = createAsyncThunk(
+  "/api/v1/internship/verify/:internshipId",
+  async (payload, { rejectWithValue }) => {
+    try {
+      console.log(payload);
+      const response = await axios.patch(
+        `/api/v1/internship/verify/${payload.id}`,
+        payload,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
+
 const token = localStorage.getItem("token");
 const internshipSlice = createSlice({
   name: "internship",
@@ -109,7 +133,8 @@ const internshipSlice = createSlice({
     });
     builder.addCase(addInternship.fulfilled, (state, { payload }) => {
       state.isLoading = false;
-      state.internships = payload.data.internships;
+      state.internships = payload.data.internships.All;
+      state.allInternships = payload.data.internships.All;
       toast.success(payload.message);
     });
     builder.addCase(addInternship.rejected, (state, { payload }) => {
@@ -139,7 +164,7 @@ const internshipSlice = createSlice({
     builder.addCase(deleteInternship.fulfilled, (state, { payload }) => {
       state.isLoading = false;
       state.allInternships = payload.data.internships;
-      state.internships = payload.data.internships.all;
+      state.internships = payload.data.internships.All;
       toast.success(payload.message);
     });
     builder.addCase(deleteInternship.rejected, (state, { payload }) => {
@@ -159,6 +184,26 @@ const internshipSlice = createSlice({
       state.isLoading = false;
       toast.error(payload.message || "something went wrong");
     });
+
+    builder.addCase(handleInternshipVerification.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(
+      handleInternshipVerification.fulfilled,
+      (state, { payload }) => {
+        state.isLoading = false;
+        state.allInternships = payload.data.internships.All;
+        state.internships = payload.data.internships.All;
+        toast.success(payload.message);
+      }
+    );
+    builder.addCase(
+      handleInternshipVerification.rejected,
+      (state, { payload }) => {
+        state.isLoading = false;
+        toast.error(payload.message || "something went wrong");
+      }
+    );
   },
 });
 

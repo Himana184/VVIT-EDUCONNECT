@@ -118,8 +118,8 @@ const certificationSlice = createSlice({
     });
     builder.addCase(getCertifications.fulfilled, (state, { payload }) => {
       state.isLoading = false;
-      console.log("Payload : ", payload.data.certifications.all);
-      state.certifications = payload.data.certifications.all;
+      console.log("Payload : ", payload.data.certifications.All);
+      state.certifications = payload.data.certifications.All;
       toast.success(payload.message);
     });
     builder.addCase(getCertifications.rejected, (state, { payload }) => {

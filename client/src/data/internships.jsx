@@ -1,11 +1,10 @@
 import { Badge } from "@/components/ui/badge"
 import DeleteDialog from "@/components/common/DeleteDialog";
-//import EditCertification from "@/components/certifications/EditCertification";
-import { Switch } from "@/components/ui/switch";
-import { deleteInternship } from "@/redux/internshipSlice";
-import { useDispatch } from "react-redux";
+import { deleteInternship, handleInternshipVerification } from "@/redux/internshipSlice";
 import { formatDate } from "@/utils/formatDate";
-//import { Badge } from "@/components/ui/badge";
+import { FileCheck2, FileDown } from "lucide-react";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import InternshipVerificationDialog from "@/components/internships/InternshipVerificationDialog";
 
 
 export const adminInternshipTableColumns = [
@@ -33,14 +32,6 @@ export const adminInternshipTableColumns = [
     header: "Branch",
     accessorKey: "branch",
   },
-  // {
-  //   header: "Domain",
-  //   accessorKey: "internshipDomain",
-  //   cell: ({ row }) => {
-  //     return <p>{JSON.stringify(row.original.internshipDomain)}</p>
-  //   }
-  // },
-
   {
     header: "Duration (MM/YY)",
     accessorKey: "startDate",
@@ -48,7 +39,6 @@ export const adminInternshipTableColumns = [
       return <p className="w-max">{formatDate(row.original.startDate)} to {formatDate(row.original.endDate)}</p>
     }
   },
-
   {
     header: 'Internship Type',
     accessorKey: "internshipType",
@@ -75,17 +65,68 @@ export const adminInternshipTableColumns = [
 
     }
   },
-  // {
-  //   header: "Actions",
-  //   cell: ({ row }) => {
-  //     return (
-  //       <div className="flex items-center space-x-3">
-  //         <Badge className={"bg-green-500 text-black hover:bg-green-600 hover:text-white cursor-pointer"}>Verify</Badge>
-  //         <Badge variant={"destructive"} className={"cursor-pointer"} >Reject</Badge>
-  //       </div>
-  //     )
-  //   }
-  // },
+  {
+    header: "Documents",
+    accessorKey: "offerLetter",
+    cell: ({ row }) => {
+      return (
+        <div className="flex gap-2">
+          {
+            row.original.offerLetter && <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <a href={row.original.offerLetter} target="_blank" rel="noreferrer">
+                    <FileDown className="cursor-pointer" />
+                  </a>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Offer Letter</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          }
+          {
+            row.original.completionCertificate && <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <a href={row.original.completionCertificate} target="_blank" rel="noreferrer">
+                    <FileCheck2 className="cursor-pointer" />
+                  </a>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Completion Certificate</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          }
+
+        </div>
+      )
+    }
+  },
+  {
+    header: "Actions",
+    cell: ({ row }) => {
+      const internship = row.original;
+      return (
+        <div className="flex items-center space-x-3">
+          {
+            internship.verificationStatus == "Pending" && <>
+              <InternshipVerificationDialog type="internship" dialogTitle={"Are you sure to approve this internship ?"} data={internship} dialogDescription={"Please verify the details correctly before approving"} handleAction={handleInternshipVerification} verificationType={"Verified"} />
+              <InternshipVerificationDialog type="internship" dialogTitle={"Are you sure to approve this internship ?"} data={internship} dialogDescription={"Please verify the details correctly before approving"} handleAction={handleInternshipVerification} verificationType={"Rejected"} /></>
+          }
+          {
+            internship.verificationStatus == "Verified" && <InternshipVerificationDialog type="internship" dialogTitle={"Are you sure to approve this internship ?"} data={internship} dialogDescription={"Please verify the details correctly before approving"} handleAction={handleInternshipVerification} verificationType={"Rejected"} />
+          }
+          {
+            internship.verificationStatus == "Rejected" && <InternshipVerificationDialog type="internship" dialogTitle={"Are you sure to approve this internship ?"} data={internship} dialogDescription={"Please verify the details correctly before approving"} handleAction={handleInternshipVerification} verificationType={"Verified"} />
+
+          }
+
+        </div>
+      )
+    }
+  },
   {
     header: "Delete",
     id: "DeleteAction",
@@ -137,26 +178,74 @@ export const studentInternshipTableColumns = [
 
   },
   {
+    header: "Documents",
+    accessorKey: "offerLetter",
+    cell: ({ row }) => {
+      return (
+        <div className="flex gap-2">
+          {
+            row.original.offerLetter && <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <a href={row.original.offerLetter} target="_blank" rel="noreferrer">
+                    <FileDown className="cursor-pointer" />
+                  </a>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Offer Letter</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          }
+          {
+            row.original.completionCertificate && <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <a href={row.original.completionCertificate} target="_blank" rel="noreferrer">
+                    <FileCheck2 className="cursor-pointer" />
+                  </a>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Completion Certificate</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          }
+
+        </div>
+      )
+    }
+  },
+  {
     header: "Verification status",
     accessorKey: "verificationStatus",
     cell: ({ row }) => {
       const status = row.original.verificationStatus;
-      console.log(status)
-      if (status == "Pending") {
-        return (
-          <Badge className={"bg-yellow-500 hover:bg-yellow-600"}>{status}</Badge>
-        )
-      } else if (status == "Verified") {
-        return (
-          <Badge className={"bg-green-500 hover:bg-green-600"}>{status}</Badge>
-        )
-      } else {
-        return (
-          <Badge className={"bg-red-500 hover:bg-red-600"}>{status}</Badge>
-        )
-      }
-
+      console.log(row.original);
+      return (
+        <>
+          {status === "Pending" && (
+            <Badge className={"bg-yellow-500 hover:bg-yellow-600"}>{status}</Badge>
+          )}
+          {status === "Verified" && (
+            <Badge className={"bg-green-500 hover:bg-green-600"}>{status}</Badge>
+          )}
+          {status !== "Pending" && status !== "Verified" && row.original.comment && (
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <p className={"bg-red-500 hover:bg-red-600 cursor-pointer text-white w-fit p-1 inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 "}>{status}</p>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>{row.original.comment}</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          )}
+        </>
+      );
     }
+
   },
   // {
   //   header: "Actions",

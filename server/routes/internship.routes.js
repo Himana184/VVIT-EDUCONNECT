@@ -27,7 +27,7 @@ router
 router.route("/student/:studentId").get(getStudentInternships);
 
 //to be done by admin or coordinator
-router.route("/verify").patch(handleInternshipVerification);
+router.route("/verify/:internshipId").patch(handleInternshipVerification);
 
 router.use(filesPayloadExists);
 router.use(
