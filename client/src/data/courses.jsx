@@ -146,3 +146,57 @@ export const studentCourseTableColumns = [
   },
 
 ];
+
+export const profileCourseColumns = [
+  {
+    header: "Course Platform",
+    accessorKey: "coursePlatform"
+  },
+  {
+    header: "Course Name",
+    accessorKey: "courseName",
+  },
+  {
+    header: "Completion Status",
+    accessorKey: "completionStatus",
+    cell: ({ row }) => {
+      const completionStatus = row.original.completionStatus;
+      return (
+        <Badge variant={completionStatus == "Pending" ? "outline" : "default"}
+          className={completionStatus == "Completed" && "bg-green-500 hover:bg-green-600"}
+        >{row.original.completionStatus}</Badge>
+      )
+    }
+  },
+  {
+    header: "Course Link",
+    cell: ({ row }) => {
+      return (
+        <a href={row.original.courseLink} target="_blank" rel="noreferrer">
+          <Badge>View</Badge>
+        </a>
+      );
+    },
+  },
+  {
+    header: "Delete",
+    id: "DeleteAction",
+    enableHiding: false,
+    cell: ({ row }) => {
+      const course = row.original;
+      return (
+        <div className="flex">
+          <DeleteDialog
+            type="course"
+            dialogTitle={"Are you sure to delete course details"}
+            data={course}
+            dialogDescription={
+              "This action is irreversible click delete to delete the details permanently"
+            }
+            handleDelete={deleteCourse}
+          />
+        </div>
+      );
+    },
+  },
+];

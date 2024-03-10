@@ -78,7 +78,7 @@ const InternshipVerificationDialog = ({ dialogTitle, dialogDescription, data, ha
             >
               {isLoading ? (
                 <>
-                  Deleting
+                  {verificationType == "Rejected" ? "verifying" : "rejecting"}
                   <Loader2 className="w-4 h-4 ml-2 animate-spin" />
                 </>
               ) : (

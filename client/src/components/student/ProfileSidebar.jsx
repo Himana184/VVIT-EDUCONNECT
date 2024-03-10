@@ -5,10 +5,12 @@ import { Link, useLocation } from "react-router-dom"
 
 export function ProfileSidebar({ className, items, ...props }) {
   const { pathname } = useLocation()
+  const paths = pathname.split("/");
+  const currentPath = paths[paths.length - 1];
   return (
     <nav
       className={cn(
-        "flex space-x-2 lg:flex-col lg:space-x-0 lg:space-y-1 justify-center",
+        "flex space-x-2 lg:flex-col lg:space-x-0 lg:space-y-1 justify-center overflow-auto",
         className
       )}
       {...props}
@@ -19,7 +21,7 @@ export function ProfileSidebar({ className, items, ...props }) {
           to={item.href}
           className={cn(
             buttonVariants({ variant: "ghost" }),
-            pathname === item.href
+            currentPath === item.href
               ? "bg-muted hover:bg-muted"
               : "hover:bg-transparent hover:underline",
             "justify-center"

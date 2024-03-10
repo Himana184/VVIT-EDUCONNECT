@@ -84,6 +84,6 @@ export const studentProfileSidebarItems = [
   },
   {
     title: "Opted Jobs",
-    href: ""
+    href: "optedJobs"
   },
 ]

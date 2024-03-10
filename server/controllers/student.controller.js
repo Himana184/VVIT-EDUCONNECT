@@ -9,7 +9,7 @@ import { studentRequiredFields } from "./constants.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { ApiError } from "../utils/ApiError.js";
 import uploadSingleFile from "../utils/uploadToCloud.js";
-
+import jobDriveModel from "../models/jobDrive.model.js";
 //student registeration
 const currentYear = new Date().getFullYear();
 
@@ -84,21 +84,33 @@ export const handleGetStudentDetails = async (req, res) => {
     { path: "courses", populate: [{ path: "student", select: ["name"] }] },
     {
       path: "certifications",
-      populate: [{ path: "student", select: ["name"] }],
+      populate: [
+        {
+          path: "student",
+          select: ["name", "rollNumber", "branch", "passoutYear"],
+        },
+      ],
     },
-  ]);
+  ]).exec();
 
+  const studentOptedJobs = await jobDriveModel.find({
+    optedStudents: { $in: studentId },
+  });
+  // console.log(studentOptedJobs)
   //if no student is found
   if (!student) {
     throw new ApiError(StatusCodes.NOT_FOUND, "Student details not found");
   }
+ const studentDetails = student.toObject();
 
+ // Add the optedJobs field to the studentDetails object
+ studentDetails.optedJobs = studentOptedJobs;
   return res
     .status(StatusCodes.OK)
     .json(
       new ApiResponse(
         StatusCodes.OK,
-        { student: student },
+        { student: studentDetails },
         "student details sent"
       )
     );

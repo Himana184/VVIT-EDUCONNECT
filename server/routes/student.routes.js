@@ -15,7 +15,7 @@ import { isAuthenticated } from "../middleware/verifyJWT.js";
 const router = express.Router();
 
 router.route("/register").post(handleStudentRegisteration);
-router.use(isAuthenticated)
+router.use(isAuthenticated);
 router.route("/all").get(getAllStudents);
 router
   .route("/:studentId")

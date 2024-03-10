@@ -67,4 +67,4 @@ const jobDrive = new mongoose.Schema(
   }
 );
 
-export default mongoose.model("JobDrive", jobDrive);
+export default mongoose.models.JobDrive ||  mongoose.model("JobDrive", jobDrive);

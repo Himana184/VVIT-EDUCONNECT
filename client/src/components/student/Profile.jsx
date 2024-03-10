@@ -8,6 +8,7 @@ import { Card, CardDescription, CardHeader, CardTitle } from "../ui/card";
 import { Tabs, TabsList, TabsTrigger } from "../ui/tabs";
 import { studentProfileSidebarItems } from "@/data/students";
 import { ProfileSidebar } from "./ProfileSidebar";
+import { RefreshCcw } from "lucide-react";
 
 const Profile = () => {
   const { studentId } = useParams();
@@ -24,9 +25,9 @@ const Profile = () => {
 
 
   return (
-    <div className=" h-[80vh] flex gap-2">
+    <div className="flex flex-col lg:flex-row gap-2">
       {/* Left div with image,name and sections tab */}
-      <div className="w-[20%] space-y-4">
+      <div className="lg:w-[20%] space-y-4">
         {/* Image div */}
         <div className="flex items-center justify-center">
           <Avatar className="h-48 w-48">
@@ -44,7 +45,10 @@ const Profile = () => {
         {/* Sections Tab */}
         <ProfileSidebar items={studentProfileSidebarItems} />
       </div>
-      <div className="w-[80%]">
+      <div className="lg:w-[80%]">
+        <div className="flex justify-end cursor-pointer mb-2">
+          <RefreshCcw onClick={() => dispatch(getStudentDetails({ id: studentId }))} />
+        </div>
         <Outlet />
       </div>
     </div>

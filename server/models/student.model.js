@@ -6,7 +6,6 @@ import Internship from "./internship.model.js";
 import Course from "./course.model.js";
 import Certification from "./certification.model.js";
 import Query from "./query.model.js";
-
 //define the student model
 const studentSchema = new mongoose.Schema(
   {
