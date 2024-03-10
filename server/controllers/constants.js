@@ -28,11 +28,10 @@ export const internshipRequiredFields = [
 
 export const courseRequiredFields = [
   "courseName",
-  "student",
   "coursePlatform",
+  "courseLink",
   "completionStatus",
   "startDate",
-  "tags",
 ];
 
 export const announcementRequiredFields = [

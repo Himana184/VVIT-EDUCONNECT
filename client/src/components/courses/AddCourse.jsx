@@ -11,6 +11,7 @@ import { Loader2 } from "lucide-react";
 import { Button } from "../ui/button";
 import { useDispatch, useSelector } from 'react-redux';
 import React from "react";
+import { addCourse } from "@/redux/courseSlice";
 
 const AddCourse = () => {
   const dispatch = useDispatch();
@@ -18,12 +19,17 @@ const AddCourse = () => {
 
   const { isLoading } = useSelector((state) => state["course"]);
   const [open, setOpen] = useState(false);
+  const [completionStatus, setCompletionStatus] = useState("");
   const { register, handleSubmit, formState, clearErrors, reset } = form;
   const { errors } = formState;
 
-  // const handleAddCourse = async (data) => {
-  //   console.log(data);
-  // }
+  const handleAddCourse = async (data) => {
+    data.completionStatus = completionStatus
+    const response = await dispatch(addCourse(data));
+    if (response.meta.requestStatus == "fulfilled") {
+      setOpen(false);
+    }
+  }
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -39,10 +45,10 @@ const AddCourse = () => {
             Fill the details of the course
           </DialogTitle>
           <DialogDescription>
-            Check the details before submitting
+            Once submitted the details cannot be edited.
           </DialogDescription>
         </DialogHeader>
-        <form className='space-y-6' onSubmit={handleSubmit(() => alert("submitted"))}>
+        <form className='space-y-6' onSubmit={handleSubmit(handleAddCourse)}>
           <div className='space-y-2'>
             <Label>Course Name</Label>
             <Input
@@ -66,18 +72,31 @@ const AddCourse = () => {
                   message: "Course platform is required"
                 }
               })} />
-            {errors["coursePlatform"] && <FormError message={errors["coursePlatfrom"].message} />}
+            {errors["coursePlatform"] && <FormError message={errors["coursePlatform"].message} />}
+          </div>
+
+          <div className='space-y-2'>
+            <Label>Course Link</Label>
+            <Input
+              type="url"
+              placeholder="Ex: https://www.google.com/courses/231132" {...register("courseLink", {
+                required: {
+                  value: true,
+                  message: "Course Link is required"
+                }
+              })} />
+            {errors["courseLink"] && <FormError message={errors["courseLink"].message} />}
           </div>
 
           <div className="space-y-2">
             <Label>Completion Status</Label>
-            <Select>
+            <Select required onValueChange={(e) => setCompletionStatus(e)}>
               <SelectTrigger>
                 <SelectValue placeholder="Select Completion status"></SelectValue>
               </SelectTrigger>
               <SelectContent>
                 {
-                  ["pending", "completed"].map((item, index) => {
+                  ["Pending", "Completed"].map((item, index) => {
                     return (
                       <SelectItem value={item} key={index}>{item}</SelectItem>
                     )

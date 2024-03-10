@@ -125,6 +125,7 @@ const courseSlice = createSlice({
     });
     builder.addCase(deleteCourse.rejected, (state, { payload }) => {
       state.isLoading = false;
+      console.log(payload);
       toast.error(payload.message || "something went wrong");
     });
 

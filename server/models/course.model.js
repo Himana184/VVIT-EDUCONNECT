@@ -16,26 +16,23 @@ const courseSchema = new mongoose.Schema({
   },
   completionStatus: {
     type: String,
-    enum: ["pending", "completed"],
+    enum: ["Pending", "Completed"],
     required: [true, "completion status is required"],
+  },
+  courseLink: {
+    type: String,
+    required: [true, "Course Link is required"],
   },
   startDate: {
     type: Date,
     required: [true, "course start date is required"],
   },
-  completionDate: {
+  endDate: {
     type: Date,
-  },
+ },
   certificate: {
     type: String,
-    required: [true, "course completion certificate is required"],
   },
-  tags: [
-    {
-      type: String,
-      required: [true, "course tags are required"],
-    },
-  ],
 });
 
 export default mongoose.model("Course", courseSchema);

@@ -1,6 +1,6 @@
 import AddCourse from "@/components/courses/AddCourse";
 import TanstackTable from "@/components/table/TanstackTable";
-import { courseTableColumns } from "@/data/courses";
+import { adminCourseTableColumns, studentCourseTableColumns } from "@/data/courses";
 import { getCourses } from "@/redux/courseSlice";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -21,7 +21,7 @@ const Courses = () => {
         </div>
       }
       <div>
-        <TanstackTable tableData={courses} columns={courseTableColumns} />
+        <TanstackTable tableData={courses || []} columns={role == "student" ? studentCourseTableColumns : adminCourseTableColumns} />
       </div>
     </div>
   );

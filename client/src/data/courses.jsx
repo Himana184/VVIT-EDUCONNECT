@@ -1,181 +1,69 @@
 /* eslint-disable no-unused-vars */
 import { Badge } from "@/components/ui/badge";
-import { PencilSquareIcon } from "@heroicons/react/24/outline";
-import { DeleteIcon, Edit2Icon, Edit3Icon, Trash2Icon } from "lucide-react";
 import DeleteDialog from "@/components/common/DeleteDialog";
-import EditCertification from "@/components/certifications/EditCertification";
-import { Switch } from "@/components/ui/switch";
 import { deleteCourse } from "@/redux/courseSlice";
-import { useDispatch } from "react-redux";
 
-export const courses = [
-  {
-    courseName: "JavaScript Basics",
-    coursePlatform: "Codecademy",
-    student: {
-      _id: { $oid: "65b75a58170348a2aca61fea" },
-      name: "chandra",
-      rollNumber: "20bq1a05p2",
-      collegeMail: "20bq1a05p2@vvit.net",
-      personalMail: "gnanachandra2003@gmail.com",
-      password: "$2a$10$MhpoqrntiXMWzS/ozfFf9uKD4CCqweaV.g5wl4nY/Fee4ur1V9/kG",
-      contact: "7702663224",
-      branch: "CSE",
-      section: "D",
-      image:
-        "https://storage.googleapis.com/filesharingapplication/gnanachandra_photo.jpg",
-      passoutYear: { $numberInt: "2024" },
-      isActive: true,
-      deviceTokens: [],
-      role: "student",
-      createdAt: { $date: { $numberLong: "1706515032991" } },
-      updatedAt: { $date: { $numberLong: "1706515032991" } },
-      __v: { $numberInt: "0" },
-    },
-    startDate: "2023-05-10",
-    completionStatus: "completed",
-    tags: "Web Development, Programming, Bootcamp,Rust,Kubernetes",
-    certificate: "https://cdn.iconscout.com/icon/free/png-256/free-google-160-189824.png",
-  },
-  {
-    courseName: "Python Fundamentals",
-    coursePlatform: "Coursera",
-    student: {
-      _id: { $oid: "65b75a58170348a2aca61fea" },
-      name: "chandra",
-      rollNumber: "20bq1a05p2",
-      collegeMail: "20bq1a05p2@vvit.net",
-      personalMail: "gnanachandra2003@gmail.com",
-      password: "$2a$10$MhpoqrntiXMWzS/ozfFf9uKD4CCqweaV.g5wl4nY/Fee4ur1V9/kG",
-      contact: "7702663224",
-      branch: "CSE",
-      section: "D",
-      image:
-        "https://storage.googleapis.com/filesharingapplication/gnanachandra_photo.jpg",
-      passoutYear: { $numberInt: "2024" },
-      isActive: true,
-      deviceTokens: [],
-      role: "student",
-      createdAt: { $date: { $numberLong: "1706515032991" } },
-      updatedAt: { $date: { $numberLong: "1706515032991" } },
-      __v: { $numberInt: "0" },
-    },
-    startDate: "2023-07-20",
-    completionStatus: "completed",
-    tags: "Web Development, Programming, Bootcamp,Rust,Kubernetes",
-    certificate:
-      "https://storage.googleapis.com/filesharingapplication/aws.png",
 
-  },
-  {
-    courseName: "Data Science Specialization",
-    coursePlatform: "Udacity",
-    student: {
-      _id: { $oid: "65b75a58170348a2aca61fea" },
-      name: "chandra",
-      rollNumber: "20bq1a05p2",
-      collegeMail: "20bq1a05p2@vvit.net",
-      personalMail: "gnanachandra2003@gmail.com",
-      password: "$2a$10$MhpoqrntiXMWzS/ozfFf9uKD4CCqweaV.g5wl4nY/Fee4ur1V9/kG",
-      contact: "7702663224",
-      branch: "CSE",
-      section: "D",
-      image:
-        "https://storage.googleapis.com/filesharingapplication/gnanachandra_photo.jpg",
-      passoutYear: { $numberInt: "2024" },
-      isActive: true,
-      deviceTokens: [],
-      role: "student",
-      createdAt: { $date: { $numberLong: "1706515032991" } },
-      updatedAt: { $date: { $numberLong: "1706515032991" } },
-      __v: { $numberInt: "0" },
-    },
-    startDate: "2023-09-15",
-    completionStatus: "completed",
-    tags: "Web Development, Programming, Bootcamp,Rust,Kubernetes",
-    certificate:
-      "https://cdn.iconscout.com/icon/free/png-256/free-google-160-189824.png",
-  },
-  {
-    courseName: "Web Development Bootcamp",
-    coursePlatform: "FreeCodeCamp",
-    student: {
-      _id: { $oid: "65b75a58170348a2aca61fea" },
-      name: "chandra",
-      rollNumber: "20bq1a05p2",
-      collegeMail: "20bq1a05p2@vvit.net",
-      personalMail: "gnanachandra2003@gmail.com",
-      password: "$2a$10$MhpoqrntiXMWzS/ozfFf9uKD4CCqweaV.g5wl4nY/Fee4ur1V9/kG",
-      contact: "7702663224",
-      branch: "CSE",
-      section: "D",
-      image:
-        "https://storage.googleapis.com/filesharingapplication/gnanachandra_photo.jpg",
-      passoutYear: { $numberInt: "2024" },
-      isActive: true,
-      deviceTokens: [],
-      role: "student",
-      createdAt: { $date: { $numberLong: "1706515032991" } },
-      updatedAt: { $date: { $numberLong: "1706515032991" } },
-      __v: { $numberInt: "0" },
-    },
-    startDate: "2023-11-28",
-    completionStatus: "completed",
-    tags: "Web Development, Programming, Bootcamp,Rust,Kubernetes",
-    certificate: "https://storage.googleapis.com/filesharingapplication/react-logo.png",
-  },
-];
-
-export const courseTableColumns = [
+export const adminCourseTableColumns = [
   {
     header: "Course Platform",
-    cell: ({ row }) => {
-      return (
-        <img
-          src={
-            row.original.certificate ||
-            "https://cdn.iconscout.com/icon/free/png-256/free-google-160-189824.png"
-          }
-          alt={row.original.coursePlatform}
-          className="w-10 h-10 rounded-full"
-        />
-      );
-    },
+    accessorKey: "coursePlatform"
   },
   {
     header: "Course Name",
     accessorKey: "courseName",
   },
 
-
-  {
-    header: "Completion Status",
-    accessorKey: "completionStatus",
-  },
   {
     header: "Student name",
+    accessorKey: "studentName",
+    accessorFn: (row) => {
+      console.log(row)
+      return row.student.name
+    },
     cell: ({ row }) => {
       return <p>{row.original.student.name}</p>;
     },
   },
   {
     header: "Roll No",
+    accessorKey: "rollNo",
+    accessorFn: (row) => {
+      console.log(row)
+      return row.student.rollNumber
+    },
     cell: ({ row }) => {
       return <p>{row.original.student.rollNumber}</p>;
     },
   },
   {
-    header: "Tags",
-    accessorKey: "tags",
-    cell: ({ row }) => {
-      return <div className="flex flex-wrap">{row.original.tags}</div>;
+    header: "Branch",
+    accessorKey: "branch",
+    accessorFn: (row) => {
+      console.log(row)
+      return row.student.branch
     },
+    cell: ({ row }) => {
+      return <p>{row.original.student.branch}</p>
+    }
   },
   {
-    header: "Course Certificate",
+    header: "Completion Status",
+    accessorKey: "completionStatus",
+    cell: ({ row }) => {
+      const completionStatus = row.original.completionStatus;
+      return (
+        <Badge variant={completionStatus == "Pending" ? "outline" : "default"}
+          className={completionStatus == "Completed" && "bg-green-500 hover:bg-green-600"}
+        >{row.original.completionStatus}</Badge>
+      )
+    }
+  },
+  {
+    header: "Course Link",
     cell: ({ row }) => {
       return (
-        <a href={row.original.certificate} target="_blank" rel="noreferrer">
+        <a href={row.original.courseLink} target="_blank" rel="noreferrer">
           <Badge>View</Badge>
         </a>
       );
@@ -202,4 +90,59 @@ export const courseTableColumns = [
       );
     },
   },
+];
+
+export const studentCourseTableColumns = [
+  {
+    header: "Course Platform",
+    accessorKey: "coursePlatform"
+  },
+  {
+    header: "Course Name",
+    accessorKey: "courseName",
+  },
+  {
+    header: "Completion Status",
+    accessorKey: "completionStatus",
+    cell: ({ row }) => {
+      const completionStatus = row.original.completionStatus;
+      return (
+        <Badge variant={completionStatus == "Pending" ? "outline" : "default"}
+          className={completionStatus == "Completed" && "bg-green-500 hover:bg-green-600"}
+        >{row.original.completionStatus}</Badge>
+      )
+    }
+  },
+  {
+    header: "Course Link",
+    cell: ({ row }) => {
+      return (
+        <a href={row.original.courseLink} target="_blank" rel="noreferrer">
+          <Badge>View</Badge>
+        </a>
+      );
+    },
+  },
+  {
+    header: "Delete",
+    id: "DeleteAction",
+    enableHiding: false,
+    cell: ({ row }) => {
+      const course = row.original;
+      return (
+        <div className="flex">
+          <DeleteDialog
+            type="course"
+            dialogTitle={"Are you sure to delete course details"}
+            data={course}
+            dialogDescription={
+              "This action is irreversible click delete to delete the details permanently"
+            }
+            handleDelete={deleteCourse}
+          />
+        </div>
+      );
+    },
+  },
+
 ];
