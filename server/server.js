@@ -13,8 +13,14 @@ import announcementRouter from "./routes/announcement.routes.js";
 import queryRouter from "./routes/query.routes.js";
 import jobdriveRouter from "./routes/jobdrive.routes.js";
 import userRouter from "./routes/user.routes.js";
-import cors from "cors"
+import cors from "cors";
 import { isAuthenticated } from "./middleware/verifyJWT.js";
+import { logger } from "./utils/logger.js";
+import expressWinston from "express-winston";
+import { transports, format } from "winston";
+import { StatusCodes } from "http-status-codes";
+import { ApiResponse } from "./utils/ApiResponse.js";
+import { Logging } from "@google-cloud/logging";
 //configure the env variable from the root path of the server (filename: .env)
 dotenv.config();
 const upload = multer({
@@ -25,8 +31,40 @@ const upload = multer({
 });
 const app = express();
 app.use(express.json());
-app.use(cors())
+app.use(cors());
 //routes
+app.get("/", (req, res) => {
+  logger.info({ message: "Message  -1", mess: { test: "hello" } });
+  // logger.info("Main route requested - Modified -- 1");
+  return res
+    .status(StatusCodes.OK)
+    .json(new ApiResponse(StatusCodes.OK, {}, "VVIT - Educonnect"));
+});
+app.get("/logs", async (req, res) => {
+  try {
+    const logging = new Logging({
+      projectId: process.env.GCP_LOGS_PROJECT_ID,
+      keyFile: "logKeyfile.json",
+    });
+    const [logs] = await logging.getEntries({
+      filter: `logName="projects/${process.env.GCP_LOGS_PROJECT_ID}/logs/winston_log"`,
+      orderBy: "timestamp desc",
+      pageSize: 10, // Adjust the number of logs to fetch
+    });
+    // console.log(logs)
+    const logEntries = logs.map((log) => {
+      return {
+        timestamp: log.metadata.timestamp,
+        severity: log.metadata.severity,
+        message: log.data.message,
+      };
+    });
+    res.json(logEntries);
+  } catch (error) {
+    console.error("Error fetching logs:", error);
+    res.status(500).send("Error fetching logs");
+  }
+});
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/student", upload.single("studentImage"), studentRouter);
 app.use("/api/v1/internship", upload.single("offerLetter"), internshipRouter);
@@ -42,8 +80,8 @@ app.use(
   announcementRouter
 );
 app.use("/api/v1/query", queryRouter);
-app.use("/api/v1/jobdrive", upload.array("files",5), jobdriveRouter);
-app.use("/api/v1/user",upload.single('userImage'),userRouter);
+app.use("/api/v1/jobdrive", upload.array("files", 5), jobdriveRouter);
+app.use("/api/v1/user", upload.single("userImage"), userRouter);
 
 //custom error middleware
 app.use(errorHandler);
