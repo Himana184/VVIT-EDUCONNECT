@@ -33,38 +33,7 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 //routes
-app.get("/", (req, res) => {
-  logger.info({ message: "Message  -1", mess: { test: "hello" } });
-  // logger.info("Main route requested - Modified -- 1");
-  return res
-    .status(StatusCodes.OK)
-    .json(new ApiResponse(StatusCodes.OK, {}, "VVIT - Educonnect"));
-});
-app.get("/logs", async (req, res) => {
-  try {
-    const logging = new Logging({
-      projectId: process.env.GCP_LOGS_PROJECT_ID,
-      keyFile: "logKeyfile.json",
-    });
-    const [logs] = await logging.getEntries({
-      filter: `logName="projects/${process.env.GCP_LOGS_PROJECT_ID}/logs/winston_log"`,
-      orderBy: "timestamp desc",
-      pageSize: 10, // Adjust the number of logs to fetch
-    });
-    // console.log(logs)
-    const logEntries = logs.map((log) => {
-      return {
-        timestamp: log.metadata.timestamp,
-        severity: log.metadata.severity,
-        message: log.data.message,
-      };
-    });
-    res.json(logEntries);
-  } catch (error) {
-    console.error("Error fetching logs:", error);
-    res.status(500).send("Error fetching logs");
-  }
-});
+
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/student", upload.single("studentImage"), studentRouter);
 app.use("/api/v1/internship", upload.single("offerLetter"), internshipRouter);

@@ -5,6 +5,8 @@ import { cookieOptions } from "./constants.js";
 import Student from "../models/student.model.js";
 import User from "../models/user.model.js";
 import mongoose from "mongoose";
+import { logActivity } from "../utils/logActivity.js";
+import { logcategories } from "../utils/logcategories.js";
 
 export const handleStudentLogin = async (req, res) => {
   //check whether student email and password are received
@@ -41,12 +43,23 @@ export const handleStudentLogin = async (req, res) => {
   //after the login is successful an email must be sent to the user
   //this will be done by kafka service
 
+  //Log the activity
+  logActivity(
+    req,
+    res,
+    logcategories["auth"],
+    `Student with email ${email} has logged in`
+  );
   //return success response
   return res
     .status(StatusCodes.OK)
     .cookie("accessToken", accessToken, cookieOptions)
     .json(
-      new ApiResponse(StatusCodes.OK, { student,accessToken }, "student login successful")
+      new ApiResponse(
+        StatusCodes.OK,
+        { student, accessToken },
+        "student login successful"
+      )
     );
 };
 
@@ -75,10 +88,22 @@ export const handleUserLogin = async (req, res) => {
   //delete the password field in the user object
   delete user.password;
 
+  logActivity(
+    req,
+    res,
+    logcategories["auth"],
+    `User with email ${email} has logged in`
+  );
   return res
     .status(StatusCodes.OK)
     .cookie("accessToken", accessToken, cookieOptions)
-    .json(new ApiResponse(StatusCodes.OK,{user,accessToken},"User login successful"));
+    .json(
+      new ApiResponse(
+        StatusCodes.OK,
+        { user, accessToken },
+        "User login successful"
+      )
+    );
 };
 
 export const studentPasswordUpdate = async (req, res) => {
@@ -113,6 +138,13 @@ export const studentPasswordUpdate = async (req, res) => {
   // We have a pre save method attached to user schema which automatically hashes the password whenever added/modified
   student.password = newPassword;
   await student.save({ validateBeforeSave: false });
+
+  logActivity(
+    req,
+    res,
+    logcategories["auth"],
+    `Student with email ${student.email} has updated the password`
+  );
 
   return res.status(200).json({ message: "password changed successfully" });
 };
@@ -149,6 +181,11 @@ export const userPasswordUpdate = async (req, res) => {
   // We have a pre save method attached to user schema which automatically hashes the password whenever added/modified
   user.password = newPassword;
   await user.save({ validateBeforeSave: false });
-
+  logActivity(
+    req,
+    res,
+    logcategories["auth"],
+    `Student with email ${user.email} has updated the password`
+  );
   return res.status(200).json({ message: "password changed successfully" });
 };
