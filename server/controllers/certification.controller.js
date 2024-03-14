@@ -7,6 +7,8 @@ import Certification from "../models/certification.model.js";
 import mongoose from "mongoose";
 import { groupData } from "../utils/groupdata.js";
 import uploadSingleFile from "../utils/uploadToCloud.js";
+import { logActivity } from "../utils/logActivity.js";
+import { logcategories } from "../utils/logcategories.js";
 const currentYear = new Date().getFullYear();
 
 // TODO: Integration with google cloud
@@ -27,14 +29,14 @@ export const handleAddCertification = async (req, res) => {
 
   //set the branch of the user so that it is easy to filter the certifications based on branch
   req.body.branch = req.user.branch;
-  const fileType = req.file.originalname.split(".")[1]
+  const fileType = req.file.originalname.split(".")[1];
   //upload the image of the student to cloud.
   const uploadResponse = await uploadSingleFile(
     req.file,
     "certification-files",
-    req.body.name.replace(/\s+/g, "")+req.user.userId+"."+fileType
+    req.body.name.replace(/\s+/g, "") + req.user.userId + "." + fileType
   );
-  
+
   if (!uploadResponse.status) {
     throw new ApiError(
       StatusCodes.INTERNAL_SERVER_ERROR,
@@ -48,6 +50,13 @@ export const handleAddCertification = async (req, res) => {
 
   //return all the certifications of the student
   const certifications = await getCertificationsByRole(req);
+
+  logActivity(
+    req,
+    res,
+    logcategories["certification"],
+    `Student with id ${req.user.userId} has added the certification with name ${req.body.name}`
+  );
 
   return res
     .status(StatusCodes.OK)
@@ -88,6 +97,12 @@ export const handleUpdateCertification = async (req, res) => {
 
   const certifications = await getCertificationsByRole(req);
 
+  logActivity(
+    req,
+    res,
+    logcategories["certification"],
+    `Student with id ${req.user.userId} has updated the certification with name ${updatedCertification.name}`
+  );
   return res.status(StatusCodes.OK).json(
     new ApiResponse(
       StatusCodes.OK,
@@ -121,9 +136,16 @@ export const getStudentCertifications = async (req, res) => {
 
 // access permission - Admin, coordinator - will group the certification by issuer name
 export const getAllCertifications = async (req, res) => {
-  
   const certifications = await getCertificationsByRole(req);
   const groupedCertifications = groupData(certifications, "issuer");
+
+  logActivity(
+    req,
+    res,
+    logcategories["certification"],
+    `User with id ${req.user.userId} has accessed all certifications`
+  );
+
   return res
     .status(StatusCodes.OK)
     .json(
@@ -149,6 +171,13 @@ export const handleDeleteCertification = async (req, res) => {
 
   const groupedCertifications = groupData(certifications, "issuer");
 
+  logActivity(
+    req,
+    res,
+    logcategories["certification"],
+    `Student with id ${req.user.userId} has deleted the certification with name ${response?.name}`
+  );
+
   return res
     .status(StatusCodes.OK)
     .json(
@@ -159,7 +188,6 @@ export const handleDeleteCertification = async (req, res) => {
       )
     );
 };
-
 
 // helper function to get certifications by role
 export const getCertificationsByRole = async (req) => {
@@ -187,9 +215,11 @@ export const getCertificationsByRole = async (req) => {
   } else {
     certifications = await Certification.find({
       student: req.user.userId,
-    }).sort({
-      createdAt: -1,
-    }).populate("student");
+    })
+      .sort({
+        createdAt: -1,
+      })
+      .populate("student");
   }
 
   return certifications;
