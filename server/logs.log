@@ -271,3 +271,120 @@
     },
     "timestamp": "2024-03-14T06:30:53.822Z"
 }
+
+{
+    "activity": {
+        "message": "User with id 65d379c25dd2f208e35b04ce has accessed all certifications"
+    },
+    "level": "info",
+    "message": "/ endpoint hit",
+    "request": {
+        "category": "certification",
+        "method": "GET",
+        "remoteIp": "::1",
+        "status": 200,
+        "url": "/"
+    },
+    "timestamp": "2024-03-14T06:40:02.699Z"
+}
+
+{
+    "activity": {
+        "message": "An announcement with title Exam has been added by the user "
+    },
+    "level": "info",
+    "message": "/ endpoint hit",
+    "request": {
+        "category": "announcement",
+        "method": "POST",
+        "remoteIp": "::1",
+        "status": 200,
+        "url": "/"
+    },
+    "timestamp": "2024-03-14T06:47:11.757Z"
+}
+
+{
+    "activity": {
+        "message": "An announcement with title exam has been added by the user 65da085dbec9fbeacdbe2572"
+    },
+    "level": "info",
+    "message": "/ endpoint hit",
+    "request": {
+        "category": "announcement",
+        "method": "POST",
+        "remoteIp": "::1",
+        "status": 200,
+        "url": "/"
+    },
+    "timestamp": "2024-03-14T06:53:31.220Z"
+}
+
+{
+    "activity": {
+        "message": "User with id 65da085dbec9fbeacdbe2572 has deleted the announcement with title exam"
+    },
+    "level": "info",
+    "message": "/65f29eeb45a2b09bda548717 endpoint hit",
+    "request": {
+        "category": "announcement",
+        "method": "DELETE",
+        "remoteIp": "::1",
+        "status": 200,
+        "url": "/65f29eeb45a2b09bda548717"
+    },
+    "timestamp": "2024-03-14T06:53:44.223Z"
+}
+
+{
+    "activity": {
+        "message": "An announcement with title hi has been added by the user 65da085dbec9fbeacdbe2572"
+    },
+    "level": "info",
+    "message": "/ endpoint hit",
+    "request": {
+        "category": "announcement",
+        "method": "POST",
+        "remoteIp": "::1",
+        "status": 200,
+        "url": "/"
+    },
+    "timestamp": "2024-03-14T06:54:11.567Z"
+}
+
+{
+    "activity": {
+        "message": "User with id 65da085dbec9fbeacdbe2572 has accessed the announcements"
+    },
+    "level": "info",
+    "message": "/65f29f1345a2b09bda54871d endpoint hit",
+    "request": {
+        "category": "announcement",
+        "method": "PATCH",
+        "remoteIp": "::1",
+        "status": 200,
+        "url": "/65f29f1345a2b09bda54871d"
+    },
+    "timestamp": "2024-03-14T06:55:01.061Z"
+}
+
+{
+    "activity": {
+        "message": "User with id 65da085dbec9fbeacdbe2572 has accessed the announcements"
+    },
+    "level": "info",
+    "message": "/65f29f1345a2b09bda54871d endpoint hit",
+    "request": {
+        "category": "announcement",
+        "method": "PATCH",
+        "remoteIp": "::1",
+        "status": 200,
+        "url": "/65f29f1345a2b09bda54871d"
+    },
+    "timestamp": "2024-03-14T06:55:26.339Z"
+}
+{"activity":{"message":"User with id 65da085dbec9fbeacdbe2572 has accessed all certifications"},"level":"info","message":"/ endpoint hit","request":{"category":"certification","method":"GET","remoteIp":"::1","status":200,"url":"/"},"timestamp":"2024-03-14T08:00:49.754Z"}
+{"activity":{"message":"An announcement with title hello has been added by the user 65da085dbec9fbeacdbe2572"},"level":"info","message":"/ endpoint hit","request":{"category":"announcement","method":"POST","remoteIp":"::1","status":200,"url":"/"},"timestamp":"2024-03-14T08:01:19.127Z"}
+{"activity":{"message":"User with id 65da085dbec9fbeacdbe2572 has accessed the announcements"},"level":"info","message":"/65f29f1345a2b09bda54871d endpoint hit","request":{"category":"announcement","method":"PATCH","remoteIp":"::1","status":200,"url":"/65f29f1345a2b09bda54871d"},"timestamp":"2024-03-14T08:01:40.550Z"}
+{"activity":{"message":"User with id 65da085dbec9fbeacdbe2572 has deleted the announcement with title hi"},"level":"info","message":"/65f29f1345a2b09bda54871d endpoint hit","request":{"category":"announcement","method":"DELETE","remoteIp":"::1","status":200,"url":"/65f29f1345a2b09bda54871d"},"timestamp":"2024-03-14T08:01:45.851Z"}
+{"activity":{"message":"User with email john@gmail.com has logged in"},"level":"info","message":"/user/login endpoint hit","request":{"category":"authentication","method":"POST","remoteIp":"::1","status":200,"url":"/user/login"},"timestamp":"2024-03-14T08:02:56.147Z"}

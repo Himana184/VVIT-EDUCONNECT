@@ -59,6 +59,12 @@ export const handleStudentRegisteration = async (req, res) => {
 
   //create a new student
   const newStudent = await Student.create(req.body);
+  logActivity(
+    req,
+    res,
+    logcategories["student"],
+    `Student with email ${collegeMail} has registered`
+  );
 
   return res
     .status(StatusCodes.CREATED)
@@ -150,6 +156,12 @@ export const updateStudentDetails = async (req, res) => {
     }
   );
   const students = await getStudentsByRole(req);
+  logActivity(
+    req,
+    res,
+    logcategories["student"],
+    `Student with email ${updateStudentDetails.collegeMail} details are updated`
+  );
 
   return res
     .status(StatusCodes.OK)
@@ -186,6 +198,12 @@ export const deleteStudent = async (req, res) => {
     Course.deleteMany({ student: studentId }),
     Certification.deleteMany({ student: studentId }),
   ]);
+  logActivity(
+    req,
+    res,
+    logcategories["student"],
+    `User with id ${req.user.userId} has deleted the student with name ${response?.name}`
+  );
 
   return res
     .status(StatusCodes.OK)
