@@ -1,15 +1,29 @@
 {
-  "activity": {
-    "message": "Student with email 20bq1a05p2@vvit.net has logged in"
-  },
+  "activity": { "message": "User with email user1@gmail.com has logged in" },
   "level": "info",
-  "message": "/student/login endpoint hit",
+  "message": "/user/login endpoint hit",
   "request": {
-    "category": "authenticationLog",
+    "category": "authentication",
     "method": "POST",
     "remoteIp": "::1",
     "status": 200,
-    "url": "/student/login"
+    "url": "/user/login"
   },
-  "timestamp": "2024-03-14T00:05:40.679Z"
+  "timestamp": "2024-03-14T00:28:53.704Z"
+}
+
+{
+  "activity": {
+    "message": "User with id 65da085dbec9fbeacdbe2572 has accessed all the courses"
+  },
+  "level": "info",
+  "message": "/ endpoint hit",
+  "request": {
+    "category": "course",
+    "method": "GET",
+    "remoteIp": "::1",
+    "status": 200,
+    "url": "/"
+  },
+  "timestamp": "2024-03-14T00:29:33.163Z"
 }

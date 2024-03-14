@@ -1,0 +1,32 @@
+
+{
+    "activity": {
+        "message": "User with id 65da085dbec9fbeacdbe2572 has accessed all the courses"
+    },
+    "level": "info",
+    "message": "/ endpoint hit",
+    "request": {
+        "category": "course",
+        "method": "GET",
+        "remoteIp": "::1",
+        "status": 200,
+        "url": "/"
+    },
+    "timestamp": "2024-03-14T00:36:11.856Z"
+}
+
+{
+    "activity": {
+        "message": "User with id 65da085dbec9fbeacdbe2572 has accessed all the courses"
+    },
+    "level": "info",
+    "message": "/ endpoint hit",
+    "request": {
+        "category": "course",
+        "method": "GET",
+        "remoteIp": "::1",
+        "status": 200,
+        "url": "/"
+    },
+    "timestamp": "2024-03-14T00:36:15.252Z"
+}

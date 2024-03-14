@@ -12,7 +12,7 @@ export const logger = createLogger({
   transports: [
     new transports.File({
       level: "info",
-      filename: "logs.json",
+      filename: "logs.log",
     }),
     loggingWinston,
   ],

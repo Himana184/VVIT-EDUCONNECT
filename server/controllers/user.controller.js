@@ -95,7 +95,7 @@ export const handleUpdateLoginAccess = async (req, res) => {
 };
 
 export const handleDeleteUser = async (req, res) => {
-  const {userId} = req.params;
+  const { userId } = req.params;
 
   if (!mongoose.isValidObjectId(userId)) {
     throw new ApiError(StatusCodes.BAD_REQUEST, "Not a valid user id");
@@ -122,7 +122,7 @@ export const handleDeleteUser = async (req, res) => {
 };
 
 export const handleUpdateUser = async (req, res) => {
-  const {userId} = req.params;
+  const { userId } = req.params;
 
   if (!mongoose.isValidObjectId(userId)) {
     throw new ApiError(StatusCodes.BAD_REQUEST, "Not a valid user Id");
