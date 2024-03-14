@@ -30,3 +30,117 @@
     },
     "timestamp": "2024-03-14T00:36:15.252Z"
 }
+{"activity":s{"message":"Student with email 20bq1a05l1@vvit.net has logged in"},"level":"info","message":"/student/login endpoint hit","request":{"category":"authentication","method":"POST","remoteIp":"::1","status":200,"url":"/student/login"},"timestamp":"2024-03-14T05:01:50.164Z"}
+
+{
+    "activity": {
+        "message": "Student with email 20bq1a05l1@vvit.net has logged in"
+    },
+    "level": "info",
+    "message": "/student/login endpoint hit",
+    "request": {
+        "category": "authentication",
+        "method": "POST",
+        "remoteIp": "::1",
+        "status": 200,
+        "url": "/student/login"
+    },
+    "timestamp": "2024-03-14T05:28:20.231Z"
+}
+
+{
+    "activity": {
+        "message": "User with id 65d379c25dd2f208e35b04ce has accessed all certifications"
+    },
+    "level": "info",
+    "message": "/ endpoint hit",
+    "request": {
+        "category": "certification",
+        "method": "GET",
+        "remoteIp": "::1",
+        "status": 200,
+        "url": "/"
+    },
+    "timestamp": "2024-03-14T05:28:25.318Z"
+}
+
+{
+    "activity": {
+        "message": "Student with id 65d379c25dd2f208e35b04ce has added the internship from Accenture"
+    },
+    "level": "info",
+    "message": "/ endpoint hit",
+    "request": {
+        "category": "internship",
+        "method": "POST",
+        "remoteIp": "::1",
+        "status": 200,
+        "url": "/"
+    },
+    "timestamp": "2024-03-14T05:29:16.756Z"
+}
+
+{
+    "activity": {
+        "message": "User with email user1@gmail.com has logged in"
+    },
+    "level": "info",
+    "message": "/user/login endpoint hit",
+    "request": {
+        "category": "authentication",
+        "method": "POST",
+        "remoteIp": "::1",
+        "status": 200,
+        "url": "/user/login"
+    },
+    "timestamp": "2024-03-14T05:31:06.547Z"
+}
+
+{
+    "activity": {
+        "message": "Admin updated verification status of intenrship undefined for Student with id 65da085dbec9fbeacdbe2572 "
+    },
+    "level": "info",
+    "message": "/verify/65f28b2cf2482ead04b3647d endpoint hit",
+    "request": {
+        "category": "certification",
+        "method": "PATCH",
+        "remoteIp": "::1",
+        "status": 200,
+        "url": "/verify/65f28b2cf2482ead04b3647d"
+    },
+    "timestamp": "2024-03-14T05:31:20.933Z"
+}
+
+{
+    "activity": {
+        "message": "User with id 65d379c25dd2f208e35b04ce has accessed all certifications"
+    },
+    "level": "info",
+    "message": "/ endpoint hit",
+    "request": {
+        "category": "certification",
+        "method": "GET",
+        "remoteIp": "::1",
+        "status": 200,
+        "url": "/"
+    },
+    "timestamp": "2024-03-14T05:32:51.379Z"
+}
+
+{
+    "activity": {
+        "message": "Admin updated verification status of intenrship cts for Student with id 65da085dbec9fbeacdbe2572 "
+    },
+    "level": "info",
+    "message": "/verify/65ed400f89e0a1a18ef33bd6 endpoint hit",
+    "request": {
+        "category": "certification",
+        "method": "PATCH",
+        "remoteIp": "::1",
+        "status": 200,
+        "url": "/verify/65ed400f89e0a1a18ef33bd6"
+    },
+    "timestamp": "2024-03-14T05:33:05.752Z"
+}
+{"activity":{"message":"User with id 65d379c25dd2f208e35b04ce has accessed all certifications"},"level":"info","message":"/ endpoint hit","request":{"category":"certification","method":"GET","remoteIp":"::1","status":200,"url":"/"},"timestamp":"2024-03-14T05:33:38.230Z"}

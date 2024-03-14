@@ -7,6 +7,8 @@ import Internship from "../models/internship.model.js";
 import mongoose from "mongoose";
 import { groupData } from "../utils/groupdata.js";
 import uploadSingleFile from "../utils/uploadToCloud.js";
+import { logActivity } from "../utils/logActivity.js";
+import { logcategories } from "../utils/logcategories.js";
 const currentYear = new Date().getFullYear();
 
 // TODO: Google Cloud Integration for storing internship offer and completion certificaton
@@ -51,6 +53,12 @@ export const handleAddInternship = async (req, res) => {
 
   //group the internships based on the verification status this will be helpful to filter in the frontend
   const groupedInternships = groupData(internships, "verificationStatus");
+  logActivity(
+    req,
+    res,
+    logcategories["internship"],
+    `Student with id ${req.user.userId} has added the internship from ${req.body.companyName}`
+  );
 
   return res
     .status(StatusCodes.OK)
@@ -89,6 +97,12 @@ export const handleUpdateInternship = async (req, res) => {
   const internships = await getInternshipsByRole(req);
 
   const groupedInternships = groupData(internships, "verificationStatus");
+  logActivity(
+    req,
+    res,
+    logcategories["internship"],
+    `Student with id ${req.user.userId} has updated the internship from ${updatedInternship.companyName}`
+  );
 
   return res.status(StatusCodes.OK).json(
     new ApiResponse(
@@ -135,6 +149,12 @@ export const handleInternshipVerification = async (req, res) => {
   const internships = await getInternshipsByRole(req);
 
   const groupedInternships = groupData(internships, "verificationStatus");
+  logActivity(
+    req,
+    res,
+    logcategories["certification"],
+    `Admin updated verification status of intenrship ${updatedDetails.companyName} for Student with id ${req.user.userId} `
+  );
 
   return res
     .status(StatusCodes.OK)
@@ -201,6 +221,12 @@ export const handleDeleteInternship = async (req, res) => {
   //fetch and group the internships based on verification status
   const internships = await getInternshipsByRole(req);
   const groupedInternships = groupData(internships, "verificationStatus");
+  logActivity(
+    req,
+    res,
+    logcategories["internship"],
+    `Student with id ${req.user.userId} has deleted the internship with name ${response?.companyName}`
+  );
   return res
     .status(StatusCodes.OK)
     .json(
