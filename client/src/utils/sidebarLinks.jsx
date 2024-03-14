@@ -69,7 +69,17 @@ export const sidebarLinks = {
       icon: <MdOutlineHelp size={24} />,
       text: "Queries",
       href: "queries"
-    }
+    },
+    {
+      icon: <PiStack size={24} />,
+      text: "Courses",
+      href: "courses"
+    },
+    {
+      icon: <FolderKanban size={24} />,
+      text: "Internships",
+      href: "internships"
+    },
   ],
   teacher: [
     {

@@ -31,10 +31,10 @@ export const adminCertificationTableColumns = [
   },
   {
     header: "Branch",
-    accessorKey: "branch",
+    //accessorKey: "branch",
     cell: ({ row }) => {
       return (
-        <p>{row.original.student.branch || "Branch"}</p>
+        <p>CSE</p>
       )
     }
   },

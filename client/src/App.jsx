@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 import { Toaster } from 'react-hot-toast';
 import AdminLayout from "./components/layouts/AdminLayout"
 import StudentLayout from "./components/layouts/StudentLayout"
+import CoordinatorLayout from "./components/layouts/CoordinatorLayout";
 import Students from "./pages/admin/Students"
 import Coordinators from "./pages/admin/Coordinators"
 import Jobs from "./pages/Jobs"
@@ -76,7 +77,29 @@ const App = () => {
         </Route>
 
         {/* all routes of coordinator */}
-        <Route path="/coordinator"></Route>
+        <Route path="/coordinator" element={<CoordinatorLayout />}>
+        <Route path="students" index element={<Students />}></Route>
+          <Route path="students/:studentId" element={<Profile />}>
+            <Route index element={<StudentDetails />}></Route>
+            <Route path="certifications" element={<StudentCertifications />}></Route>
+            <Route path="internships" element={<StudentInternships />}></Route>
+            <Route path="courses" element={<StudentCourses />}></Route>
+            <Route path="internships" element={<Internships />}></Route>
+            <Route path="optedJobs" element={<StudentOptedJobs />}></Route>
+          </Route>
+          <Route path="coordinators" index element={<Coordinators />}></Route>
+          <Route path="jobs" element={<Jobs />} ></Route>
+          <Route path="jobs/:jobId" element={<JobDetail />}></Route>
+          <Route path="certifications" element={<Certifications />}></Route>
+          <Route path="detail" element={<JobDetail />} />
+          <Route path="announcements" element={<Announcements />}></Route>
+          <Route path="internships" element={<Internships />}></Route>
+          <Route path="courses" element={<Courses />}></Route>
+          <Route path="addAnnouncement" element={<AddAnnouncement />} />
+          <Route path="editAnnouncement" element={<EditAnnouncement />} />
+          <Route path="addJobDrive" element={<AddJobDrive />} />
+
+        </Route>
 
         {/* all routes of faculty */}
         <Route path="/faculty"></Route>

@@ -235,12 +235,11 @@ export const getStudentsByRole = async (req) => {
       .sort({
         createdAt: -1,
       })
-      .populate({
-        path: "student",
-        match: {
-          passoutYear: { $gte: currentYear },
-        },
-      });
+      .populate([
+        { path: "internships" },
+        { path: "certifications" },
+        { path: "courses" },
+      ]);
   } else {
     students = await Student.find({ student: req.user.userId }).sort({
       createdAt: -1,
