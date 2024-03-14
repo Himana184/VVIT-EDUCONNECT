@@ -143,4 +143,131 @@
     },
     "timestamp": "2024-03-14T05:33:05.752Z"
 }
-{"activity":{"message":"User with id 65d379c25dd2f208e35b04ce has accessed all certifications"},"level":"info","message":"/ endpoint hit","request":{"category":"certification","method":"GET","remoteIp":"::1","status":200,"url":"/"},"timestamp":"2024-03-14T05:33:38.230Z"}
+
+{
+    "activity": {
+        "message": "User with id 65d379c25dd2f208e35b04ce has accessed all certifications"
+    },
+    "level": "info",
+    "message": "/ endpoint hit",
+    "request": {
+        "category": "certification",
+        "method": "GET",
+        "remoteIp": "::1",
+        "status": 200,
+        "url": "/"
+    },
+    "timestamp": "2024-03-14T05:33:38.230Z"
+}
+
+{
+    "activity": {
+        "message": "User with id 65d379c25dd2f208e35b04ce has accessed all certifications"
+    },
+    "level": "info",
+    "message": "/ endpoint hit",
+    "request": {
+        "category": "certification",
+        "method": "GET",
+        "remoteIp": "::1",
+        "status": 200,
+        "url": "/"
+    },
+    "timestamp": "2024-03-14T06:13:38.211Z"
+}
+
+{
+    "activity": {
+        "message": "User with id 65d379c25dd2f208e35b04ce has accessed all certifications"
+    },
+    "level": "info",
+    "message": "/ endpoint hit",
+    "request": {
+        "category": "certification",
+        "method": "GET",
+        "remoteIp": "::1",
+        "status": 200,
+        "url": "/"
+    },
+    "timestamp": "2024-03-14T06:16:30.487Z"
+}
+
+{
+    "activity": {
+        "message": "User with id 65d379c25dd2f208e35b04ce has accessed all certifications"
+    },
+    "level": "info",
+    "message": "/ endpoint hit",
+    "request": {
+        "category": "certification",
+        "method": "GET",
+        "remoteIp": "::1",
+        "status": 200,
+        "url": "/"
+    },
+    "timestamp": "2024-03-14T06:18:11.454Z"
+}
+
+{
+    "activity": {
+        "message": "Student with id 65d379c25dd2f208e35b04ce has opted out from the drive of  undefined"
+    },
+    "level": "info",
+    "message": "/optOut/65f29697be95820593819ca9 endpoint hit",
+    "request": {
+        "category": "jobdrive",
+        "method": "PATCH",
+        "remoteIp": "::1",
+        "status": 200,
+        "url": "/optOut/65f29697be95820593819ca9"
+    },
+    "timestamp": "2024-03-14T06:27:34.674Z"
+}
+
+{
+    "activity": {
+        "message": "Student with id 65d379c25dd2f208e35b04ce has opted to the drive of  Wipro"
+    },
+    "level": "info",
+    "message": "/optIn/65f29697be95820593819ca9 endpoint hit",
+    "request": {
+        "category": "jobdrive",
+        "method": "PATCH",
+        "remoteIp": "::1",
+        "status": 200,
+        "url": "/optIn/65f29697be95820593819ca9"
+    },
+    "timestamp": "2024-03-14T06:28:23.629Z"
+}
+
+{
+    "activity": {
+        "message": "user with id 65da085dbec9fbeacdbe2572 has deleted the drive of Wipro"
+    },
+    "level": "info",
+    "message": "/65ec75147a0a1c2735b9567c endpoint hit",
+    "request": {
+        "category": "jobdrive",
+        "method": "DELETE",
+        "remoteIp": "::1",
+        "status": 200,
+        "url": "/65ec75147a0a1c2735b9567c"
+    },
+    "timestamp": "2024-03-14T06:28:57.460Z"
+}
+
+{
+    "activity": {
+        "message": "User with id 65da085dbec9fbeacdbe2572 has added the jobdrive from Tech Mahindra"
+    },
+    "level": "info",
+    "message": "/ endpoint hit",
+    "request": {
+        "category": "jobdrive",
+        "method": "POST",
+        "remoteIp": "::1",
+        "status": 200,
+        "url": "/"
+    },
+    "timestamp": "2024-03-14T06:30:53.822Z"
+}

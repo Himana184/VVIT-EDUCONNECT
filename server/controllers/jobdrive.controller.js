@@ -3,10 +3,12 @@ import { ApiError } from "../utils/ApiError.js";
 import { checkRequiredFields } from "../utils/requiredFields.js";
 import { jobDriveRequiredFields } from "./constants.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
-import JobDrive from "../models/jobdrive.model.js";
+import JobDrive from "../models/jobDrive.model.js";
 import mongoose from "mongoose";
 import { uploadMultipleFiles } from "../utils/uploadToCloud.js";
-import jobdriveModel from "../models/jobdrive.model.js";
+import { logActivity } from "../utils/logActivity.js";
+import { logcategories } from "../utils/logcategories.js";
+//import jobdriveModel from "../models/jobdrive.model.js";
 //const currentYear = new Date().getFullYear();
 
 export const handleAddJobDrive = async (req, res) => {
@@ -42,6 +44,12 @@ export const handleAddJobDrive = async (req, res) => {
 
   //fetch all jobdrives
   const jobDrives = await JobDrive.find({}).sort({ createdAt: -1 });
+  logActivity(
+    req,
+    res,
+    logcategories["jobdrive"],
+    `User with id ${req.user.userId} has added the jobdrive from ${req.body.companyName}`
+  );
 
   return res
     .status(StatusCodes.OK)
@@ -94,6 +102,12 @@ export const handleDeleteJobDrive = async (req, res) => {
   //fetch all jobdrives
 
   const jobDrives = await JobDrive.find({}).sort({ createdAt: -1 });
+  logActivity(
+    req,
+    res,
+    logcategories["jobdrive"],
+    `user with id ${req.user.userId} has deleted the drive of ${response?.companyName}`
+  );
   return res
     .status(StatusCodes.OK)
     .json(
@@ -121,6 +135,12 @@ export const handleStudentOptIn = async (req, res) => {
     jobId,
     { $push: { optedStudents: userId } },
     { new: true }
+  );
+  logActivity(
+    req,
+    res,
+    logcategories["jobdrive"],
+    `Student with id ${req.user.userId} has opted to the drive of  ${updatedJob.companyName}`
   );
 
   return res
@@ -153,6 +173,12 @@ export const handleStudentOptOut = async (req, res) => {
   );
 
   const updatedDetails = await JobDrive.findById(jobId);
+  logActivity(
+    req,
+    res,
+    logcategories["jobdrive"],
+    `Student with id ${req.user.userId} has opted out from the drive of  ${updatedJob.companyName}`
+  );
 
   return res
     .status(StatusCodes.OK)
