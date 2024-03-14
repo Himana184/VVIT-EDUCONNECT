@@ -118,7 +118,7 @@ const certificationSlice = createSlice({
     });
     builder.addCase(getCertifications.fulfilled, (state, { payload }) => {
       state.isLoading = false;
-      console.log("Payload : ", payload.data.certifications.All);
+      console.log("Payload : ", payload);
       state.certifications = payload.data.certifications.All;
       toast.success(payload.message);
     });
