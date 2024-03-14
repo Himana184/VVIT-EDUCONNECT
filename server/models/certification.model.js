@@ -26,6 +26,10 @@ const certificationSchema = new mongoose.Schema(
     expiryDate: {
       type: Date,
     },
+    branch : {
+      type : String,
+      required : [true,"Student branch is required"]
+    },
     tags: {
       type: String,
       required: [true, "Atleast one tag is required"],

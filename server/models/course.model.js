@@ -10,6 +10,10 @@ const courseSchema = new mongoose.Schema({
     ref: "Student",
     required: [true, "student details are required"],
   },
+  branch: {
+    type: String,
+    required: [true, "Student branch is required"],
+  },
   coursePlatform: {
     type: String,
     required: [true, "course platform is required"],
@@ -29,7 +33,7 @@ const courseSchema = new mongoose.Schema({
   },
   endDate: {
     type: Date,
- },
+  },
   certificate: {
     type: String,
   },
