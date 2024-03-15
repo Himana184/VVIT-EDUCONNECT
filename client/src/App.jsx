@@ -24,8 +24,22 @@ import StudentCertifications from "./pages/student/StudentCertifications";
 import StudentCourses from "./pages/student/StudentCourses";
 import StudentDetails from "./components/student/StudentDetails";
 import StudentOptedJobs from "./pages/student/StudentOptedJobs";
+import { useEffect } from "react";
+import { requestPermission } from "./utils/requestPermission";
+import { useDispatch } from "react-redux";
+import { handleSaveUserToken } from "./redux/notificationSlice";
 
 const App = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    const handleNotification = async () => {
+      const data = await requestPermission();
+      if (data.status) {
+        dispatch(handleSaveUserToken({token : data.response}));
+      }
+    }
+    handleNotification();
+  }, [])
   return (
     <Router>
       <Routes>
@@ -78,7 +92,7 @@ const App = () => {
 
         {/* all routes of coordinator */}
         <Route path="/coordinator" element={<CoordinatorLayout />}>
-        <Route path="students" index element={<Students />}></Route>
+          <Route path="students" index element={<Students />}></Route>
           <Route path="students/:studentId" element={<Profile />}>
             <Route index element={<StudentDetails />}></Route>
             <Route path="certifications" element={<StudentCertifications />}></Route>

@@ -7,6 +7,7 @@ import certificationReducer from "./redux/certificationSlice";
 import internshipReducer from "./redux/internshipSlice";
 import courseReducer from "./redux/courseSlice";
 import announcementReducer from "./redux/announcementSlice";
+import notificationSlice from "./redux/notificationSlice";
 const store = configureStore({
   reducer: {
     auth: authReducer,
@@ -17,6 +18,7 @@ const store = configureStore({
     internship: internshipReducer,
     course: courseReducer,
     announcement: announcementReducer,
+    notification: notificationSlice,
   },
 });
 
