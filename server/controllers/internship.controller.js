@@ -6,6 +6,9 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import Internship from "../models/internship.model.js";
 import mongoose from "mongoose";
 import { groupData } from "../utils/groupdata.js";
+import uploadSingleFile from "../utils/uploadToCloud.js";
+import { logActivity } from "../utils/logActivity.js";
+import { logcategories } from "../utils/logcategories.js";
 const currentYear = new Date().getFullYear();
 
 // TODO: Google Cloud Integration for storing internship offer and completion certificaton
@@ -27,6 +30,21 @@ export const handleAddInternship = async (req, res) => {
 
   //set the branch of the user so that it is easy to filter the internships based on branch
   req.body.branch = req.user.branch;
+  req.body.student = req.user.userId;
+  const fileType = req.file.originalname.split(".")[1];
+  const fileUploadResponse = await uploadSingleFile(
+    req.file,
+    "internship-offerLetters",
+    req.body.companyName.replace(/\s+/g, "") + req.user.userId + "." + fileType
+  );
+  if (!fileUploadResponse.status) {
+    throw new ApiError(
+      StatusCodes.INTERNAL_SERVER_ERROR,
+      "Unable to upload file"
+    );
+  } else {
+    req.body.offerLetter = fileUploadResponse.url;
+  }
 
   const newInternship = await Internship.create(req.body);
 
@@ -34,7 +52,13 @@ export const handleAddInternship = async (req, res) => {
   const internships = await getInternshipsByRole(req);
 
   //group the internships based on the verification status this will be helpful to filter in the frontend
-  groupedInternships = groupData(internships, "verificationStatus");
+  const groupedInternships = groupData(internships, "verificationStatus");
+  logActivity(
+    req,
+    res,
+    logcategories["internship"],
+    `Student with id ${req.user.userId} has added the internship from ${req.body.companyName}`
+  );
 
   return res
     .status(StatusCodes.OK)
@@ -73,6 +97,12 @@ export const handleUpdateInternship = async (req, res) => {
   const internships = await getInternshipsByRole(req);
 
   const groupedInternships = groupData(internships, "verificationStatus");
+  logActivity(
+    req,
+    res,
+    logcategories["internship"],
+    `Student with id ${req.user.userId} has updated the internship from ${updatedInternship.companyName}`
+  );
 
   return res.status(StatusCodes.OK).json(
     new ApiResponse(
@@ -88,7 +118,7 @@ export const handleUpdateInternship = async (req, res) => {
 // Access permission - Admin, Coordinator of that branch
 export const handleInternshipVerification = async (req, res) => {
   const { internshipId } = req.params;
-
+  console.log(req.body);
   if (!internshipId || !mongoose.isValidObjectId(internshipId)) {
     throw new ApiError(StatusCodes.BAD_REQUEST, "Not a valid Internship id");
   }
@@ -106,14 +136,25 @@ export const handleInternshipVerification = async (req, res) => {
       `Internship already ${verificationStatus}`
     );
   }
-  //save the verification status of the internship
-  internship.verificationStatus = req.body.verificationStatus;
-  await internship.save();
-
+  const updatedDetails = await Internship.findByIdAndUpdate(
+    internshipId,
+    req.body,
+    {
+      runValidators: true,
+      new: true,
+    }
+  );
+  console.log(updatedDetails);
   //fetch and group the internship based on verification status
   const internships = await getInternshipsByRole(req);
 
   const groupedInternships = groupData(internships, "verificationStatus");
+  logActivity(
+    req,
+    res,
+    logcategories["certification"],
+    `Admin updated verification status of intenrship ${updatedDetails.companyName} for Student with id ${req.user.userId} `
+  );
 
   return res
     .status(StatusCodes.OK)
@@ -121,7 +162,7 @@ export const handleInternshipVerification = async (req, res) => {
       new ApiResponse(
         StatusCodes.OK,
         { internships: groupedInternships },
-        `Internship marked as ${verificationStatus}`
+        `Internship marked as ${updatedDetails.verificationStatus}`
       )
     );
 };
@@ -180,6 +221,12 @@ export const handleDeleteInternship = async (req, res) => {
   //fetch and group the internships based on verification status
   const internships = await getInternshipsByRole(req);
   const groupedInternships = groupData(internships, "verificationStatus");
+  logActivity(
+    req,
+    res,
+    logcategories["internship"],
+    `Student with id ${req.user.userId} has deleted the internship with name ${response?.companyName}`
+  );
   return res
     .status(StatusCodes.OK)
     .json(

@@ -69,7 +69,17 @@ export const sidebarLinks = {
       icon: <MdOutlineHelp size={24} />,
       text: "Queries",
       href: "queries"
-    }
+    },
+    {
+      icon: <PiStack size={24} />,
+      text: "Courses",
+      href: "courses"
+    },
+    {
+      icon: <FolderKanban size={24} />,
+      text: "Internships",
+      href: "internships"
+    },
   ],
   teacher: [
     {
@@ -82,17 +92,17 @@ export const sidebarLinks = {
     {
       icon: <TfiAnnouncement size={24} />,
       text: "Announcements",
-      href: "stuannouncements",
+      href: "announcements",
     },
     {
       icon: <BriefcaseIcon size={24} />,
       text: "Jobs",
-      href: "stujobs"
+      href: "jobs"
     },
     {
       icon: <PiCertificateFill size={24} />,
       text: "Certifications",
-      href: "stucertifications",
+      href: "certifications",
     },
     {
       icon: <MdOutlineHelp size={24} />,
@@ -102,12 +112,12 @@ export const sidebarLinks = {
     {
       icon: <FolderKanban size={24} />,
       text: "Internships",
-      href: "stuinternships"
+      href: "internships"
     },
     {
       icon: <PiStack size={24} />,
-      text: "courses",
-      href: "stucourses"
+      text: "Courses",
+      href: "courses"
     },
   ]
 }

@@ -7,19 +7,23 @@ import { Link } from "react-router-dom"
 
 const Jobs = () => {
   const dispatch = useDispatch();
+  const { user, role } = useSelector((state) => state["auth"])
   const { jobs } = useSelector((state) => state["job"]);
+  console.log(jobs)
   useEffect(() => {
     dispatch(getJobDrives())
   }, [])
   return (
     <div className="space-y-4">
-      <Link to="/admin/addJobDrive">
-        <div className="flex justify-end">
-          <Button>
-            Add Job Drive
-          </Button>
-        </div>
-      </Link>
+      {
+        role == "admin" && <Link to="/admin/addJobDrive">
+          <div className="flex justify-end">
+            <Button>
+              Add Job Drive
+            </Button>
+          </div>
+        </Link>
+      }
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
         {
           jobs?.map((job, index) => {
@@ -29,7 +33,7 @@ const Jobs = () => {
           })
         }
         {
-          jobs.length == 0 && <p>No Job Drives</p>
+          jobs?.length == 0 && <p>No Job Drives</p>
         }
       </div>
     </div>

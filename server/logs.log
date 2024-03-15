@@ -1,0 +1,800 @@
+
+{
+    "activity": {
+        "message": "User with id 65da085dbec9fbeacdbe2572 has accessed all the courses"
+    },
+    "level": "info",
+    "message": "/ endpoint hit",
+    "request": {
+        "category": "course",
+        "method": "GET",
+        "remoteIp": "::1",
+        "status": 200,
+        "url": "/"
+    },
+    "timestamp": "2024-03-14T00:36:11.856Z"
+}
+
+{
+    "activity": {
+        "message": "User with id 65da085dbec9fbeacdbe2572 has accessed all the courses"
+    },
+    "level": "info",
+    "message": "/ endpoint hit",
+    "request": {
+        "category": "course",
+        "method": "GET",
+        "remoteIp": "::1",
+        "status": 200,
+        "url": "/"
+    },
+    "timestamp": "2024-03-14T00:36:15.252Z"
+}
+{"activity":s{"message":"Student with email 20bq1a05l1@vvit.net has logged in"},"level":"info","message":"/student/login endpoint hit","request":{"category":"authentication","method":"POST","remoteIp":"::1","status":200,"url":"/student/login"},"timestamp":"2024-03-14T05:01:50.164Z"}
+
+{
+    "activity": {
+        "message": "Student with email 20bq1a05l1@vvit.net has logged in"
+    },
+    "level": "info",
+    "message": "/student/login endpoint hit",
+    "request": {
+        "category": "authentication",
+        "method": "POST",
+        "remoteIp": "::1",
+        "status": 200,
+        "url": "/student/login"
+    },
+    "timestamp": "2024-03-14T05:28:20.231Z"
+}
+
+{
+    "activity": {
+        "message": "User with id 65d379c25dd2f208e35b04ce has accessed all certifications"
+    },
+    "level": "info",
+    "message": "/ endpoint hit",
+    "request": {
+        "category": "certification",
+        "method": "GET",
+        "remoteIp": "::1",
+        "status": 200,
+        "url": "/"
+    },
+    "timestamp": "2024-03-14T05:28:25.318Z"
+}
+
+{
+    "activity": {
+        "message": "Student with id 65d379c25dd2f208e35b04ce has added the internship from Accenture"
+    },
+    "level": "info",
+    "message": "/ endpoint hit",
+    "request": {
+        "category": "internship",
+        "method": "POST",
+        "remoteIp": "::1",
+        "status": 200,
+        "url": "/"
+    },
+    "timestamp": "2024-03-14T05:29:16.756Z"
+}
+
+{
+    "activity": {
+        "message": "User with email user1@gmail.com has logged in"
+    },
+    "level": "info",
+    "message": "/user/login endpoint hit",
+    "request": {
+        "category": "authentication",
+        "method": "POST",
+        "remoteIp": "::1",
+        "status": 200,
+        "url": "/user/login"
+    },
+    "timestamp": "2024-03-14T05:31:06.547Z"
+}
+
+{
+    "activity": {
+        "message": "Admin updated verification status of intenrship undefined for Student with id 65da085dbec9fbeacdbe2572 "
+    },
+    "level": "info",
+    "message": "/verify/65f28b2cf2482ead04b3647d endpoint hit",
+    "request": {
+        "category": "certification",
+        "method": "PATCH",
+        "remoteIp": "::1",
+        "status": 200,
+        "url": "/verify/65f28b2cf2482ead04b3647d"
+    },
+    "timestamp": "2024-03-14T05:31:20.933Z"
+}
+
+{
+    "activity": {
+        "message": "User with id 65d379c25dd2f208e35b04ce has accessed all certifications"
+    },
+    "level": "info",
+    "message": "/ endpoint hit",
+    "request": {
+        "category": "certification",
+        "method": "GET",
+        "remoteIp": "::1",
+        "status": 200,
+        "url": "/"
+    },
+    "timestamp": "2024-03-14T05:32:51.379Z"
+}
+
+{
+    "activity": {
+        "message": "Admin updated verification status of intenrship cts for Student with id 65da085dbec9fbeacdbe2572 "
+    },
+    "level": "info",
+    "message": "/verify/65ed400f89e0a1a18ef33bd6 endpoint hit",
+    "request": {
+        "category": "certification",
+        "method": "PATCH",
+        "remoteIp": "::1",
+        "status": 200,
+        "url": "/verify/65ed400f89e0a1a18ef33bd6"
+    },
+    "timestamp": "2024-03-14T05:33:05.752Z"
+}
+
+{
+    "activity": {
+        "message": "User with id 65d379c25dd2f208e35b04ce has accessed all certifications"
+    },
+    "level": "info",
+    "message": "/ endpoint hit",
+    "request": {
+        "category": "certification",
+        "method": "GET",
+        "remoteIp": "::1",
+        "status": 200,
+        "url": "/"
+    },
+    "timestamp": "2024-03-14T05:33:38.230Z"
+}
+
+{
+    "activity": {
+        "message": "User with id 65d379c25dd2f208e35b04ce has accessed all certifications"
+    },
+    "level": "info",
+    "message": "/ endpoint hit",
+    "request": {
+        "category": "certification",
+        "method": "GET",
+        "remoteIp": "::1",
+        "status": 200,
+        "url": "/"
+    },
+    "timestamp": "2024-03-14T06:13:38.211Z"
+}
+
+{
+    "activity": {
+        "message": "User with id 65d379c25dd2f208e35b04ce has accessed all certifications"
+    },
+    "level": "info",
+    "message": "/ endpoint hit",
+    "request": {
+        "category": "certification",
+        "method": "GET",
+        "remoteIp": "::1",
+        "status": 200,
+        "url": "/"
+    },
+    "timestamp": "2024-03-14T06:16:30.487Z"
+}
+
+{
+    "activity": {
+        "message": "User with id 65d379c25dd2f208e35b04ce has accessed all certifications"
+    },
+    "level": "info",
+    "message": "/ endpoint hit",
+    "request": {
+        "category": "certification",
+        "method": "GET",
+        "remoteIp": "::1",
+        "status": 200,
+        "url": "/"
+    },
+    "timestamp": "2024-03-14T06:18:11.454Z"
+}
+
+{
+    "activity": {
+        "message": "Student with id 65d379c25dd2f208e35b04ce has opted out from the drive of  undefined"
+    },
+    "level": "info",
+    "message": "/optOut/65f29697be95820593819ca9 endpoint hit",
+    "request": {
+        "category": "jobdrive",
+        "method": "PATCH",
+        "remoteIp": "::1",
+        "status": 200,
+        "url": "/optOut/65f29697be95820593819ca9"
+    },
+    "timestamp": "2024-03-14T06:27:34.674Z"
+}
+
+{
+    "activity": {
+        "message": "Student with id 65d379c25dd2f208e35b04ce has opted to the drive of  Wipro"
+    },
+    "level": "info",
+    "message": "/optIn/65f29697be95820593819ca9 endpoint hit",
+    "request": {
+        "category": "jobdrive",
+        "method": "PATCH",
+        "remoteIp": "::1",
+        "status": 200,
+        "url": "/optIn/65f29697be95820593819ca9"
+    },
+    "timestamp": "2024-03-14T06:28:23.629Z"
+}
+
+{
+    "activity": {
+        "message": "user with id 65da085dbec9fbeacdbe2572 has deleted the drive of Wipro"
+    },
+    "level": "info",
+    "message": "/65ec75147a0a1c2735b9567c endpoint hit",
+    "request": {
+        "category": "jobdrive",
+        "method": "DELETE",
+        "remoteIp": "::1",
+        "status": 200,
+        "url": "/65ec75147a0a1c2735b9567c"
+    },
+    "timestamp": "2024-03-14T06:28:57.460Z"
+}
+
+{
+    "activity": {
+        "message": "User with id 65da085dbec9fbeacdbe2572 has added the jobdrive from Tech Mahindra"
+    },
+    "level": "info",
+    "message": "/ endpoint hit",
+    "request": {
+        "category": "jobdrive",
+        "method": "POST",
+        "remoteIp": "::1",
+        "status": 200,
+        "url": "/"
+    },
+    "timestamp": "2024-03-14T06:30:53.822Z"
+}
+
+{
+    "activity": {
+        "message": "User with id 65d379c25dd2f208e35b04ce has accessed all certifications"
+    },
+    "level": "info",
+    "message": "/ endpoint hit",
+    "request": {
+        "category": "certification",
+        "method": "GET",
+        "remoteIp": "::1",
+        "status": 200,
+        "url": "/"
+    },
+    "timestamp": "2024-03-14T06:40:02.699Z"
+}
+
+{
+    "activity": {
+        "message": "An announcement with title Exam has been added by the user "
+    },
+    "level": "info",
+    "message": "/ endpoint hit",
+    "request": {
+        "category": "announcement",
+        "method": "POST",
+        "remoteIp": "::1",
+        "status": 200,
+        "url": "/"
+    },
+    "timestamp": "2024-03-14T06:47:11.757Z"
+}
+
+{
+    "activity": {
+        "message": "An announcement with title exam has been added by the user 65da085dbec9fbeacdbe2572"
+    },
+    "level": "info",
+    "message": "/ endpoint hit",
+    "request": {
+        "category": "announcement",
+        "method": "POST",
+        "remoteIp": "::1",
+        "status": 200,
+        "url": "/"
+    },
+    "timestamp": "2024-03-14T06:53:31.220Z"
+}
+
+{
+    "activity": {
+        "message": "User with id 65da085dbec9fbeacdbe2572 has deleted the announcement with title exam"
+    },
+    "level": "info",
+    "message": "/65f29eeb45a2b09bda548717 endpoint hit",
+    "request": {
+        "category": "announcement",
+        "method": "DELETE",
+        "remoteIp": "::1",
+        "status": 200,
+        "url": "/65f29eeb45a2b09bda548717"
+    },
+    "timestamp": "2024-03-14T06:53:44.223Z"
+}
+
+{
+    "activity": {
+        "message": "An announcement with title hi has been added by the user 65da085dbec9fbeacdbe2572"
+    },
+    "level": "info",
+    "message": "/ endpoint hit",
+    "request": {
+        "category": "announcement",
+        "method": "POST",
+        "remoteIp": "::1",
+        "status": 200,
+        "url": "/"
+    },
+    "timestamp": "2024-03-14T06:54:11.567Z"
+}
+
+{
+    "activity": {
+        "message": "User with id 65da085dbec9fbeacdbe2572 has accessed the announcements"
+    },
+    "level": "info",
+    "message": "/65f29f1345a2b09bda54871d endpoint hit",
+    "request": {
+        "category": "announcement",
+        "method": "PATCH",
+        "remoteIp": "::1",
+        "status": 200,
+        "url": "/65f29f1345a2b09bda54871d"
+    },
+    "timestamp": "2024-03-14T06:55:01.061Z"
+}
+
+{
+    "activity": {
+        "message": "User with id 65da085dbec9fbeacdbe2572 has accessed the announcements"
+    },
+    "level": "info",
+    "message": "/65f29f1345a2b09bda54871d endpoint hit",
+    "request": {
+        "category": "announcement",
+        "method": "PATCH",
+        "remoteIp": "::1",
+        "status": 200,
+        "url": "/65f29f1345a2b09bda54871d"
+    },
+    "timestamp": "2024-03-14T06:55:26.339Z"
+}
+
+{
+    "activity": {
+        "message": "User with id 65da085dbec9fbeacdbe2572 has accessed all certifications"
+    },
+    "level": "info",
+    "message": "/ endpoint hit",
+    "request": {
+        "category": "certification",
+        "method": "GET",
+        "remoteIp": "::1",
+        "status": 200,
+        "url": "/"
+    },
+    "timestamp": "2024-03-14T08:00:49.754Z"
+}
+
+{
+    "activity": {
+        "message": "An announcement with title hello has been added by the user 65da085dbec9fbeacdbe2572"
+    },
+    "level": "info",
+    "message": "/ endpoint hit",
+    "request": {
+        "category": "announcement",
+        "method": "POST",
+        "remoteIp": "::1",
+        "status": 200,
+        "url": "/"
+    },
+    "timestamp": "2024-03-14T08:01:19.127Z"
+}
+
+{
+    "activity": {
+        "message": "User with id 65da085dbec9fbeacdbe2572 has accessed the announcements"
+    },
+    "level": "info",
+    "message": "/65f29f1345a2b09bda54871d endpoint hit",
+    "request": {
+        "category": "announcement",
+        "method": "PATCH",
+        "remoteIp": "::1",
+        "status": 200,
+        "url": "/65f29f1345a2b09bda54871d"
+    },
+    "timestamp": "2024-03-14T08:01:40.550Z"
+}
+
+{
+    "activity": {
+        "message": "User with id 65da085dbec9fbeacdbe2572 has deleted the announcement with title hi"
+    },
+    "level": "info",
+    "message": "/65f29f1345a2b09bda54871d endpoint hit",
+    "request": {
+        "category": "announcement",
+        "method": "DELETE",
+        "remoteIp": "::1",
+        "status": 200,
+        "url": "/65f29f1345a2b09bda54871d"
+    },
+    "timestamp": "2024-03-14T08:01:45.851Z"
+}
+
+{
+    "activity": {
+        "message": "User with email john@gmail.com has logged in"
+    },
+    "level": "info",
+    "message": "/user/login endpoint hit",
+    "request": {
+        "category": "authentication",
+        "method": "POST",
+        "remoteIp": "::1",
+        "status": 200,
+        "url": "/user/login"
+    },
+    "timestamp": "2024-03-14T08:02:56.147Z"
+}
+
+{
+    "activity": {
+        "message": "User with email john@gmail.com has logged in"
+    },
+    "level": "info",
+    "message": "/user/login endpoint hit",
+    "request": {
+        "category": "authentication",
+        "method": "POST",
+        "remoteIp": "::1",
+        "status": 200,
+        "url": "/user/login"
+    },
+    "timestamp": "2024-03-14T10:49:14.983Z"
+}
+
+{
+    "activity": {
+        "message": "User with id 65f2af15f7c190f2ed1d9095 has accessed all certifications"
+    },
+    "level": "info",
+    "message": "/ endpoint hit",
+    "request": {
+        "category": "certification",
+        "method": "GET",
+        "remoteIp": "::1",
+        "status": 200,
+        "url": "/"
+    },
+    "timestamp": "2024-03-14T10:49:22.727Z"
+}
+
+{
+    "activity": {
+        "message": "User with email user1@gmail.com has logged in"
+    },
+    "level": "info",
+    "message": "/user/login endpoint hit",
+    "request": {
+        "category": "authentication",
+        "method": "POST",
+        "remoteIp": "::1",
+        "status": 200,
+        "url": "/user/login"
+    },
+    "timestamp": "2024-03-14T10:50:03.816Z"
+}
+
+{
+    "activity": {
+        "message": "User with id 65f2af15f7c190f2ed1d9095 has accessed all certifications"
+    },
+    "level": "info",
+    "message": "/ endpoint hit",
+    "request": {
+        "category": "certification",
+        "method": "GET",
+        "remoteIp": "::1",
+        "status": 200,
+        "url": "/"
+    },
+    "timestamp": "2024-03-14T10:51:47.430Z"
+}
+
+{
+    "activity": {
+        "message": "User with email john@gmail.com has logged in"
+    },
+    "level": "info",
+    "message": "/user/login endpoint hit",
+    "request": {
+        "category": "authentication",
+        "method": "POST",
+        "remoteIp": "::1",
+        "status": 200,
+        "url": "/user/login"
+    },
+    "timestamp": "2024-03-14T10:55:22.247Z"
+}
+
+{
+    "activity": {
+        "message": "User with id 65f2af15f7c190f2ed1d9095 has accessed all certifications"
+    },
+    "level": "info",
+    "message": "/ endpoint hit",
+    "request": {
+        "category": "certification",
+        "method": "GET",
+        "remoteIp": "::1",
+        "status": 200,
+        "url": "/"
+    },
+    "timestamp": "2024-03-14T11:19:58.457Z"
+}
+
+{
+    "activity": {
+        "message": "User with id 65f2af15f7c190f2ed1d9095 has accessed all the courses"
+    },
+    "level": "info",
+    "message": "/ endpoint hit",
+    "request": {
+        "category": "course",
+        "method": "GET",
+        "remoteIp": "::1",
+        "status": 200,
+        "url": "/"
+    },
+    "timestamp": "2024-03-14T11:23:41.458Z"
+}
+
+{
+    "activity": {
+        "message": "User with id 65da085dbec9fbeacdbe2572 has accessed all the courses"
+    },
+    "level": "info",
+    "message": "/ endpoint hit",
+    "request": {
+        "category": "course",
+        "method": "GET",
+        "remoteIp": "::1",
+        "status": 200,
+        "url": "/"
+    },
+    "timestamp": "2024-03-14T11:30:11.359Z"
+}
+
+{
+    "activity": {
+        "message": "User with id 65f2af15f7c190f2ed1d9095 has accessed all certifications"
+    },
+    "level": "info",
+    "message": "/ endpoint hit",
+    "request": {
+        "category": "certification",
+        "method": "GET",
+        "remoteIp": "::1",
+        "status": 200,
+        "url": "/"
+    },
+    "timestamp": "2024-03-14T11:38:56.310Z"
+}
+
+{
+    "activity": {
+        "message": "User with id 65f2af15f7c190f2ed1d9095 has accessed all certifications"
+    },
+    "level": "info",
+    "message": "/ endpoint hit",
+    "request": {
+        "category": "certification",
+        "method": "GET",
+        "remoteIp": "::1",
+        "status": 200,
+        "url": "/"
+    },
+    "timestamp": "2024-03-14T11:53:28.870Z"
+}
+
+{
+    "activity": {
+        "message": "User with id 65f2af15f7c190f2ed1d9095 has accessed all certifications"
+    },
+    "level": "info",
+    "message": "/ endpoint hit",
+    "request": {
+        "category": "certification",
+        "method": "GET",
+        "remoteIp": "::1",
+        "status": 200,
+        "url": "/"
+    },
+    "timestamp": "2024-03-14T11:53:51.366Z"
+}
+
+{
+    "activity": {
+        "message": "User with id 65f2af15f7c190f2ed1d9095 has accessed all certifications"
+    },
+    "level": "info",
+    "message": "/ endpoint hit",
+    "request": {
+        "category": "certification",
+        "method": "GET",
+        "remoteIp": "::1",
+        "status": 200,
+        "url": "/"
+    },
+    "timestamp": "2024-03-14T11:54:23.808Z"
+}
+
+{
+    "activity": {
+        "message": "User with id 65f2af15f7c190f2ed1d9095 has accessed all the courses"
+    },
+    "level": "info",
+    "message": "/ endpoint hit",
+    "request": {
+        "category": "course",
+        "method": "GET",
+        "remoteIp": "::1",
+        "status": 200,
+        "url": "/"
+    },
+    "timestamp": "2024-03-14T11:54:26.428Z"
+}
+
+{
+    "activity": {
+        "message": "User with id 65f2af15f7c190f2ed1d9095 has accessed all certifications"
+    },
+    "level": "info",
+    "message": "/ endpoint hit",
+    "request": {
+        "category": "certification",
+        "method": "GET",
+        "remoteIp": "::1",
+        "status": 200,
+        "url": "/"
+    },
+    "timestamp": "2024-03-14T12:03:36.163Z"
+}
+
+{
+    "activity": {
+        "message": "User with id 65f2af15f7c190f2ed1d9095 has accessed all certifications"
+    },
+    "level": "info",
+    "message": "/ endpoint hit",
+    "request": {
+        "category": "certification",
+        "method": "GET",
+        "remoteIp": "::1",
+        "status": 200,
+        "url": "/"
+    },
+    "timestamp": "2024-03-14T12:03:54.873Z"
+}
+
+{
+    "activity": {
+        "message": "User with id 65f2af15f7c190f2ed1d9095 has accessed all certifications"
+    },
+    "level": "info",
+    "message": "/ endpoint hit",
+    "request": {
+        "category": "certification",
+        "method": "GET",
+        "remoteIp": "::1",
+        "status": 200,
+        "url": "/"
+    },
+    "timestamp": "2024-03-14T12:04:16.263Z"
+}
+
+{
+    "activity": {
+        "message": "User with id 65f2af15f7c190f2ed1d9095 has accessed all certifications"
+    },
+    "level": "info",
+    "message": "/ endpoint hit",
+    "request": {
+        "category": "certification",
+        "method": "GET",
+        "remoteIp": "::1",
+        "status": 200,
+        "url": "/"
+    },
+    "timestamp": "2024-03-14T12:04:27.875Z"
+}
+
+{
+    "activity": {
+        "message": "User with id 65f2af15f7c190f2ed1d9095 has accessed all certifications"
+    },
+    "level": "info",
+    "message": "/ endpoint hit",
+    "request": {
+        "category": "certification",
+        "method": "GET",
+        "remoteIp": "::1",
+        "status": 200,
+        "url": "/"
+    },
+    "timestamp": "2024-03-14T12:04:33.226Z"
+}
+
+{
+    "activity": {
+        "message": "User with id 65f2af15f7c190f2ed1d9095 has accessed all certifications"
+    },
+    "level": "info",
+    "message": "/ endpoint hit",
+    "request": {
+        "category": "certification",
+        "method": "GET",
+        "remoteIp": "::1",
+        "status": 200,
+        "url": "/"
+    },
+    "timestamp": "2024-03-14T12:04:39.870Z"
+}
+{"activity":{"message":"User with email user1@gmail.com has logged in"},"level":"info","message":"/user/login endpoint hit","request":{"category":"authentication","method":"POST","remoteIp":"::1","status":200,"url":"/user/login"},"timestamp":"2024-03-14T14:38:23.879Z"}
+{"activity":{"message":"User with email john@gmail.com has logged in"},"level":"info","message":"/user/login endpoint hit","request":{"category":"authentication","method":"POST","remoteIp":"::1","status":200,"url":"/user/login"},"timestamp":"2024-03-14T14:39:28.138Z"}
+{"activity":{"message":"User with id 65f2af15f7c190f2ed1d9095 has accessed all certifications"},"level":"info","message":"/ endpoint hit","request":{"category":"certification","method":"GET","remoteIp":"::1","status":200,"url":"/"},"timestamp":"2024-03-14T14:39:45.801Z"}
+{"activity":{"message":"User with id 65da085dbec9fbeacdbe2572 has accessed all certifications"},"level":"info","message":"/ endpoint hit","request":{"category":"certification","method":"GET","remoteIp":"::1","status":200,"url":"/"},"timestamp":"2024-03-14T14:40:06.742Z"}
+{"activity":{"message":"User with id 65da085dbec9fbeacdbe2572 has accessed all certifications"},"level":"info","message":"/ endpoint hit","request":{"category":"certification","method":"GET","remoteIp":"::1","status":200,"url":"/"},"timestamp":"2024-03-14T14:40:36.298Z"}
+{"activity":{"message":"User with id 65da085dbec9fbeacdbe2572 has accessed all certifications"},"level":"info","message":"/ endpoint hit","request":{"category":"certification","method":"GET","remoteIp":"::1","status":200,"url":"/"},"timestamp":"2024-03-14T14:40:38.539Z"}
+{"activity":{"message":"User with id 65da085dbec9fbeacdbe2572 has accessed all certifications"},"level":"info","message":"/ endpoint hit","request":{"category":"certification","method":"GET","remoteIp":"::1","status":200,"url":"/"},"timestamp":"2024-03-14T14:40:54.924Z"}
+{"activity":{"message":"User with id 65da085dbec9fbeacdbe2572 has accessed all certifications"},"level":"info","message":"/ endpoint hit","request":{"category":"certification","method":"GET","remoteIp":"::1","status":200,"url":"/"},"timestamp":"2024-03-14T14:41:14.901Z"}
+{"activity":{"message":"User with id 65da085dbec9fbeacdbe2572 has accessed all certifications"},"level":"info","message":"/ endpoint hit","request":{"category":"certification","method":"GET","remoteIp":"::1","status":200,"url":"/"},"timestamp":"2024-03-14T14:41:20.929Z"}
+{"activity":{"message":"User with id 65da085dbec9fbeacdbe2572 has accessed all certifications"},"level":"info","message":"/ endpoint hit","request":{"category":"certification","method":"GET","remoteIp":"::1","status":200,"url":"/"},"timestamp":"2024-03-14T14:41:21.962Z"}
+{"activity":{"message":"User with id 65da085dbec9fbeacdbe2572 has accessed all certifications"},"level":"info","message":"/ endpoint hit","request":{"category":"certification","method":"GET","remoteIp":"::1","status":200,"url":"/"},"timestamp":"2024-03-14T14:41:24.811Z"}
+{"activity":{"message":"User with id 65da085dbec9fbeacdbe2572 has accessed all certifications"},"level":"info","message":"/ endpoint hit","request":{"category":"certification","method":"GET","remoteIp":"::1","status":200,"url":"/"},"timestamp":"2024-03-14T14:41:33.137Z"}
+{"activity":{"message":"User with id 65f2af15f7c190f2ed1d9095 has accessed all certifications"},"level":"info","message":"/ endpoint hit","request":{"category":"certification","method":"GET","remoteIp":"::1","status":200,"url":"/"},"timestamp":"2024-03-14T14:41:36.564Z"}
+{"activity":{"message":"User with id 65f2af15f7c190f2ed1d9095 has accessed all certifications"},"level":"info","message":"/ endpoint hit","request":{"category":"certification","method":"GET","remoteIp":"::1","status":200,"url":"/"},"timestamp":"2024-03-14T14:41:38.221Z"}
+{"activity":{"message":"User with id 65f2af15f7c190f2ed1d9095 has accessed all certifications"},"level":"info","message":"/ endpoint hit","request":{"category":"certification","method":"GET","remoteIp":"::1","status":200,"url":"/"},"timestamp":"2024-03-14T14:42:06.899Z"}
+{"activity":{"message":"User with id 65da085dbec9fbeacdbe2572 has accessed all certifications"},"level":"info","message":"/ endpoint hit","request":{"category":"certification","method":"GET","remoteIp":"::1","status":200,"url":"/"},"timestamp":"2024-03-14T14:42:06.925Z"}
+{"activity":{"message":"User with id 65da085dbec9fbeacdbe2572 has accessed all certifications"},"level":"info","message":"/ endpoint hit","request":{"category":"certification","method":"GET","remoteIp":"::1","status":200,"url":"/"},"timestamp":"2024-03-14T14:42:28.983Z"}
+{"activity":{"message":"User with id 65f2af15f7c190f2ed1d9095 has accessed all certifications"},"level":"info","message":"/ endpoint hit","request":{"category":"certification","method":"GET","remoteIp":"::1","status":200,"url":"/"},"timestamp":"2024-03-14T14:42:29.981Z"}
+{"activity":{"message":"User with id 65da085dbec9fbeacdbe2572 has accessed all certifications"},"level":"info","message":"/ endpoint hit","request":{"category":"certification","method":"GET","remoteIp":"::1","status":200,"url":"/"},"timestamp":"2024-03-14T14:42:35.960Z"}
+{"activity":{"message":"User with id 65f2af15f7c190f2ed1d9095 has accessed all certifications"},"level":"info","message":"/ endpoint hit","request":{"category":"certification","method":"GET","remoteIp":"::1","status":200,"url":"/"},"timestamp":"2024-03-14T14:42:46.277Z"}
+{"activity":{"message":"User with id 65f2af15f7c190f2ed1d9095 has accessed all certifications"},"level":"info","message":"/ endpoint hit","request":{"category":"certification","method":"GET","remoteIp":"::1","status":200,"url":"/"},"timestamp":"2024-03-14T14:42:52.955Z"}
+{"activity":{"message":"User with id 65da085dbec9fbeacdbe2572 has accessed all certifications"},"level":"info","message":"/ endpoint hit","request":{"category":"certification","method":"GET","remoteIp":"::1","status":200,"url":"/"},"timestamp":"2024-03-14T14:43:05.440Z"}
+{"activity":{"message":"User with id 65f2af15f7c190f2ed1d9095 has accessed all certifications"},"level":"info","message":"/ endpoint hit","request":{"category":"certification","method":"GET","remoteIp":"::1","status":200,"url":"/"},"timestamp":"2024-03-14T14:43:05.585Z"}
+{"activity":{"message":"User with id 65f2af15f7c190f2ed1d9095 has accessed all certifications"},"level":"info","message":"/ endpoint hit","request":{"category":"certification","method":"GET","remoteIp":"::1","status":200,"url":"/"},"timestamp":"2024-03-14T14:43:59.722Z"}
+{"activity":{"message":"Student with email 20bq1a05p2@vvit.net has logged in"},"level":"info","message":"/student/login endpoint hit","request":{"category":"authentication","method":"POST","remoteIp":"::1","status":200,"url":"/student/login"},"timestamp":"2024-03-14T14:47:45.524Z"}
+{"activity":{"message":"User with id 65ebe786a3329a07b4c7eae2 has accessed all certifications"},"level":"info","message":"/ endpoint hit","request":{"category":"certification","method":"GET","remoteIp":"::1","status":200,"url":"/"},"timestamp":"2024-03-14T14:47:48.986Z"}
+{"activity":{"message":"Student with id 65ebe786a3329a07b4c7eae2 has added the certification with name Googleasqwer"},"level":"info","message":"/ endpoint hit","request":{"category":"certification","method":"POST","remoteIp":"::1","status":200,"url":"/"},"timestamp":"2024-03-14T14:48:16.204Z"}
+{"activity":{"message":"User with id 65f2af15f7c190f2ed1d9095 has accessed all certifications"},"level":"info","message":"/ endpoint hit","request":{"category":"certification","method":"GET","remoteIp":"::1","status":200,"url":"/"},"timestamp":"2024-03-14T14:48:27.051Z"}
+{"activity":{"message":"User with id 65ebe786a3329a07b4c7eae2 has accessed all the courses"},"level":"info","message":"/ endpoint hit","request":{"category":"course","method":"GET","remoteIp":"::1","status":200,"url":"/"},"timestamp":"2024-03-14T14:48:49.034Z"}
+{"activity":{"message":"Student with id 65ebe786a3329a07b4c7eae2 has added the course 65f30e61245ef3f110d64951"},"level":"info","message":"/ endpoint hit","request":{"category":"course","method":"POST","remoteIp":"::1","status":200,"url":"/"},"timestamp":"2024-03-14T14:49:05.618Z"}
+{"activity":{"message":"User with id 65f2af15f7c190f2ed1d9095 has accessed all the courses"},"level":"info","message":"/ endpoint hit","request":{"category":"course","method":"GET","remoteIp":"::1","status":200,"url":"/"},"timestamp":"2024-03-14T14:49:12.957Z"}

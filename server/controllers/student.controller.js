@@ -9,7 +9,7 @@ import { studentRequiredFields } from "./constants.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { ApiError } from "../utils/ApiError.js";
 import uploadSingleFile from "../utils/uploadToCloud.js";
-
+import jobDriveModel from "../models/jobDrive.model.js";
 //student registeration
 const currentYear = new Date().getFullYear();
 
@@ -59,6 +59,12 @@ export const handleStudentRegisteration = async (req, res) => {
 
   //create a new student
   const newStudent = await Student.create(req.body);
+  logActivity(
+    req,
+    res,
+    logcategories["student"],
+    `Student with email ${collegeMail} has registered`
+  );
 
   return res
     .status(StatusCodes.CREATED)
@@ -71,9 +77,8 @@ export const handleStudentRegisteration = async (req, res) => {
     );
 };
 
-export const getStudentDetails = async (req, res) => {
+export const handleGetStudentDetails = async (req, res) => {
   const { studentId } = req.params;
-
   //check whether the student id is valid or not
   if (!studentId || !mongoose.isValidObjectId(studentId)) {
     throw new ApiError(StatusCodes.BAD_REQUEST, "Not a valid student Id");
@@ -81,22 +86,37 @@ export const getStudentDetails = async (req, res) => {
 
   //fetch the details of the student with the given id
   const student = await Student.findById(studentId).populate([
-    "internships",
-    "courses",
-    "certifications",
-  ]);
+    { path: "internships", populate: [{ path: "student", select: ["name"] }] },
+    { path: "courses", populate: [{ path: "student", select: ["name"] }] },
+    {
+      path: "certifications",
+      populate: [
+        {
+          path: "student",
+          select: ["name", "rollNumber", "branch", "passoutYear"],
+        },
+      ],
+    },
+  ]).exec();
 
+  const studentOptedJobs = await jobDriveModel.find({
+    optedStudents: { $in: studentId },
+  });
+  // console.log(studentOptedJobs)
   //if no student is found
   if (!student) {
     throw new ApiError(StatusCodes.NOT_FOUND, "Student details not found");
   }
+ const studentDetails = student.toObject();
 
+ // Add the optedJobs field to the studentDetails object
+ studentDetails.optedJobs = studentOptedJobs;
   return res
     .status(StatusCodes.OK)
     .json(
       new ApiResponse(
         StatusCodes.OK,
-        { student: student },
+        { student: studentDetails },
         "student details sent"
       )
     );
@@ -136,6 +156,12 @@ export const updateStudentDetails = async (req, res) => {
     }
   );
   const students = await getStudentsByRole(req);
+  logActivity(
+    req,
+    res,
+    logcategories["student"],
+    `Student with email ${updateStudentDetails.collegeMail} details are updated`
+  );
 
   return res
     .status(StatusCodes.OK)
@@ -172,6 +198,12 @@ export const deleteStudent = async (req, res) => {
     Course.deleteMany({ student: studentId }),
     Certification.deleteMany({ student: studentId }),
   ]);
+  logActivity(
+    req,
+    res,
+    logcategories["student"],
+    `User with id ${req.user.userId} has deleted the student with name ${response?.name}`
+  );
 
   return res
     .status(StatusCodes.OK)
@@ -203,12 +235,11 @@ export const getStudentsByRole = async (req) => {
       .sort({
         createdAt: -1,
       })
-      .populate({
-        path: "student",
-        match: {
-          passoutYear: { $gte: currentYear },
-        },
-      });
+      .populate([
+        { path: "internships" },
+        { path: "certifications" },
+        { path: "courses" },
+      ]);
   } else {
     students = await Student.find({ student: req.user.userId }).sort({
       createdAt: -1,

@@ -87,11 +87,12 @@ export const updateAnnouncement = createAsyncThunk(
     }
   }
 );
-const token = localStorage.getItem("token");
 
-const adminAnnouncementSlice = createSlice({
+const announcementSlice = createSlice({
   name: "announcement",
   initialState: {
+    currentPriority: "all",
+    allAnnouncements: [],
     isLoading: false,
     announcements: [],
     announcement: {},
@@ -99,6 +100,17 @@ const adminAnnouncementSlice = createSlice({
   reducers: {
     setAnnouncement: (state, { payload }) => {
       state.announcement = payload.announcement;
+    },
+    filterByPriority: (state, { payload }) => {
+      state.currentPriority = payload.currentPriority;
+      if (payload.priority == "all") {
+        state.announcements = state.allAnnouncements;
+      } else {
+        state.announcements = state.allAnnouncements.filter(
+          (announcement) => announcement.priority == payload.priority
+        );
+      }
+      console.log(state.allAnnouncements);
     },
   },
   extraReducers: (builder) => {
@@ -108,7 +120,8 @@ const adminAnnouncementSlice = createSlice({
     });
     builder.addCase(addAnnouncement.fulfilled, (state, { payload }) => {
       state.isLoading = false;
-      state.users = payload.data.users;
+      state.allAnnouncements = payload.data.announcements;
+      state.announcements = payload.data.announcements;
       toast.success(payload.message);
     });
     builder.addCase(addAnnouncement.rejected, (state, { payload }) => {
@@ -122,6 +135,7 @@ const adminAnnouncementSlice = createSlice({
     });
     builder.addCase(getAnnouncements.fulfilled, (state, { payload }) => {
       state.isLoading = false;
+      state.allAnnouncements = payload.data.announcements;
       state.announcements = payload.data.announcements;
       toast.success(payload.message);
     });
@@ -136,6 +150,7 @@ const adminAnnouncementSlice = createSlice({
     });
     builder.addCase(deleteAnnouncement.fulfilled, (state, { payload }) => {
       state.isLoading = false;
+      state.allAnnouncements = payload.data.announcements;
       state.announcements = payload.data.announcements;
       toast.success(payload.message);
     });
@@ -150,7 +165,7 @@ const adminAnnouncementSlice = createSlice({
     });
     builder.addCase(updateAnnouncement.fulfilled, (state, { payload }) => {
       state.isLoading = false;
-      state.announcements = payload.data.announcements;
+      state.allAnnouncements = payload.data.announcements;
       toast.success(payload.message);
     });
     builder.addCase(updateAnnouncement.rejected, (state, { payload }) => {
@@ -160,5 +175,5 @@ const adminAnnouncementSlice = createSlice({
   },
 });
 
-export const { setAnnouncement } = adminAnnouncementSlice.actions;
-export default adminAnnouncementSlice.reducer;
+export const { setAnnouncement, filterByPriority } = announcementSlice.actions;
+export default announcementSlice.reducer;

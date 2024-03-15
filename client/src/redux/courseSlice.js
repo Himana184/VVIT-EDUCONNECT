@@ -125,6 +125,7 @@ const courseSlice = createSlice({
     });
     builder.addCase(deleteCourse.rejected, (state, { payload }) => {
       state.isLoading = false;
+      console.log(payload);
       toast.error(payload.message || "something went wrong");
     });
 
@@ -139,6 +140,7 @@ const courseSlice = createSlice({
     });
     builder.addCase(addCourse.rejected, (state, { payload }) => {
       state.isLoading = false;
+      console.log(payload);
       toast.error(payload.message || "something went wrong");
     });
 
@@ -155,8 +157,6 @@ const courseSlice = createSlice({
       state.isLoading = false;
       toast.error(payload.message || "something went wrong");
     });
-
-
   },
 });
 

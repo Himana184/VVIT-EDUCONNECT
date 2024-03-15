@@ -7,17 +7,21 @@ import { Button } from "../ui/button";
 import { Link } from "react-router-dom";
 import { formatDate } from "@/utils/formatDate";
 import { useSelector } from "react-redux";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
 const JobCard = ({ job }) => {
   const { user, role } = useSelector((state) => state["auth"])
   return (
-    <Card className="max-w-sm">
+    <Card className="max-w-sm w-full flex flex-col justify-between">
       <CardHeader className="flex flex-row justify-between">
-        <div className="space-y-2">
-          <img src={job?.companyLogo || "https://www.forgerock.com/sites/default/files/dam-assets/accenture-partner-tp-logo.png"}
-            className="h-16 w-16 rounded-full border border-gray-200" />
-          <CardTitle>{job?.companyName || "Accenture"}</CardTitle>
-          <CardDescription>{job?.roles?.join(",") || "Associate Software Engineer, AASE"}</CardDescription>
+        <div className="space-y-4">
+          <Avatar>
+            <AvatarImage src={job?.companyLogo} alt={job?.companyName} />
+            <AvatarFallback>{job?.companyName.charAt(0).toUpperCase()}</AvatarFallback>
+          </Avatar>
+
+          <CardTitle>{job?.companyName || "Company Name"}</CardTitle>
+          <CardDescription>{job?.roles?.join(",") || "Job Roles"}</CardDescription>
         </div>
         {
           role == "student" &&

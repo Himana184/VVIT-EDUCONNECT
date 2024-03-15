@@ -6,7 +6,6 @@ import Internship from "./internship.model.js";
 import Course from "./course.model.js";
 import Certification from "./certification.model.js";
 import Query from "./query.model.js";
-
 //define the student model
 const studentSchema = new mongoose.Schema(
   {
@@ -141,7 +140,7 @@ studentSchema.methods.generateAccessToken = async function () {
         branch: this.branch,
       },
     },
-    process.env.STUDENT_ACCESS_SECRET,
+    process.env.ACCESS_TOKEN_SECRET,
     {
       expiresIn: "1d",
     }

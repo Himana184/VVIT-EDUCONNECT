@@ -6,6 +6,8 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import Announcement from "../models/announcement.model.js";
 import mongoose from "mongoose";
 import uploadSingleFile from "../utils/uploadToCloud.js";
+import { logActivity } from "../utils/logActivity.js";
+import { logcategories } from "../utils/logcategories.js";
 
 export const handleAddAnnouncement = async (req, res) => {
   //check whether all the required fields have been received or not
@@ -40,6 +42,13 @@ export const handleAddAnnouncement = async (req, res) => {
 
   const announcements = await Announcement.find({});
 
+  logActivity(
+    req,
+    res,
+    logcategories["announcement"],
+    `An announcement with title ${req.body.title} has been added by the user ${req.user.userId}`
+  );
+
   return res
     .status(StatusCodes.OK)
     .json(
@@ -52,7 +61,11 @@ export const handleAddAnnouncement = async (req, res) => {
 };
 
 export const getAllAnnouncements = async (req, res) => {
-  const announcements = await Announcement.find({}).sort({ createdAt: -1 });
+  const announcements = await Announcement.find({}).sort({
+    createdAt: -1,
+  });
+
+  console.log(announcements);
   return res
     .status(StatusCodes.OK)
     .json(
@@ -103,7 +116,14 @@ export const handleUpdateAnnouncement = async (req, res) => {
     }
   );
   const announcements = await Announcement.find({}).sort({ createdAt: -1 });
-  console.log(announcements);
+
+  logActivity(
+    req,
+    res,
+    logcategories["announcement"],
+    `${req.user.role != "student" ? "User" : "Student"} with id ${req.user.userId} has accessed the announcements`
+  );
+
   return res
     .status(StatusCodes.OK)
     .json(
@@ -127,6 +147,13 @@ export const handleDeleteAnnouncement = async (req, res) => {
 
   //fetch all anouncements
   const announcements = await Announcement.find({}).sort({ createdAt: -1 });
+
+  logActivity(
+    req,
+    res,
+    logcategories["announcement"],
+    `User with id ${req.user.userId} has deleted the announcement with title ${response?.title}`
+  );
 
   return res
     .status(StatusCodes.OK)

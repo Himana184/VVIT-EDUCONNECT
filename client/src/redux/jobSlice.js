@@ -77,6 +77,52 @@ export const deleteJobDrive = createAsyncThunk(
     }
   }
 );
+
+export const handleOptInDrive = createAsyncThunk(
+  "/api/v1/jobdrive/optIn/:jobId",
+  async (payload, { rejectWithValue }) => {
+    try {
+      const response = await axios.patch(
+        `/api/v1/jobDrive/optIn/${payload.id}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
+
+export const handleOptOutDrive = createAsyncThunk(
+  "/api/v1/jobdrive/optOut/:jobId",
+  async (payload, { rejectWithValue }) => {
+    try {
+      const response = await axios.patch(
+        `/api/v1/jobDrive/optOut/${payload.id}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
 const jobSlice = createSlice({
   name: "job",
   initialState: {
@@ -123,6 +169,7 @@ const jobSlice = createSlice({
     });
     builder.addCase(getJobDriveDetails.fulfilled, (state, { payload }) => {
       state.isLoading = false;
+      console.log(payload);
       state.job = payload.data.job;
       toast.success(payload.message);
     });
@@ -140,6 +187,32 @@ const jobSlice = createSlice({
       toast.success(payload.message);
     });
     builder.addCase(deleteJobDrive.rejected, (state, { payload }) => {
+      state.isLoading = false;
+      toast.error(payload.message || "something went wrong");
+    });
+
+    builder.addCase(handleOptInDrive.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(handleOptInDrive.fulfilled, (state, { payload }) => {
+      state.isLoading = false;
+      state.job = payload.data.job;
+      toast.success(payload.message);
+    });
+    builder.addCase(handleOptInDrive.rejected, (state, { payload }) => {
+      state.isLoading = false;
+      toast.error(payload.message || "something went wrong");
+    });
+
+    builder.addCase(handleOptOutDrive.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(handleOptOutDrive.fulfilled, (state, { payload }) => {
+      state.isLoading = false;
+      state.job = payload.data.job;
+      toast.success(payload.message);
+    });
+    builder.addCase(handleOptOutDrive.rejected, (state, { payload }) => {
       state.isLoading = false;
       toast.error(payload.message || "something went wrong");
     });

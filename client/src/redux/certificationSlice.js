@@ -118,8 +118,8 @@ const certificationSlice = createSlice({
     });
     builder.addCase(getCertifications.fulfilled, (state, { payload }) => {
       state.isLoading = false;
-      console.log("Payload : ", payload.data.certifications.all);
-      state.certifications = payload.data.certifications.all;
+      console.log("Payload : ", payload);
+      state.certifications = payload.data.certifications.All;
       toast.success(payload.message);
     });
     builder.addCase(getCertifications.rejected, (state, { payload }) => {
@@ -127,13 +127,13 @@ const certificationSlice = createSlice({
       toast.error(payload.message || "something went wrong");
     });
 
-    // Delete user
+    // Delete certification
     builder.addCase(deleteCertification.pending, (state) => {
       state.isLoading = true;
     });
     builder.addCase(deleteCertification.fulfilled, (state, { payload }) => {
       state.isLoading = false;
-      state.certifications = payload.data.certifications;
+      state.certifications = payload.data.certifications.all;
       toast.success(payload.message);
     });
     builder.addCase(deleteCertification.rejected, (state, { payload }) => {

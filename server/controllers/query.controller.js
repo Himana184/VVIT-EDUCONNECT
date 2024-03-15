@@ -31,6 +31,12 @@ export const handleAddQuery = async (req, res) => {
   }).sort({
     createdAt: 1,
   });
+  logActivity(
+    req,
+    res,
+    logcategories["query"],
+    `Student with id ${req.user.userId} has added the query on ${req.body.category}`
+  );
 
   return res
     .status(StatusCodes.OK)
@@ -69,6 +75,12 @@ export const handleUpdateQuery = async (req, res) => {
   );
 
   const queries = await getQueriesByRole(req.user.role);
+  logActivity(
+    req,
+    res,
+    logcategories["query"],
+    `Student with id ${req.user.userId} has updated the query on ${updatedQuery.category}`
+  );
 
   return res.status(StatusCodes.OK).json(
     new ApiResponse(
@@ -121,6 +133,12 @@ export const handleDeleteQuery = async (req, res) => {
   }
   const response = await Query.findByIdAndDelete(queryId);
   const queries = await getQueriesByRole(req.user.role);
+  logActivity(
+    req,
+    res,
+    logcategories["query"],
+    `Student with id ${req.user.userId} has deleted the query on ${response?.category}`
+  );
   return res
     .status(StatusCodes.OK)
     .json(

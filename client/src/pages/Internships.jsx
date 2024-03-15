@@ -1,28 +1,27 @@
 import InternshipCard from '@/components/internships/InternshipCard'
 import TanstackTable from '@/components/table/TanstackTable';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
-import { internshipTableColumns } from '@/data/internships';
-import { useQueryParams } from '@/hooks/useQueryParams';
-import { BuildingIcon, Loader2 } from 'lucide-react';
+import { adminInternshipTableColumns, studentInternshipTableColumns } from '@/data/internships';
+import { Loader2 } from 'lucide-react';
 import { useDispatch, useSelector } from "react-redux"
 import { useState, useEffect } from 'react'
 import { getInternships, handleFilter } from '@/redux/internshipSlice';
 import { Select, SelectContent, SelectTrigger, SelectValue, SelectItem } from '@/components/ui/select';
+import AddInternship from '@/components/internships/AddInternship';
+import { internshipVerificationStatus } from '@/utils/internship';
 
-// import { useLocation, useNavigate } from 'react-router-dom';
 const Internships = () => {
-  // const params = useQueryParams();
 
   const [view, setView] = useState("table");
   const { internships, isLoading } = useSelector((state) => state["internship"]);
-
+  const { role } = useSelector((state) => state["auth"])
 
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getInternships())
   }, [])
+
   if (isLoading) {
     return <div className='flex items-center justify-center h-[80vh]'>
       <Loader2 className='animate-spin' />
@@ -32,6 +31,11 @@ const Internships = () => {
   return (
     <>
       <div className='flex flex-col space-y-6'>
+        {
+          role == "student" && <div className='flex justify-end'>
+            <AddInternship />
+          </div>
+        }
         <div className='flex items-center space-x-2 justify-between'>
           <div>
             <Select className="w-72" onValueChange={(e) => dispatch(handleFilter({ status: e }))}>
@@ -40,7 +44,7 @@ const Internships = () => {
               </SelectTrigger>
               <SelectContent className="w-72">
                 {
-                  ["all", "pending", "verified", "rejected"].map((status, index) => {
+                  internshipVerificationStatus.map((status, index) => {
                     return (
                       <SelectItem value={status} key={index}>{status}</SelectItem>
                     )
@@ -49,15 +53,15 @@ const Internships = () => {
               </SelectContent>
             </Select>
           </div>
-          <div className='flex items-center space-x-3'>
+          {/* <div className='flex items-center space-x-3'>
             <Switch onCheckedChange={e => {
               e ? setView("table") : setView("card")
             }} defaultChecked={view == "table"} />
             <Label>Table View</Label>
-          </div>
+          </div> */}
         </div>
         {
-          view == "table" ? <TanstackTable tableData={internships} columns={internshipTableColumns} /> : (
+          view == "table" ? <TanstackTable tableData={internships || []} columns={role == "admin" ? adminInternshipTableColumns : studentInternshipTableColumns} /> : (
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10'>
               {
                 internships?.map((internship, index) => {

@@ -105,7 +105,7 @@ const EditCertification = ({ data }) => {
 
           <div className='space-y-3'>
             <Label>Issued Date</Label>
-            <Input type='date' {...register("issueDate", {
+            <Input type='date' defaultValue={data.issueDate} {...register("issueDate", {
               required: {
                 value: true,
                 message: "Issued Date required"

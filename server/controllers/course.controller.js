@@ -6,13 +6,17 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import Course from "../models/course.model.js";
 import mongoose from "mongoose";
 import uploadSingleFile from "../utils/uploadToCloud.js";
+import { logActivity } from "../utils/logActivity.js";
+import { logcategories } from "../utils/logcategories.js";
 const currentYear = new Date().getFullYear();
+
 export const handleAddCourse = async (req, res) => {
   //check whether all the required fields have been received or not
   const requiredFieldsValidation = checkRequiredFields(
     req.body,
     courseRequiredFields
   );
+
   //if required fields are not present
   if (!requiredFieldsValidation.status) {
     const { message } = requiredFieldsValidation;
@@ -21,27 +25,19 @@ export const handleAddCourse = async (req, res) => {
 
   //set the branch of the user so that it is easy to filter the courses based on branch
   req.body.branch = req.user.branch;
-  const fileType = req.file.originalname.split(".")[1];
-  //upload the image of the course certificate to cloud.
-  const uploadResponse = await uploadSingleFile(
-    req.file,
-    "coursecertificate-images",
-    req.body.courseName.replace(/\s+/g, "") + "." + fileType
-  );
-
-  if (!uploadResponse.status) {
-    throw new ApiError(
-      StatusCodes.INTERNAL_SERVER_ERROR,
-      "Unable to upload course completion certificate"
-    );
-  }
-  //set the image value to the response url from the upload.
-  req.body.certificate = uploadResponse.url;
+  req.body.student = req.user.userId;
+  
   const newCourse = await Course.create(req.body);
-  //return all the courses of the student
+
   const courses = await Course.find({ student: req.user.userId }).sort({
-    createdAt: 1,
+    createdAt: -1,
   });
+  logActivity(
+    req,
+    res,
+    logcategories["course"],
+    `Student with id ${req.user.userId} has added the course ${newCourse._id}`
+  );
   return res
     .status(StatusCodes.OK)
     .json(
@@ -52,6 +48,7 @@ export const handleAddCourse = async (req, res) => {
       )
     );
 };
+
 export const handleUpdateCourse = async (req, res) => {
   const { courseId } = req.params;
   if (!courseId || !mongoose.isValidObjectId(courseId)) {
@@ -65,6 +62,13 @@ export const handleUpdateCourse = async (req, res) => {
     runValidators: true,
     new: true,
   });
+  logActivity(
+    req,
+    res,
+    logcategories["course"],
+    `Student with id ${req.user.userId} has updated the course with id ${courseId}`
+  );
+
   const courses = await getCoursesByRole(req.user.role);
   return res.status(StatusCodes.OK).json(
     new ApiResponse(
@@ -95,7 +99,12 @@ export const getStudentCourses = async (req, res) => {
 
 export const getAllCourses = async (req, res) => {
   const courses = await getCoursesByRole(req);
-
+  logActivity(
+    req,
+    res,
+    logcategories["course"],
+    `User with id ${req.user.userId} has accessed all the courses`
+  );
   return res
     .status(StatusCodes.OK)
     .json(new ApiResponse(StatusCodes.OK, { courses }, "courses data sent"));
@@ -108,7 +117,13 @@ export const handleDeleteCourse = async (req, res) => {
   }
   const response = await Course.findByIdAndDelete(courseId);
   //get the courses by role if role is admin then return all the data, if coordinator return only branch students data else return student courses
-  let courses = await getCoursesByRole(req.user.role);
+  let courses = await getCoursesByRole(req);
+  logActivity(
+    req,
+    res,
+    logcategories["course"],
+    `Student with id ${req.user.userId} has deleted the course ${response?.name}`
+  );
   return res
     .status(StatusCodes.OK)
     .json(
@@ -120,7 +135,7 @@ export const handleDeleteCourse = async (req, res) => {
     );
 };
 
-export const getCoursesByRole = async (req, res) => {
+export const getCoursesByRole = async (req) => {
   let courses = [];
   if (req.user.role === "admin") {
     courses = await Course.find({})
@@ -143,9 +158,7 @@ export const getCoursesByRole = async (req, res) => {
         },
       });
   } else {
-    courses = await Course.find({ student: req.user.userId }).sort({
-
-    });
+    courses = await Course.find({ student: req.user.userId }).sort({});
   }
 
   console.log("courses : ", courses);
