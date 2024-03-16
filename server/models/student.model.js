@@ -77,7 +77,6 @@ const studentSchema = new mongoose.Schema(
     },
     deviceTokens: [{
       type: String,
-      select: false,
     }],
     role: {
       select: false,
