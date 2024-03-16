@@ -1,28 +1,28 @@
+/* eslint-disable react/prop-types */
+import { jwtDecode } from "jwt-decode";
 import Navbar from "../common/Navbar";
 import AdminSidebar from "../common/AdminSidebar";
-import { Outlet } from "react-router-dom";
-import { jwtDecode } from "jwt-decode";
-import { useDispatch } from "react-redux";
-import { setRole } from "@/redux/authSlice";
-import { useEffect } from "react";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
 
-const AdminLayout = () => {
+const AdminLayout = (props) => {
   const token = localStorage.getItem("token");
+  const location = useLocation();
+  if (!token) {
+    return <Navigate to={"/auth/login"} replace />
+  }
   const decodedData = jwtDecode(token);
   const userRole = decodedData.user.role;
-
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(setRole({ role: userRole }));
-  }, [])
   return (
     <>
       <Navbar />
       <div className="pt-20">
         <AdminSidebar />
-        <main className="p-4 lg:ml-24">
-          <Outlet />
+        <main className="p-4 lg:ml-28">
+          {props[userRole] ? (
+            <Outlet />
+          ) : (
+            <Navigate to="/unauthorized" state={{ from: location }} />
+          )}
         </main>
       </div>
     </>

@@ -82,6 +82,7 @@ const authSlice = createSlice({
       state.role = decodedData.user.role;
       localStorage.setItem("user", JSON.stringify(payload.data.student));
       localStorage.setItem("token", payload.data.accessToken);
+      
       toast.success(payload.message);
     });
     builder.addCase(studentLogin.rejected, (state, { payload }) => {

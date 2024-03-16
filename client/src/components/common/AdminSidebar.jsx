@@ -1,5 +1,4 @@
 // Example usage for the "student" role
-import React from "react";
 import Sidebar from "./Sidebar";
 
 const AdminSidebar = () => {

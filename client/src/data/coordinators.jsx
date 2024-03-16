@@ -1,8 +1,6 @@
 import DeleteDialog from "@/components/common/DeleteDialog";
 import EditCoordinator from "@/components/coordinator/EditCoordinator";
-import { Switch } from "@/components/ui/switch";
 import { deleteUser } from "@/redux/userSlice";
-import { useDispatch } from "react-redux";
 
 export const coordinatorTableColumns = [
   {

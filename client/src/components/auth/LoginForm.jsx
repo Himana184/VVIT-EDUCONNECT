@@ -90,7 +90,7 @@ const LoginForm = () => {
                 <Label htmlFor="r2">Coordinator</Label>
               </div>
               <div className="flex items-center space-x-2">
-                <RadioGroupItem value="admin" id="r2" />
+                <RadioGroupItem value="admin" id="r3" />
                 <Label htmlFor="r2">Admin</Label>
               </div>
             </RadioGroup>
