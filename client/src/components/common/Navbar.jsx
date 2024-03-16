@@ -6,7 +6,7 @@ import {
 } from "@/components/ui/sheet"
 import Sidebar from "./Sidebar";
 import { GiHamburgerMenu } from "react-icons/gi";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -17,16 +17,28 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Switch } from "../ui/switch";
+import { Label } from "../ui/label";
+import { requestPermission } from "@/utils/requestPermission";
+import { handleSaveUserToken } from "@/redux/notificationSlice";
 
 export function Navbar() {
+  const dispatch = useDispatch();
   const { role, user } = useSelector((state) => state["auth"]);
-  console.log(user)
+
+  const handleNotification = async () => {
+    const data = await requestPermission();
+    if (data.status) {
+      dispatch(handleSaveUserToken({ token: data.response }));
+    }
+  }
   const navigate = useNavigate();
   const handleLogout = () => {
     localStorage.removeItem("token");
     navigate("/");
     window.location.reload();
   }
+
   return (
     <div className="fixed z-50 w-full h-20 bg-white border-b border-b-blue-gray-50">
       <div className="mx-auto flex items-center justify-between px-4 py-2 lg:py-[18px] sm:px-6 lg:px-8 h-[87px]">
@@ -41,7 +53,7 @@ export function Navbar() {
         </div>
         <div className="flex  items-center justify-center gap-5">
           <div>
-            <DropdownMenu>
+            <DropdownMenu className="w-72">
               <DropdownMenuTrigger asChild>
                 <Avatar className="cursor-pointer">
                   <AvatarImage
@@ -51,19 +63,19 @@ export function Navbar() {
                   <AvatarFallback>{role.charAt(0).toUpperCase()}</AvatarFallback>
                 </Avatar>
               </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-36">
+              <DropdownMenuContent className="w-40">
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
-                  <Link to={`/${role}/profile`}>
-                    <DropdownMenuItem>
-                      Profile
-                    </DropdownMenuItem>
-                  </Link>
 
-                  {/* <DropdownMenuItem>
-                    Settings
-                  </DropdownMenuItem> */}
+                  {
+                    (
+                      <div className="flex items-center justify-center gap-2">
+                        <Switch defaultChecked={user.deviceTokens} onCheckedChange={(e) => e ? handleNotification() : console.log("Must implement to remove device token")}></Switch>
+                        <Label>Notifications</Label>
+                      </div>
+                    )
+                  }
                 </DropdownMenuGroup>
 
                 <DropdownMenuSeparator />

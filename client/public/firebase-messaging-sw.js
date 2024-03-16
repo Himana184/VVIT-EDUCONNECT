@@ -8,7 +8,6 @@ importScripts(
   "https://www.gstatic.com/firebasejs/9.2.0/firebase-messaging-compat.js"
 );
 
-
 firebase.initializeApp({
   apiKey: "AIzaSyB1nWoorgclYcJviTHU9GX7lvL6N-EGuQg",
   authDomain: "sihtangleddevs.firebaseapp.com",
@@ -19,25 +18,21 @@ firebase.initializeApp({
   measurementId: "G-N5X70SJ7HR",
 });
 
-
-
 firebase.messaging().onBackgroundMessage(function (payload) {
   console.log(
     "[firebase-messaging-sw.js] Received background message ",
     payload
   );
-  
+
   const notificationTitle = payload?.notification?.title;
-  setNotification({
+  self.registration.showNotification(notificationTitle, {
     title: payload?.notification?.title,
     body: payload?.notification?.body,
   });
-
-  self.registration.showNotification(notificationTitle, notificationOptions);
 });
 
 this.addEventListener("activate", function (event) {
-  console.log("service worker activated");
+  console.log("service worker activated!");
 });
 // this.addEventListener("push", async function (event) {
 //   console.log("notifications will be displayed here");

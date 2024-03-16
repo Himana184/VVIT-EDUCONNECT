@@ -4,9 +4,11 @@ import Navbar from "../common/Navbar";
 import StudentSidebar from "../common/StudentSidebar";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 
+
 const StudentLayout = (props) => {
   const location = useLocation();
   const token = localStorage.getItem("token");
+
   if (!token) {
     return <Navigate to={"/auth/login"} replace />
   }

@@ -7,7 +7,7 @@ import toast from "react-hot-toast";
 export const handleSaveUserToken = createAsyncThunk(
   "/api/v1/notification/saveToken",
   async (payload, { rejectWithValue }) => {
-    console.log(payload)
+    console.log(payload);
     try {
       const response = await axios.post(
         `/api/v1/notification/saveToken`,
@@ -28,7 +28,28 @@ export const handleSaveUserToken = createAsyncThunk(
     }
   }
 );
-
+export const sendNotificationToStudents = createAsyncThunk(
+  "/api/v1/notification/sendNotification",
+  async (payload, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(
+        "/api/v1/notification/sendNotification",
+        payload,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
 const token = localStorage.getItem("token");
 const user = JSON.parse(localStorage.getItem("user"));
 const notificationSlice = createSlice({
@@ -54,6 +75,25 @@ const notificationSlice = createSlice({
       console.log(payload);
       console.log(payload?.message || "Something went wrong");
     });
+
+    builder.addCase(sendNotificationToStudents.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(
+      sendNotificationToStudents.fulfilled,
+      (state, { payload }) => {
+        state.isLoading = false;
+        toast.success(payload.message || "Notifications sent!");
+      }
+    );
+    builder.addCase(
+      sendNotificationToStudents.rejected,
+      (state, { payload }) => {
+        state.isLoading = false;
+        console.log(payload);
+        console.log(payload?.message || "Something went wrong");
+      }
+    );
   },
 });
 

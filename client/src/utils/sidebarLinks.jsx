@@ -43,6 +43,11 @@ export const sidebarLinks = {
       text: "courses",
       href: "courses"
     },
+    {
+      icon: <TfiAnnouncement size={24} />,
+      text: "Notifications",
+      href: "notifications",
+    },
   ],
   coordinator: [
     {

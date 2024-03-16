@@ -13,53 +13,48 @@ admin.initializeApp({
 });
 
 // Function to send notification to a single token
-async function sendNotification(token) {
+async function sendNotification(token, title, body) {
   try {
     const message = {
-      // Specify either token or topic (not both):
-      token: token, // For sending to a specific device
-      // OR
-      // topic: "your_topic_name", // For sending to a topic
-
+      token: token,
       notification: {
-        body: "This is an FCM notification message!",
-        title: "FCM Message",
+        body,
+        title,
       },
     };
-    console.log(message);
-    await admin.messaging().send(message);
-    console.log("Notification sent successfully to token:", token);
-    
+    const response = await admin.messaging().send(message);
+    return response;
   } catch (error) {
     console.error("Error sending notification to token:", token, error);
-    
   }
 }
 
 // Method to send notifications to multiple tokens
-export const sendNotificationsToTokens = async (req,res) => {
-  try {
-    const tokens = await getAllDeviceTokens();
-    console.log(tokens);
-    // Send notifications to all tokens concurrently
-    const responses = await Promise.all(
-      tokens.map((token) => sendNotification(token))
+export const sendNotificationsToTokens = async (req, res) => {
+  const { title, body } = req.body;
+  if (!title || !body) {
+    throw new ApiError(
+      StatusCodes.BAD_REQUEST,
+      "Title and Body of notification are required"
     );
-    console.log("All notifications sent successfully:", responses);
-    return res
-      .status(StatusCodes.OK)
-      .json(
-        new ApiResponse(StatusCodes.OK, {}, "Notifications sent successfully")
-      );
-  } catch (error) {
-    console.error("Failed to send one or more notifications:", error);
-    throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR,"Error sending notifications")
   }
+  const tokens = await getAllDeviceTokens();
+  const responses = await Promise.all(
+    tokens.map((token) => sendNotification(token, title, body))
+  );
+  return res
+    .status(StatusCodes.OK)
+    .json(
+      new ApiResponse(
+        StatusCodes.OK,
+        { responses },
+        "Notifications sent successfully"
+      )
+    );
 };
 
 export const getAllDeviceTokens = async () => {
   const students = await Student.find({});
-  console.log(students);
   const tokens = students.reduce((acc, student) => {
     return acc.concat(student.deviceTokens);
   }, []);

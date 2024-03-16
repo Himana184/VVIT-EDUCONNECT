@@ -24,23 +24,15 @@ import StudentCertifications from "./pages/student/StudentCertifications";
 import StudentCourses from "./pages/student/StudentCourses";
 import StudentDetails from "./components/student/StudentDetails";
 import StudentOptedJobs from "./pages/student/StudentOptedJobs";
-import { useEffect } from "react";
-import { requestPermission } from "./utils/requestPermission";
-import { useDispatch } from "react-redux";
-import { handleSaveUserToken } from "./redux/notificationSlice";
 import Landing from "./pages/Landing";
 import Unauthorized from "./pages/Unauthorized";
+import { useEffect } from "react";
+import { requestPermission } from "./utils/requestPermission";
+import Notifications from "./pages/admin/Notifications";
 
 const App = () => {
-  const dispatch = useDispatch();
   useEffect(() => {
-    const handleNotification = async () => {
-      const data = await requestPermission();
-      if (data.status) {
-        dispatch(handleSaveUserToken({ token: data.response }));
-      }
-    }
-    handleNotification();
+    requestPermission()
   }, [])
   return (
     <Router>
@@ -79,6 +71,7 @@ const App = () => {
             <Route path="internships" element={<Internships />}></Route>
             <Route path="optedJobs" element={<StudentOptedJobs />}></Route>
           </Route>
+          <Route path="notifications" element={<Notifications />} />
           <Route path="coordinators" index element={<Coordinators />}></Route>
           <Route path="jobs" element={<Jobs />} ></Route>
           <Route path="jobs/:jobId" element={<JobDetail />}></Route>

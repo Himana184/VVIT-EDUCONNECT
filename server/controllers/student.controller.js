@@ -10,6 +10,8 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import { ApiError } from "../utils/ApiError.js";
 import uploadSingleFile from "../utils/uploadToCloud.js";
 import jobDriveModel from "../models/jobDrive.model.js";
+import { logActivity } from "../utils/logActivity.js";
+import { logcategories } from "../utils/logcategories.js";
 //student registeration
 const currentYear = new Date().getFullYear();
 
