@@ -37,7 +37,7 @@ app.use(express.json());
 app.use(cors());
 
 //routes
-
+app.use(isAuthenticated);
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/student", upload.single("studentImage"), studentRouter);
 app.use("/api/v1/internship", upload.single("offerLetter"), internshipRouter);
