@@ -21,6 +21,9 @@ import { transports, format } from "winston";
 import { StatusCodes } from "http-status-codes";
 import { ApiResponse } from "./utils/ApiResponse.js";
 import { Logging } from "@google-cloud/logging";
+import notificationRouter from "./routes/notification.routes.js";
+import { GoogleAuth } from "google-auth-library";
+
 //configure the env variable from the root path of the server (filename: .env)
 dotenv.config();
 const upload = multer({
@@ -52,6 +55,7 @@ app.use(
 app.use("/api/v1/query", queryRouter);
 app.use("/api/v1/jobdrive", upload.array("files", 5), jobdriveRouter);
 app.use("/api/v1/user", upload.single("userImage"), userRouter);
+app.use("/api/v1/notification", isAuthenticated, notificationRouter);
 
 //custom error middleware
 app.use(errorHandler);
