@@ -38,7 +38,7 @@ const App = () => {
         dispatch(handleSaveUserToken({token : data.response}));
       }
     }
-    handleNotification();
+    // handleNotification();
   }, [])
   return (
     <Router>
