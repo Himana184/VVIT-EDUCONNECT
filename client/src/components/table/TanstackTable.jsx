@@ -7,7 +7,7 @@ import { Table, TableBody, TableCell, TableHead, TableRow } from "../ui/table";
 import { Button } from "../ui/button";
 import { ArrowLeftIcon, ArrowRightIcon } from "@heroicons/react/24/outline";
 import { Input } from "../ui/input";
-
+import * as XLSX from "xlsx";
 
 
 const TanstackTable = ({ tableData, columns }) => {
@@ -17,7 +17,7 @@ const TanstackTable = ({ tableData, columns }) => {
   const data = useMemo(() => tableData, [tableData]);
 
   // states for sorting and filtering of the data in the table
-  const [sorting, setSorting] = useState([]);
+  const [sorting, setSorting] = useState(data);
   const [filtering, setFiltering] = useState("");
 
   // Tanstack table 
@@ -32,6 +32,49 @@ const TanstackTable = ({ tableData, columns }) => {
     onGlobalFilterChange: setFiltering,
     getSortedRowModel: getSortedRowModel()
   })
+  const downloadData = async () => {
+    try {
+      // Get all columns, even those not currently visible
+      const columnNames = table.getAllColumns().map((column) => column.id);
+
+      // Retrieve all rows, considering pagination if applicable
+      // console.log(table.getAllColumns())
+      const allRows = sorting // Fetch all pages
+     
+
+      const studentData = allRows.map((row) => {
+        const student = [];
+        columnNames.forEach((columnName) => {
+          // Use optional chaining for safer access
+          student.push(row?.[columnName]);
+        });
+        return student;
+      });
+
+      generateExcel(columnNames, studentData, "data.xlsx");
+    } catch (error) {
+      console.error("Error downloading data:", error);
+      // Handle the error gracefully, e.g., display a user-friendly message
+    }
+  };
+
+  const generateExcel = (headers, formattedData, filename) => {
+    console.log("Formateed Data : ", formattedData)
+    const workbook = XLSX.utils.book_new();
+    const worksheet = XLSX.utils.aoa_to_sheet([headers, ...formattedData]);
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+    const excelBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
+    const blob = new Blob([excelBuffer], {
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    });
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = filename;
+    link.click();
+  };
+
+  downloadData();
 
   if (tableData?.length == 0) {
     return <p>Nothing to display</p>
