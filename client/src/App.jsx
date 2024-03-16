@@ -28,6 +28,8 @@ import { useEffect } from "react";
 import { requestPermission } from "./utils/requestPermission";
 import { useDispatch } from "react-redux";
 import { handleSaveUserToken } from "./redux/notificationSlice";
+import Landing from "./pages/Landing";
+import Unauthorized from "./pages/Unauthorized";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -35,7 +37,7 @@ const App = () => {
     const handleNotification = async () => {
       const data = await requestPermission();
       if (data.status) {
-        dispatch(handleSaveUserToken({token : data.response}));
+        dispatch(handleSaveUserToken({ token: data.response }));
       }
     }
     handleNotification();
@@ -45,7 +47,7 @@ const App = () => {
       <Routes>
 
         {/* Landing page which contains details about the project features */}
-        {/* <Route path="/" element={<Landing />} /> */}
+        <Route path="/" element={<Landing />} />
 
         {/* routes related to registeration and login of users */}
         <Route path="/auth">
@@ -54,7 +56,7 @@ const App = () => {
         </Route>
 
         {/* all routes of student */}
-        <Route path="/student" element={<StudentLayout />}>
+        <Route path="/student" element={<StudentLayout student={true} />}>
           <Route path="announcements" element={<Announcements />}></Route>
           <Route path="jobs" element={<Jobs />}></Route>
           <Route path="jobs/:jobId" element={<JobDetail />}></Route>
@@ -66,7 +68,7 @@ const App = () => {
         </Route>
 
         {/* all routes of admin */}
-        <Route path="/admin" element={<AdminLayout />}>
+        <Route path="/admin" element={<AdminLayout admin={true} />}>
           <Route index element={<Dashboard />} />
           <Route path="students" index element={<Students />}></Route>
           <Route path="students/:studentId" element={<Profile />}>
@@ -91,7 +93,7 @@ const App = () => {
         </Route>
 
         {/* all routes of coordinator */}
-        <Route path="/coordinator" element={<CoordinatorLayout />}>
+        <Route path="/coordinator" element={<CoordinatorLayout coordinator={true} />}>
           <Route path="students" index element={<Students />}></Route>
           <Route path="students/:studentId" element={<Profile />}>
             <Route index element={<StudentDetails />}></Route>
@@ -117,6 +119,7 @@ const App = () => {
 
         {/* all routes of faculty */}
         <Route path="/faculty"></Route>
+        <Route path="/unauthorized" element={<Unauthorized />}></Route>
       </Routes>
       <Toaster />
     </Router>

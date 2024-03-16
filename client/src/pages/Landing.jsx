@@ -1,12 +1,18 @@
 import { Button } from "@/components/ui/button"
+import { Link } from "react-router-dom"
 
 const Landing = () => {
 	return (
-		<div className="flex flex-col gap-5 h-screen w-screen items-center justify-center">
-			<Button className="w-72" variant="destructive">Login</Button>
-			<Button className="w-72" variant="secondary">Login</Button>
-			<Button className="w-72" >Login</Button>
-			<p className="font-medium text-lg">Hello world</p>
+		<div className="flex h-screen w-screen items-center justify-center gap-10">
+			<Link to={"/admin"}>
+				<Button>Admin</Button>
+			</Link>
+			<Link to={"/coordinator"}>
+				<Button>Coordinator</Button>
+			</Link>
+			<Link to={"/student"}>
+				<Button>Student</Button>
+			</Link>
 		</div>
 	)
 }
