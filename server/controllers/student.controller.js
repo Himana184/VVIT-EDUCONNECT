@@ -133,8 +133,7 @@ export const handleGetStudentDetails = async (req, res) => {
 
 //need to add pagination to it as there will be a large number of students
 export const getAllStudents = async (req, res) => {
-  var students = getStudentsByRole(req);
-
+  var students = await getStudentsByRole(req);
   return res
     .status(StatusCodes.OK)
     .json(
@@ -233,7 +232,6 @@ export const getStudentsByRole = async (req) => {
 
     if (req.user.role === "admin") {
       const keyExists = await redisClient.exists("students");
-
       if (keyExists) {
         students = await getCacheValue("students");
         return students;
@@ -250,13 +248,20 @@ export const getStudentsByRole = async (req) => {
         return students;
       }
     } else if (req.user.role === "coordinator") {
-      students = await Student.find({ branch: req.user.branch })
-        .sort({ createdAt: -1 })
-        .populate([
-          { path: "internships" },
-          { path: "certifications" },
-          { path: "courses" },
-        ]);
+      const keyExists = await redisClient.exists(`students-${req.user.branch}`);
+      if (keyExists) {
+        students = await getCacheValue(`students-${req.user.branch}`);
+        return students;
+      } else {
+        students = await Student.find({ branch: req.user.branch })
+          .sort({ createdAt: -1 })
+          .populate([
+            { path: "internships" },
+            { path: "certifications" },
+            { path: "courses" },
+          ]);
+        await setCacheValue(`students-${req.user.branch}`, students);
+      }
     } else {
       students = await Student.find({ student: req.user.userId }).sort({
         createdAt: -1,
@@ -269,4 +274,3 @@ export const getStudentsByRole = async (req) => {
     throw error;
   }
 };
-
