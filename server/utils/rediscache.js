@@ -2,7 +2,7 @@ import redisClient from "./redisclient.js";
 const DEFAULT_EXPIRATION = 30;
 
 export const getCacheValue = async (key) => {
-  console.log("Cache HIT")
+  console.log("Cache HIT");
   const data = await redisClient.get(key);
   const parsedData = await JSON.parse(data);
   return parsedData;
