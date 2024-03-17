@@ -21,6 +21,7 @@ import { Switch } from "../ui/switch";
 import { Label } from "../ui/label";
 import { requestPermission } from "@/utils/requestPermission";
 import { handleSaveUserToken } from "@/redux/notificationSlice";
+import { sidebarLinks } from "@/utils/sidebarLinks";
 
 export function Navbar() {
   const dispatch = useDispatch();
@@ -94,7 +95,21 @@ export function Navbar() {
                 <GiHamburgerMenu size={30} className="cursor-pointer" />
               </SheetTrigger>
               <SheetContent className="w-32 pt-12">
-                <Sidebar show={false} />
+                <p>Hello wolrfd</p>
+                {
+                  <div className={`flex flex-col  justify-center items-center fixed w-fit h-screen px-2 bg-red-500 border-r border-r-blue-gray-50`}>
+                    {sidebarLinks[role]?.map((link, index) => (
+                      <Link
+                        key={index}
+                        to={`/${role}/${link.href}`}
+                        className="w-20 h-20 flex flex-col gap-[2px] items-center justify-center cursor-pointer hover:bg-blue-gray-50"
+                      >
+                        {link.icon}
+                        <div className="text-xs">{link.text || "H"}</div>
+                      </Link>
+                    ))}
+                  </div>
+                }
               </SheetContent>
             </Sheet>
           </div>

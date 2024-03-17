@@ -208,69 +208,44 @@ export const deleteStudent = async (req, res) => {
     req,
     res,
     logcategories["student"],
-    `User with id ${req.user.userId} has deleted the student with name ${response?.name}`
+    `User with id ${req.user.userId} has deleted the student with name ${student?.name}`
   );
-
-  return res
-    .status(StatusCodes.OK)
-    .json(
-      new ApiResponse(
-        StatusCodes.OK,
-        [
-          studentResponse,
-          internshipResponse,
-          courseResponse,
-          certificationResponse,
-        ],
-        `Student ${studentResponse?.name} details deleted, along with associated records`
-      )
-    );
+  const students = await getStudentsByRole(req);
+  return res.status(StatusCodes.OK).json(
+    new ApiResponse(
+      StatusCodes.OK,
+      {
+        students,
+      },
+      `Student ${studentResponse?.name} details deleted, along with associated records`
+    )
+  );
 };
 export const getStudentsByRole = async (req) => {
-  try {
-    let students = [];
-
-    if (req.user.role === "admin") {
-      const keyExists = await redisClient.exists("students");
-      if (keyExists) {
-        students = await getCacheValue("students");
-        return students;
-      } else {
-        students = await Student.find({})
-          .sort({ createdAt: -1 })
-          .populate([
-            { path: "internships" },
-            { path: "certifications" },
-            { path: "courses" },
-          ]);
-
-        await setCacheValue("students", students);
-        return students;
-      }
-    } else if (req.user.role === "coordinator") {
-      const keyExists = await redisClient.exists(`students-${req.user.branch}`);
-      if (keyExists) {
-        students = await getCacheValue(`students-${req.user.branch}`);
-        return students;
-      } else {
-        students = await Student.find({ branch: req.user.branch })
-          .sort({ createdAt: -1 })
-          .populate([
-            { path: "internships" },
-            { path: "certifications" },
-            { path: "courses" },
-          ]);
-        await setCacheValue(`students-${req.user.branch}`, students);
-      }
-    } else {
-      students = await Student.find({ student: req.user.userId }).sort({
+  let students = [];
+  if (req.user.role === "admin") {
+    students = await Student.find({})
+      .sort({ createdAt: -1 })
+      .populate([
+        { path: "internships" },
+        { path: "certifications" },
+        { path: "courses" },
+      ]);
+  } else if (req.user.role === "coordinator") {
+    students = await Student.find({ branch: req.user.branch })
+      .sort({
         createdAt: -1,
-      });
-    }
-
-    return students;
-  } catch (error) {
-    console.error("Error in getStudentsByRole:", error);
-    throw error;
+      })
+      .populate([
+        { path: "internships" },
+        { path: "certifications" },
+        { path: "courses" },
+      ]);
+  } else {
+    students = await Student.find({ student: req.user.userId }).sort({
+      createdAt: -1,
+    });
   }
+
+  return students;
 };
