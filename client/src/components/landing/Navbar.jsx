@@ -10,7 +10,7 @@ export function Navbar() {
 
         <div className="hidden lg:block">
           <Link
-            to="/login"
+            to="/auth/login"
             type="button"
             className="rounded-md bg-black px-5 py-2 text-sm font-semibold text-white shadow-sm hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
           >

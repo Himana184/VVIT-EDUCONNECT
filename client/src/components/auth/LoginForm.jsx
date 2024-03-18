@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { useForm } from "react-hook-form";
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardContent, CardTitle, CardFooter, } from "../ui/card";
 import { Input } from "../ui/input";
@@ -26,7 +26,9 @@ const LoginForm = () => {
   const { handleSubmit, register, formState, reset, clearErrors } = form;
   const { errors } = formState;
 
-
+  if (user) {
+    return <Navigate to={`/${user.role}`} />
+  }
   const handleUserLogin = async (data) => {
     let response;
     if (role == "student") {

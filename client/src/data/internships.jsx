@@ -21,11 +21,24 @@ export const adminInternshipTableColumns = [
     accessorKey: "stipend",
   },
   {
-    header: "Student Name",
+    header: "Student name",
+    accessorKey: "student[name]",
+    accessorFn: (row) => {
+      return row.student.name
+    },
     cell: ({ row }) => {
-      console.log(row.original)
+      return <p>{row.original.student.name}</p>;
+    },
+  },
+  {
+    header: "Roll No",
+    accessorKey: "student[rollNumber]",
+    accessorFn: (row) => {
+      return row.student.rollNumber
+    },
+    cell: ({ row }) => {
       return (
-        <p>{row.original.student?.name}</p>
+        <p>{row.original.student.rollNumber || "Roll Number"}</p>
       )
     }
   },
