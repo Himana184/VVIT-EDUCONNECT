@@ -7,12 +7,13 @@ import { Table, TableBody, TableCell, TableHead, TableRow } from "../ui/table";
 import { Button } from "../ui/button";
 import { ArrowLeftIcon, ArrowRightIcon } from "@heroicons/react/24/outline";
 import { Input } from "../ui/input";
-
+import * as XLSX from "xlsx";
+import { Download } from "lucide-react";
 
 
 const TanstackTable = ({ tableData, columns }) => {
 
-  console.log("Table data : ", tableData)
+  // console.log("Table data : ", tableData)
   // Memorizing the data using useMemo
   const data = useMemo(() => tableData, [tableData]);
 
@@ -36,6 +37,57 @@ const TanstackTable = ({ tableData, columns }) => {
   if (tableData?.length == 0) {
     return <p>Nothing to display</p>
   }
+
+  const handleBtnClick = () => {
+    const headers = columns.filter((column) => {
+      if (column.accessorKey) {
+        return column.accessorKey;
+      }
+    });
+    console.log(headers);
+    const headerNames = headers.map((header) => header.accessorKey);
+
+    const data = table.getFilteredRowModel().flatRows.map((row) => row.original);
+    console.log(data);
+    console.log(headerNames);
+    const accessNestedProperty = (obj, path) => {
+      const parts = path.split('[').map(part => part.replace(']', ''));
+      let value = obj;
+      for (const part of parts) {
+        value = value[part];
+        if (value === undefined) return undefined;
+      }
+      return value;
+    };
+
+    const formattedData = data.map((student) => [
+      ...headerNames.map((name) => {
+        if (name.includes('[')) {
+          return accessNestedProperty(student, name);
+        } else {
+          return student[name];
+        }
+      })
+    ]);
+    generateExcel(headerNames, formattedData, "Student-Contacts.xlsx");
+  };
+
+
+  const generateExcel = (headers, formattedData, filename) => {
+    const workbook = XLSX.utils.book_new();
+    const worksheet = XLSX.utils.aoa_to_sheet([headers, ...formattedData]);
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+    const excelBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
+    const blob = new Blob([excelBuffer], {
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    });
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = filename;
+    link.click();
+  };
+
   return (
     <div>
 
@@ -62,7 +114,10 @@ const TanstackTable = ({ tableData, columns }) => {
             <p className="hidden lg:block">Next</p>
           </Button>
         </div>
-        <Input type="text" value={filtering} onChange={e => setFiltering(e.target.value)} className="justify-end w-52 lg:w-72" placeholder="Search Anything" />
+        <div className="flex gap-3">
+          <Button variant="icon" onClick={handleBtnClick}><Download /></Button>
+          <Input type="text" value={filtering} onChange={e => setFiltering(e.target.value)} className="justify-end w-52 lg:w-72" placeholder="Search Anything" />
+        </div>
       </div>
 
       {/* Table */}

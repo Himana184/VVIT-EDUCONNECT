@@ -16,7 +16,7 @@ export const adminCourseTableColumns = [
 
   {
     header: "Student name",
-    accessorKey: "studentName",
+    accessorKey: "student[name]",
     accessorFn: (row) => {
       console.log(row)
       return row.student.name
@@ -27,7 +27,7 @@ export const adminCourseTableColumns = [
   },
   {
     header: "Roll No",
-    accessorKey: "rollNo",
+    accessorKey: "student[rollNumber]",
     accessorFn: (row) => {
       console.log(row)
       return row.student.rollNumber
@@ -38,7 +38,7 @@ export const adminCourseTableColumns = [
   },
   {
     header: "Branch",
-    accessorKey: "branch",
+    accessorKey: "student[branch]",
     accessorFn: (row) => {
       console.log(row)
       return row.student.branch

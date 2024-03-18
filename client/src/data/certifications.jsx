@@ -15,14 +15,20 @@ export const adminCertificationTableColumns = [
   },
   {
     header: "Student name",
+    accessorKey: "student[name]",
+    accessorFn: (row) => {
+      return row.student.name
+    },
     cell: ({ row }) => {
-      return (
-        <p>{row.original.student.name || "Name"}</p>
-      )
-    }
+      return <p>{row.original.student.name}</p>;
+    },
   },
   {
     header: "Roll No",
+    accessorKey: "student[rollNumber]",
+    accessorFn: (row) => {
+      return row.student.rollNumber
+    },
     cell: ({ row }) => {
       return (
         <p>{row.original.student.rollNumber || "Roll Number"}</p>
@@ -31,18 +37,22 @@ export const adminCertificationTableColumns = [
   },
   {
     header: "Branch",
+    accessorKey: "student[branch]",
+    accessorFn: (row) => {
+      return row.student.branch
+    },
     cell: ({ row }) => {
-      return (
-        <p>{row.original.student.branch || "Branch"}</p>
-      )
+      return <p>{row.original.student.branch}</p>
     }
   },
   {
     header: "Passout Year",
+    accessorKey: "student[passoutYear]",
+    accessorFn: (row) => {
+      return row.student.passoutYear
+    },
     cell: ({ row }) => {
-      return (
-        <p>{row.original.student.passoutYear || "20**"}</p>
-      )
+      return <p>{row.original.student.passoutYear}</p>
     }
   },
   {
