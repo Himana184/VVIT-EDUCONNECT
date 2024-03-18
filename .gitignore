@@ -7,3 +7,4 @@ ER-diagram.txt
 models.txt
 server/keyfile.json
 server/logKeyfile.json
+server/logs.log
