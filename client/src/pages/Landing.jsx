@@ -1,20 +1,20 @@
-import { Button } from "@/components/ui/button"
-import { Link } from "react-router-dom"
+import FAQ from "@/components/landing/FAQ";
+import Features from "@/components/landing/Features";
+import Footer from "@/components/landing/Footer";
+import Hero from "@/components/landing/Hero";
+import Navbar from "@/components/landing/Navbar";
+
 
 const Landing = () => {
 	return (
-		<div className="flex h-screen w-screen items-center justify-center gap-10">
-			<Link to={"/admin"}>
-				<Button>Admin</Button>
-			</Link>
-			<Link to={"/coordinator"}>
-				<Button>Coordinator</Button>
-			</Link>
-			<Link to={"/student"}>
-				<Button>Student</Button>
-			</Link>
-		</div>
-	)
-}
+		<>
+			<Navbar />
+			<Hero />
+			<Features />
+			<FAQ />
+			<Footer />
+		</>
+	);
+};
 
-export default Landing
+export default Landing;
