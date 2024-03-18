@@ -42,6 +42,7 @@ export const sendNotificationsToTokens = async (req, res) => {
   const responses = await Promise.all(
     tokens.map((token) => sendNotification(token, title, body))
   );
+  console.log(responses)
   return res
     .status(StatusCodes.OK)
     .json(

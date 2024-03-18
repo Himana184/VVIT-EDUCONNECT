@@ -8,6 +8,8 @@ import mongoose from "mongoose";
 import uploadSingleFile from "../utils/uploadToCloud.js";
 import { logActivity } from "../utils/logActivity.js";
 import { logcategories } from "../utils/logcategories.js";
+import redisClient from "../utils/redisclient.js";
+import { getCacheValue, setCacheValue } from "../utils/rediscache.js";
 
 export const handleAddAnnouncement = async (req, res) => {
   //check whether all the required fields have been received or not
@@ -40,8 +42,8 @@ export const handleAddAnnouncement = async (req, res) => {
   }
   const newAnnouncement = await Announcement.create(req.body);
 
-  const announcements = await Announcement.find({});
-
+  const announcements = await Announcement.find({}).sort({ createdAt: -1 });
+  setCacheValue("announcements", announcements);
   logActivity(
     req,
     res,
@@ -61,11 +63,17 @@ export const handleAddAnnouncement = async (req, res) => {
 };
 
 export const getAllAnnouncements = async (req, res) => {
-  const announcements = await Announcement.find({}).sort({
-    createdAt: -1,
-  });
+  const keyExists = await redisClient.exists("announcements");
+  var announcements = [];
+  if (keyExists != 0) {
+    announcements = await getCacheValue("announcements");
+  } else {
+    announcements = await Announcement.find({}).sort({
+      createdAt: -1,
+    });
+    setCacheValue("announcements", announcements);
+  }
 
-  console.log(announcements);
   return res
     .status(StatusCodes.OK)
     .json(
@@ -116,7 +124,7 @@ export const handleUpdateAnnouncement = async (req, res) => {
     }
   );
   const announcements = await Announcement.find({}).sort({ createdAt: -1 });
-
+  setCacheValue("announcements", announcements);
   logActivity(
     req,
     res,
@@ -147,7 +155,7 @@ export const handleDeleteAnnouncement = async (req, res) => {
 
   //fetch all anouncements
   const announcements = await Announcement.find({}).sort({ createdAt: -1 });
-
+  setCacheValue("announcements", announcements);
   logActivity(
     req,
     res,

@@ -81,7 +81,7 @@ const JobCard = ({ job }) => {
             <p className="text-xs font-medium">Last Date</p>
           </div>
         </div>
-        <Link to={`/${role}/jobs/${job._id}`}>
+        <Link to={`/${user.role || "student"}/jobs/${job._id}`}>
           <Button>
             View More
           </Button>

@@ -12,6 +12,8 @@ import uploadSingleFile from "../utils/uploadToCloud.js";
 import jobDriveModel from "../models/jobDrive.model.js";
 import { logActivity } from "../utils/logActivity.js";
 import { logcategories } from "../utils/logcategories.js";
+import { getCacheValue, setCacheValue } from "../utils/rediscache.js";
+import redisClient from "../utils/redisclient.js";
 //student registeration
 const currentYear = new Date().getFullYear();
 
@@ -87,19 +89,24 @@ export const handleGetStudentDetails = async (req, res) => {
   }
 
   //fetch the details of the student with the given id
-  const student = await Student.findById(studentId).populate([
-    { path: "internships", populate: [{ path: "student", select: ["name"] }] },
-    { path: "courses", populate: [{ path: "student", select: ["name"] }] },
-    {
-      path: "certifications",
-      populate: [
-        {
-          path: "student",
-          select: ["name", "rollNumber", "branch", "passoutYear"],
-        },
-      ],
-    },
-  ]).exec();
+  const student = await Student.findById(studentId)
+    .populate([
+      {
+        path: "internships",
+        populate: [{ path: "student", select: ["name"] }],
+      },
+      { path: "courses", populate: [{ path: "student", select: ["name"] }] },
+      {
+        path: "certifications",
+        populate: [
+          {
+            path: "student",
+            select: ["name", "rollNumber", "branch", "passoutYear"],
+          },
+        ],
+      },
+    ])
+    .exec();
 
   const studentOptedJobs = await jobDriveModel.find({
     optedStudents: { $in: studentId },
@@ -109,10 +116,10 @@ export const handleGetStudentDetails = async (req, res) => {
   if (!student) {
     throw new ApiError(StatusCodes.NOT_FOUND, "Student details not found");
   }
- const studentDetails = student.toObject();
+  const studentDetails = student.toObject();
 
- // Add the optedJobs field to the studentDetails object
- studentDetails.optedJobs = studentOptedJobs;
+  // Add the optedJobs field to the studentDetails object
+  studentDetails.optedJobs = studentOptedJobs;
   return res
     .status(StatusCodes.OK)
     .json(
@@ -126,10 +133,7 @@ export const handleGetStudentDetails = async (req, res) => {
 
 //need to add pagination to it as there will be a large number of students
 export const getAllStudents = async (req, res) => {
-  var students = [];
-  console.log(req.user);
-  students = await getStudentsByRole(req);
-
+  var students = await getStudentsByRole(req);
   return res
     .status(StatusCodes.OK)
     .json(
@@ -204,23 +208,18 @@ export const deleteStudent = async (req, res) => {
     req,
     res,
     logcategories["student"],
-    `User with id ${req.user.userId} has deleted the student with name ${response?.name}`
+    `User with id ${req.user.userId} has deleted the student with name ${student?.name}`
   );
-
-  return res
-    .status(StatusCodes.OK)
-    .json(
-      new ApiResponse(
-        StatusCodes.OK,
-        [
-          studentResponse,
-          internshipResponse,
-          courseResponse,
-          certificationResponse,
-        ],
-        `Student ${studentResponse?.name} details deleted, along with associated records`
-      )
-    );
+  const students = await getStudentsByRole(req);
+  return res.status(StatusCodes.OK).json(
+    new ApiResponse(
+      StatusCodes.OK,
+      {
+        students,
+      },
+      `Student ${studentResponse?.name} details deleted, along with associated records`
+    )
+  );
 };
 export const getStudentsByRole = async (req) => {
   let students = [];

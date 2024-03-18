@@ -8,11 +8,10 @@ import mongoose from "mongoose";
 import { uploadMultipleFiles } from "../utils/uploadToCloud.js";
 import { logActivity } from "../utils/logActivity.js";
 import { logcategories } from "../utils/logcategories.js";
-//import jobdriveModel from "../models/jobdrive.model.js";
-//const currentYear = new Date().getFullYear();
+import redisClient from "../utils/redisclient.js";
+import { getCacheValue, setCacheValue } from "../utils/rediscache.js";
 
 export const handleAddJobDrive = async (req, res) => {
-  console.log(req.body);
   //check whether all the required fields have been received or not
   const requiredFieldsValidation = checkRequiredFields(
     req.body,
@@ -24,12 +23,12 @@ export const handleAddJobDrive = async (req, res) => {
     const { message } = requiredFieldsValidation;
     throw new ApiError(StatusCodes.BAD_REQUEST, message);
   }
-  console.log(req.files);
+
   const uploadFilesResponse = await uploadMultipleFiles(
     req.files,
     "job-drive-files"
   );
-  console.log(uploadFilesResponse);
+
   if (!uploadFilesResponse.status) {
     throw new ApiError(
       StatusCodes.INTERNAL_SERVER_ERROR,
@@ -38,12 +37,13 @@ export const handleAddJobDrive = async (req, res) => {
   }
 
   req.body.files = uploadFilesResponse.files;
-  console.log(req.body);
+
   //create a new job drive with given details
   const newJobDrive = await JobDrive.create(req.body);
 
   //fetch all jobdrives
   const jobDrives = await JobDrive.find({}).sort({ createdAt: -1 });
+  setCacheValue("jobdrives", jobDrives);
   logActivity(
     req,
     res,
@@ -83,8 +83,14 @@ export const getJobDriveDetails = async (req, res) => {
 };
 
 export const getAllJobDrives = async (req, res) => {
-  const jobDrives = await JobDrive.find({}).sort({ createdAt: -1 });
-
+  const keyExists = await redisClient.exists("jobdrives");
+  var jobDrives = [];
+  if (keyExists != 0) {
+    jobDrives = await getCacheValue("jobdrives");
+  } else {
+    jobDrives = await JobDrive.find({}).sort({ createdAt: -1 });
+    setCacheValue("jobdrives", jobDrives);
+  }
   return res
     .status(StatusCodes.OK)
     .json(
@@ -102,6 +108,7 @@ export const handleDeleteJobDrive = async (req, res) => {
   //fetch all jobdrives
 
   const jobDrives = await JobDrive.find({}).sort({ createdAt: -1 });
+  setCacheValue("jobdrives", jobDrives);
   logActivity(
     req,
     res,

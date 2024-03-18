@@ -44,11 +44,14 @@ export const deleteStudent = createAsyncThunk(
   async (payload, { rejectWithValue }) => {
     console.log("Delete student payload : ", payload);
     try {
-      const response = await axios.delete(`/api/v1/student/${payload.data._id}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
+      const response = await axios.delete(
+        `/api/v1/student/${payload.data._id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
       return response.data;
     } catch (error) {
       if (!error?.response) {
@@ -92,13 +95,13 @@ const authSlice = createSlice({
       state.isLoading = false;
       toast.error(payload?.message || "something went wrong");
     });
-        // Delete student
+    // Delete student
     builder.addCase(deleteStudent.pending, (state) => {
       state.isLoading = true;
     });
     builder.addCase(deleteStudent.fulfilled, (state, { payload }) => {
       state.isLoading = false;
-      state.student = payload.data.student;
+      state.students = payload.data.students;
       toast.success(payload.message);
     });
     builder.addCase(deleteStudent.rejected, (state, { payload }) => {

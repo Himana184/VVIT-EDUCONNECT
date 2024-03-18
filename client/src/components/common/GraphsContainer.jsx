@@ -48,7 +48,7 @@ const GraphsContainer = () => {
     labels: years,
     datasets: [
       {
-        label: "Number of Placements",
+        label: "Number of Internships",
         data: numberOfPlacementsByYear,
         borderColor: "rgba(75, 192, 192, 1)",
         borderWidth: 2,
