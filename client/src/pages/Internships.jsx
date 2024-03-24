@@ -10,6 +10,7 @@ import { getInternships, handleFilter } from '@/redux/internshipSlice';
 import { Select, SelectContent, SelectTrigger, SelectValue, SelectItem } from '@/components/ui/select';
 import AddInternship from '@/components/internships/AddInternship';
 import { internshipVerificationStatus } from '@/utils/internship';
+import Loading from '@/components/common/Loading';
 
 const Internships = () => {
 
@@ -23,9 +24,7 @@ const Internships = () => {
   }, [])
 
   if (isLoading) {
-    return <div className='flex items-center justify-center h-[80vh]'>
-      <Loader2 className='animate-spin' />
-    </div>
+    return <Loading />
   }
 
   return (
@@ -61,7 +60,7 @@ const Internships = () => {
           </div> */}
         </div>
         {
-          view == "table" ? <TanstackTable tableData={internships || []} columns={user.role == "admin" ? adminInternshipTableColumns : studentInternshipTableColumns} /> : (
+          view == "table" ? <TanstackTable tableData={internships || []} columns={user.role !="student" ? adminInternshipTableColumns : studentInternshipTableColumns} /> : (
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10'>
               {
                 internships?.map((internship, index) => {
