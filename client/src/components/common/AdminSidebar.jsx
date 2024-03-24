@@ -3,7 +3,6 @@ import Sidebar from "./Sidebar";
 
 const AdminSidebar = () => {
   const role = "admin";
-
   return (
     <div>
       {/* Other components or content for the student page */}

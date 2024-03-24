@@ -15,6 +15,7 @@ import { Button } from "../ui/button";
 import { useDispatch, useSelector } from 'react-redux';
 import toast from 'react-hot-toast';
 import { updateInternship } from "@/redux/internshipSlice";
+import { PencilSquareIcon } from "@heroicons/react/24/outline";
 
 const EditInternship = () => {
   //const isLoading = false;

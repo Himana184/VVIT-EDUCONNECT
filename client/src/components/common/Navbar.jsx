@@ -4,7 +4,6 @@ import {
   SheetContent,
   SheetTrigger,
 } from "@/components/ui/sheet"
-import Sidebar from "./Sidebar";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { useDispatch, useSelector } from "react-redux";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -22,6 +21,7 @@ import { Label } from "../ui/label";
 import { requestPermission } from "@/utils/requestPermission";
 import { handleSaveUserToken } from "@/redux/notificationSlice";
 import { sidebarLinks } from "@/utils/sidebarLinks";
+import { clearAuthState } from "@/redux/authSlice";
 
 export function Navbar() {
   const dispatch = useDispatch();
@@ -33,11 +33,10 @@ export function Navbar() {
       dispatch(handleSaveUserToken({ token: data.response }));
     }
   }
-  const navigate = useNavigate();
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    navigate("/");
+    localStorage.clear()
     window.location.reload();
+
   }
 
   return (

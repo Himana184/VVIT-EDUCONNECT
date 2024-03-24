@@ -58,18 +58,24 @@ export const studentRegisteration = createAsyncThunk(
 
 const token = localStorage.getItem("token");
 const user = JSON.parse(localStorage.getItem("user"));
+const role  = localStorage.getItem("role");
 const authSlice = createSlice({
   name: "auth",
   initialState: {
     isLoading: false,
     user: user,
-    role: "",
+    role: role,
     token: token,
   },
   reducers: {
     setRole: (state, { payload }) => {
       state.role = payload.role;
     },
+    clearAuthState:(state) => {
+      state.user = {},
+      state.role = "",
+      state.token = ""
+    }
   },
   extraReducers: (builder) => {
     builder.addCase(studentLogin.pending, (state) => {
@@ -80,9 +86,10 @@ const authSlice = createSlice({
       state.user = payload.data.student;
       const decodedData = jwtDecode(payload.data.accessToken);
       state.role = decodedData.user.role;
+      state.token = payload.data.accessToken;
       localStorage.setItem("user", JSON.stringify(payload.data.student));
       localStorage.setItem("token", payload.data.accessToken);
-      
+      localStorage.setItem("role", decodedData.user.role);
       toast.success(payload.message);
     });
     builder.addCase(studentLogin.rejected, (state, { payload }) => {
@@ -99,8 +106,10 @@ const authSlice = createSlice({
       state.user = payload.data.user;
       const decodedData = jwtDecode(payload.data.accessToken);
       state.role = decodedData.user.role;
+      state.token = payload.data.accessToken;
       localStorage.setItem("user", JSON.stringify(payload.data.user));
       localStorage.setItem("token", payload.data.accessToken);
+      localStorage.setItem("role", decodedData.user.role);
       toast.success(payload.message);
     });
     builder.addCase(userLogin.rejected, (state, { payload }) => {
@@ -123,5 +132,5 @@ const authSlice = createSlice({
   },
 });
 
-export const { logout, setRole } = authSlice.actions;
+export const { logout, setRole, clearAuthState } = authSlice.actions;
 export default authSlice.reducer;

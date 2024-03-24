@@ -11,23 +11,23 @@ const GraphsContainer = () => {
   const [selectedYear, setSelectedYear] = useState(null);
   const [selectedDepartment, setSelectedDepartment] = useState(null);
 
-  useEffect(() => {
-    let filtered = data;
-    if (selectedYear) {
-      filtered = filtered.filter(
-        (placement) => placement.year_of_passing == selectedYear
-      );
-    }
-    console.log(filtered.length);
-    if (selectedDepartment) {
-      filtered = filtered.filter(
-        (placement) => placement.department === selectedDepartment
-      );
-    }
-    console.log(filtered.length);
-    setFilteredData(filtered);
-    console.log(filtered.length);
-  }, [selectedYear, selectedDepartment]);
+  // useEffect(() => {
+  //   let filtered = data;
+  //   if (selectedYear) {
+  //     filtered = filtered.filter(
+  //       (placement) => placement.year_of_passing == selectedYear
+  //     );
+  //   }
+  //   console.log(filtered.length);
+  //   if (selectedDepartment) {
+  //     filtered = filtered.filter(
+  //       (placement) => placement.department === selectedDepartment
+  //     );
+  //   }
+  //   console.log(filtered.length);
+  //   setFilteredData(filtered);
+  //   console.log(filtered.length);
+  // }, [selectedYear, selectedDepartment]);
 
   const dataByYear = data.reduce((accumulator, student) => {
     const year = student.year_of_passing;

@@ -17,6 +17,7 @@ import { updateCourse } from "@/redux/courseSlice";
 import toast from 'react-hot-toast';
 //import { addCertification } from "@/redux/certificationSlice";
 import React from "react";
+import { PencilSquareIcon } from "@heroicons/react/24/outline";
 
 const EditCourse = () => {
   const isLoading = false;
