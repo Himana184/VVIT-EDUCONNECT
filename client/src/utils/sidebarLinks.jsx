@@ -71,11 +71,6 @@ export const sidebarLinks = {
       href: "announcements",
     },
     {
-      icon: <MdOutlineHelp size={24} />,
-      text: "Queries",
-      href: "queries"
-    },
-    {
       icon: <PiStack size={24} />,
       text: "Courses",
       href: "courses"
@@ -108,11 +103,6 @@ export const sidebarLinks = {
       icon: <PiCertificateFill size={24} />,
       text: "Certifications",
       href: "certifications",
-    },
-    {
-      icon: <MdOutlineHelp size={24} />,
-      text: "Queries",
-      href: "stuqueries"
     },
     {
       icon: <FolderKanban size={24} />,
