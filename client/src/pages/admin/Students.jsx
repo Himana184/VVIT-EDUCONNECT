@@ -1,7 +1,7 @@
+import Loading from '@/components/common/Loading';
 import TanstackTable from '@/components/table/TanstackTable'
 import { studentTableColumns } from '@/data/students'
 import { getStudents } from '@/redux/studentSlice';
-import { Loader2 } from 'lucide-react';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
 
@@ -12,9 +12,7 @@ const Students = () => {
     dispatch(getStudents());
   }, [])
   if (isLoading) {
-    return <div className='flex justify-center h-full w-full items-center'>
-      <Loader2 className='animate-spin flex' />
-    </div>
+    return <Loading />
   }
   return (
     <div>

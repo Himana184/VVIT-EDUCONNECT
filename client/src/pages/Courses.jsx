@@ -1,3 +1,4 @@
+import Loading from "@/components/common/Loading";
 import AddCourse from "@/components/courses/AddCourse";
 import TanstackTable from "@/components/table/TanstackTable";
 import { adminCourseTableColumns, studentCourseTableColumns } from "@/data/courses";
@@ -6,12 +7,16 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 const Courses = () => {
-  const { courses } = useSelector((state) => state["course"]);
+  const { courses, isLoading } = useSelector((state) => state["course"]);
   const { role } = useSelector((state) => state["auth"])
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getCourses());
   }, []);
+
+  if (isLoading) {
+    return <Loading />
+  }
   return (
     <div className="flex flex-col space-y-6">
       {

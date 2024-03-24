@@ -114,7 +114,7 @@ const App = () => {
         <Route path="/faculty"></Route>
         <Route path="/unauthorized" element={<Unauthorized />}></Route>
       </Routes>
-      <Toaster />
+      <Toaster position="top-right" />
     </Router>
   )
 }

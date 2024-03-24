@@ -44,9 +44,8 @@ const TanstackTable = ({ tableData, columns }) => {
         return column.accessorKey;
       }
     });
-    console.log(headers);
     const headerNames = headers.map((header) => header.accessorKey);
-
+    console.log(headerNames)
     const data = table.getFilteredRowModel().flatRows.map((row) => row.original);
     console.log(data);
     console.log(headerNames);
