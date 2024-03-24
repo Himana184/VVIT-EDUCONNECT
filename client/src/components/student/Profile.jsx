@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { Outlet, useParams } from "react-router-dom"
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Card, CardDescription, CardHeader, CardTitle } from "../ui/card";
-import { Tabs, TabsList, TabsTrigger } from "../ui/tabs";
 import { studentProfileSidebarItems } from "@/data/students";
 import { ProfileSidebar } from "./ProfileSidebar";
 import { RefreshCcw } from "lucide-react";

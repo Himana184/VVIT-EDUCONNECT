@@ -12,7 +12,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 const JobCard = ({ job }) => {
   const { user, role } = useSelector((state) => state["auth"])
   return (
-    <Card className="max-w-sm w-full flex flex-col justify-between">
+    <Card className="w-full flex flex-col justify-between">
       <CardHeader className="flex flex-row justify-between">
         <div className="space-y-4">
           <Avatar>
@@ -34,42 +34,45 @@ const JobCard = ({ job }) => {
           )
         }
       </CardHeader>
-      <CardContent className="space-y-4">
-        <div className="flex items-center space-x-2">
-          <MapPin size={20} className="text-primary" />
-          <p>{job?.jobLocation || "Pan India"}</p>
-        </div>
-        <div className="flex items-center space-x-2">
-          <Briefcase size={20} className="text-primary" />
-          <p className="flex-1">{job?.category?.join(",") || "Internship, Full Time, Internship + Full Time"}</p>
-        </div>
-        <div className="flex items-center space-x-2">
-          <Banknote size={20} className="text-primary" />
-          <p className="text-lg font-medium"><span>&#8377;</span>{job?.salary || "4,00,000 to 8,00,000"} <span className="text-xs">LPA</span></p>
-        </div>
-
-        <div className="space-y-2">
-          <p className="block w-full font-medium text-lg">Skills</p>
-          <div className="flex flex-wrap gap-2">
-            {
-              job.skills["0"].split(",").map((skill, index) => {
-                return (
-                  <Badge key={index} variant={"outline"}>{skill}</Badge>
-                )
-              })
-            }
+      <CardContent className="md:flex justify-between space-y-4 md:space-y-0">
+        <div className="space-y-4">
+          <div className="flex items-center space-x-2">
+            <MapPin size={20} className="text-primary" />
+            <p>{job?.jobLocation || "Pan India"}</p>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Briefcase size={20} className="text-primary" />
+            <p className="flex-1">{job?.category?.join(",") || "Internship, Full Time, Internship + Full Time"}</p>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Banknote size={20} className="text-primary" />
+            <p className="text-lg font-medium"><span>&#8377;</span>{job?.salary || "4,00,000 to 8,00,000"} <span className="text-xs">LPA</span></p>
           </div>
         </div>
-        <div className="space-y-2">
-          <p className="block w-full font-medium text-lg">Branches</p>
-          <div className="flex flex-wrap gap-2">
-            {
-              job.eligibleBranches["0"].split(",").map((skill, index) => {
-                return (
-                  <Badge key={index} variant={"outline"}>{skill}</Badge>
-                )
-              })
-            }
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <p className="block w-full font-medium text-lg">Skills</p>
+            <div className="flex flex-wrap gap-2">
+              {
+                job.skills["0"].split(",").map((skill, index) => {
+                  return (
+                    <Badge key={index} variant={"outline"}>{skill}</Badge>
+                  )
+                })
+              }
+            </div>
+          </div>
+          <div className="space-y-2">
+            <p className="block w-full font-medium text-lg">Branches</p>
+            <div className="flex flex-wrap gap-2">
+              {
+                job.eligibleBranches["0"].split(",").map((skill, index) => {
+                  return (
+                    <Badge key={index} variant={"outline"}>{skill}</Badge>
+                  )
+                })
+              }
+            </div>
           </div>
         </div>
       </CardContent>

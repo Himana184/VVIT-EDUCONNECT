@@ -3,7 +3,7 @@
 /* eslint-disable no-unused-vars */
 import { useReactTable, getCoreRowModel, flexRender, getSortedRowModel, getPaginationRowModel, getFilteredRowModel } from "@tanstack/react-table"
 import { useMemo, useState } from "react";
-import { Table, TableBody, TableCell, TableHead, TableRow } from "../ui/table";
+import { Table, TableBody, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "../ui/table";
 import { Button } from "../ui/button";
 import { ArrowLeftIcon, ArrowRightIcon } from "@heroicons/react/24/outline";
 import { Input } from "../ui/input";
@@ -122,25 +122,27 @@ const TanstackTable = ({ tableData, columns }) => {
 
       {/* Table */}
       <Table className="overflow-auto mt-5">
-        {
-          table.getHeaderGroups().map((headerGroup, index) => (
-            <TableRow key={index}>
-              {
-                headerGroup.headers.map(header => (
-                  <TableHead key={header.id}
-                    className="cursor-pointer select-none"
-                    onClick={header.column.getToggleSortingHandler()}>
-                    {flexRender(header.column.columnDef.header, header.getContext())}
-                    {{
-                      asc: ' 🔼',
-                      desc: ' 🔽',
-                    }[header.column.getIsSorted()] ?? null}
-                  </TableHead>
-                ))
-              }
-            </TableRow>
-          ))
-        }
+        <TableHeader>
+          {
+            table.getHeaderGroups().map((headerGroup, index) => (
+              <TableRow key={index}>
+                {
+                  headerGroup.headers.map(header => (
+                    <TableHead key={header.id}
+                      className="cursor-pointer select-none"
+                      onClick={header.column.getToggleSortingHandler()}>
+                      {flexRender(header.column.columnDef.header, header.getContext())}
+                      {{
+                        asc: ' 🔼',
+                        desc: ' 🔽',
+                      }[header.column.getIsSorted()] ?? null}
+                    </TableHead>
+                  ))
+                }
+              </TableRow>
+            ))
+          }
+        </TableHeader>
         <TableBody>
           {
             table.getRowModel().rows.map((row) => (

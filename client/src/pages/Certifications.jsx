@@ -12,11 +12,15 @@ const Certifications = () => {
   const { role } = useSelector((state) => state["auth"])
   const dispatch = useDispatch();
 
-  
+
 
   useEffect(() => {
     dispatch(getCertifications())
   }, [])
+
+  if (isLoading) {
+    return <Loading />
+  }
 
   return (
     <div>

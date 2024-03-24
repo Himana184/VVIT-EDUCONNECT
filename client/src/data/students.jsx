@@ -1,18 +1,26 @@
 import { Link } from "react-router-dom";
 import DeleteDialog from "@/components/common/DeleteDialog";
 import { deleteStudent } from "@/redux/studentSlice";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 export const studentTableColumns = [
   {
     header: "Image",
     cell: ({ row }) => {
-      return <img src={"https://docs.material-tailwind.com/img/face-2.jpg"} alt={row.original.name} className="h-10 w-10 rounded-full" />;
+      return (
+        <Avatar className="cursor-pointer">
+          <AvatarImage
+            src={row.original.image}
+            alt="avatar"
+          />
+          <AvatarFallback>{row.original.name.charAt(0).toUpperCase()}</AvatarFallback>
+        </Avatar>)
     },
   },
   {
     header: "Name",
     accessorKey: "name",
     cell: ({ row }) => {
-      return <Link to={`${row.original._id}`}>
+      return <Link to={`${row.original._id}/profile`}>
         {row.original.name}</Link>;
     },
   },
@@ -90,7 +98,7 @@ export const studentTableColumns = [
 export const studentProfileSidebarItems = [
   {
     title: "Profile",
-    href: "",
+    href: "profile",
   },
   {
     title: "Internships",

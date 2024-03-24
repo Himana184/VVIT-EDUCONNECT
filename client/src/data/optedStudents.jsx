@@ -13,6 +13,17 @@ export const optedStudentsTableColumns = [
     },
   },
   {
+    header: "Email",
+    accessorKey: "student[collegeMail]",
+    accessorFn: (row) => {
+      console.log(row)
+      return row.original.collegeMail || ""
+    },
+    cell: ({ row }) => {
+      return <p>{row.original.collegeMail || ""}</p>;
+    },
+  },
+  {
     header: "Roll No",
     accessorKey: "rollNumber",
   },

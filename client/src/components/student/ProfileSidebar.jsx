@@ -7,6 +7,7 @@ export function ProfileSidebar({ className, items, ...props }) {
   const { pathname } = useLocation()
   const paths = pathname.split("/");
   const currentPath = paths[paths.length - 1];
+  
   return (
     <nav
       className={cn(

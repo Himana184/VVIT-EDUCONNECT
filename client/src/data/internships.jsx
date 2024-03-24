@@ -5,6 +5,7 @@ import { formatDate } from "@/utils/formatDate";
 import { FileCheck2, FileDown } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import InternshipVerificationDialog from "@/components/internships/InternshipVerificationDialog";
+import EditInternship from "@/components/internships/EditInternship";
 
 
 export const adminInternshipTableColumns = [
@@ -272,15 +273,14 @@ export const studentInternshipTableColumns = [
 
   },
   // {
-  //   header: "Actions",
+  //   header: "Edit",
+  //   id: "EditAction",
+  //   enableHiding: false,
   //   cell: ({ row }) => {
   //     return (
-  //       <div className="flex items-center space-x-3">
-  //         <Badge className={"bg-green-500 text-black hover:bg-green-600 hover:text-white cursor-pointer"}>Verify</Badge>
-  //         <Badge variant={"destructive"} className={"cursor-pointer"} >Reject</Badge>
-  //       </div>
-  //     )
-  //   }
+  //       <EditInternship internship={row.original} />
+  //     );
+  //   },
   // },
   {
     header: "Delete",
@@ -289,7 +289,7 @@ export const studentInternshipTableColumns = [
     cell: ({ row }) => {
       const internship = row.original;
       return (
-        <div className="flex">
+        row.original.verificationStatus != "Verified" ? <div className="flex">
           <DeleteDialog
             type="internship"
             dialogTitle={"Are you sure to delete internship details"}
@@ -299,8 +299,10 @@ export const studentInternshipTableColumns = [
             }
             handleDelete={deleteInternship}
           />
-        </div>
-      );
+        </div> : (
+          <p>--</p>
+        )
+      )
     },
   },
 

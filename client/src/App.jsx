@@ -64,7 +64,7 @@ const App = () => {
           <Route index element={<Dashboard />} />
           <Route path="students" index element={<Students />}></Route>
           <Route path="students/:studentId" element={<Profile />}>
-            <Route index element={<StudentDetails />}></Route>
+            <Route path="profile" index element={<StudentDetails />}></Route>
             <Route path="certifications" element={<StudentCertifications />}></Route>
             <Route path="internships" element={<StudentInternships />}></Route>
             <Route path="courses" element={<StudentCourses />}></Route>
@@ -89,7 +89,7 @@ const App = () => {
         <Route path="/coordinator" element={<CoordinatorLayout coordinator={true} />}>
           <Route path="students" index element={<Students />}></Route>
           <Route path="students/:studentId" element={<Profile />}>
-            <Route index element={<StudentDetails />}></Route>
+            <Route path="profile" index element={<StudentDetails />}></Route>
             <Route path="certifications" element={<StudentCertifications />}></Route>
             <Route path="internships" element={<StudentInternships />}></Route>
             <Route path="courses" element={<StudentCourses />}></Route>

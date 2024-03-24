@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import { useEffect, useState } from "react"
 import { Dialog, DialogContent, DialogHeader, DialogTrigger, DialogTitle, DialogFooter } from "../ui/dialog"
@@ -17,29 +18,26 @@ import toast from 'react-hot-toast';
 import { updateInternship } from "@/redux/internshipSlice";
 import { PencilSquareIcon } from "@heroicons/react/24/outline";
 
-const EditInternship = () => {
-  //const isLoading = false;
+const EditInternship = ({ internship }) => {
+  console.log(internship)
   const dispatch = useDispatch();
   const { isLoading } = useSelector((state) => state["internship"]);
-  // State to handle dialog open and close
   const [open, setOpen] = useState(false);
+  const [type, setType] = useState(internship?.internshipType);
 
-  //const [priority, setPriority] = useState("");
-  const [companyName, setName] = useState("");
   //react hook form
-  const form = useForm();
+  const form = useForm({
+    defaultValues: {
+      ...internship
+    }
+  });
   const { register, handleSubmit, formState, clearErrors, reset } = form;
   const { errors } = formState;
   const handleEditDetails = async (data) => {
-
-    data["companyName"] = companyName
-
-
+    data.internshipType = type;
     const response = await dispatch(updateInternship(data));
     setOpen(false)
   }
-
-  
 
   //clear errors of the form based on the open and close of dialog
   useEffect(() => {
@@ -49,7 +47,7 @@ const EditInternship = () => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <PencilSquareIcon className="text-gray-700 cursor-pointer h-7 w-7 hover:text-primary" />
+        <PencilSquareIcon className="text-gray-700 cursor-pointer h-7 w-7 hover:text-secondary" />
       </DialogTrigger>
       <DialogContent className="sm:max-w-[400px] max-h-[400px] lg:max-h-[600px] overflow-auto pb-10">
         <DialogHeader className="mb-5">
@@ -70,7 +68,7 @@ const EditInternship = () => {
           </div>
 
           <div className='space-y-2'>
-          <Label>Internship Domain</Label>
+            <Label>Internship Domain</Label>
             <Input
               type="text"
               placeholder="domain of the internship" {...register("internshipDomain", {
@@ -122,11 +120,11 @@ const EditInternship = () => {
             {errors["stipend"] && <FormError message={errors["stipend"].message} />}
           </div>
 
-         
+
 
           <div className="space-y-2">
             <Label>Internship Type</Label>
-            <Select onValueChange={(e) => setType(e)}>
+            <Select onValueChange={(e) => setType(e)} defaultValue={internship?.internshipType}>
               <SelectTrigger>
                 <SelectValue placeholder="Select internship type"></SelectValue>
               </SelectTrigger>
@@ -143,7 +141,7 @@ const EditInternship = () => {
           </div>
           <div className='space-y-3'>
             <Label>Start Date</Label>
-            <Input type='date' {...register("startDate", {
+            <Input type='date' value={internship.startDate.split("T")[0]} {...register("startDate", {
               required: {
                 value: true,
                 message: "Start Date required"
@@ -153,7 +151,7 @@ const EditInternship = () => {
           </div>
           <div className='space-y-3'>
             <Label>End Date</Label>
-            <Input type='date' {...register("endDate", {
+            <Input type='date' value={internship.endDate.split("T")[0]} {...register("endDate", {
               required: {
                 value: true,
                 message: "End Date required"
