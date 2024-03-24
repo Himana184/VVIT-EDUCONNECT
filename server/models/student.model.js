@@ -75,13 +75,24 @@ const studentSchema = new mongoose.Schema(
       type: Boolean,
       default: true,
     },
-    deviceTokens: [{
-      type: String,
-    }],
+    deviceTokens: [
+      {
+        type: String,
+      },
+    ],
     role: {
       select: false,
       type: String,
       default: "student",
+    },
+    skills: [
+      {
+        type: String,
+      },
+    ],
+    verified: {
+      type: Boolean,
+      default: false,
     },
   },
   {

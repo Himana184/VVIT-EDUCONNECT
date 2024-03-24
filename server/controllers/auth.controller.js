@@ -25,7 +25,17 @@ export const handleStudentLogin = async (req, res) => {
   })
     .select("+password")
     .exec();
-
+  if (!student.verified) {
+    return res
+      .status(StatusCodes.BAD_REQUEST)
+      .json(
+        new ApiResponse(
+          StatusCodes.OK,
+          {},
+          `Please verify the email sent to ${email}`
+        )
+      );
+  }
   //if student details are not found with the given email
   if (!student) {
     throw new ApiError(StatusCodes.NOT_FOUND, "Student details not found");

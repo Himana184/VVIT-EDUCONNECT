@@ -13,7 +13,9 @@ import jobDriveModel from "../models/jobDrive.model.js";
 import { logActivity } from "../utils/logActivity.js";
 import { logcategories } from "../utils/logcategories.js";
 import { getCacheValue, setCacheValue } from "../utils/rediscache.js";
-import redisClient from "../utils/redisclient.js";
+import jwt from "jsonwebtoken";
+import crypto from "crypto";
+import { sendMail } from "../utils/sendMail.js";
 //student registeration
 const currentYear = new Date().getFullYear();
 
@@ -69,6 +71,17 @@ export const handleStudentRegisteration = async (req, res) => {
     logcategories["student"],
     `Student with email ${collegeMail} has registered`
   );
+  const verificationJwt = await jwt.sign(
+    { email: collegeMail },
+    process.env.VERIFICATION_SECRET
+  );
+  const verificationUrl = `${req.protocol}://${process.env.BASE_URL}/verify/${verificationJwt}`;
+  const message = `Your email verification link is :\n\n ${verificationUrl} \n\n This link will be active for the next 15 minutes.\n\n If you have not requested this email then please ignore it.`;
+  await sendMail({
+    email: collegeMail,
+    subject: `Educonnect Student Verification`,
+    message,
+  });
 
   return res
     .status(StatusCodes.CREATED)
@@ -76,7 +89,7 @@ export const handleStudentRegisteration = async (req, res) => {
       new ApiResponse(
         StatusCodes.CREATED,
         { student: newStudent },
-        "student resgisteration successful"
+        "student resgisteration successful, verify mail before login!"
       )
     );
 };
@@ -179,6 +192,114 @@ export const updateStudentDetails = async (req, res) => {
       )
     );
 };
+
+export const handleAddStudentSkills = async (req, res) => {
+  const { skills } = req.body;
+  if (skills.length === 0) {
+    throw new ApiError(
+      StatusCodes.BAD_REQUEST,
+      "At least one skill is required"
+    );
+  }
+
+  const student = await Student.findById(req.user.userId);
+  const uniqueSkillsSet = new Set([...student.skills, ...skills]);
+  const uniqueSkillsArray = Array.from(uniqueSkillsSet);
+  student.skills = uniqueSkillsArray;
+  await student.save();
+
+  const updatedStudentData = await Student.findById(req.user.userId);
+  return res
+    .status(StatusCodes.OK)
+    .json(
+      new ApiResponse(
+        StatusCodes.OK,
+        { student: updatedStudentData },
+        "Skills added"
+      )
+    );
+};
+
+export const handleStudentVerification = async (req, res) => {
+  const { verificationJwt } = req.params;
+  console.log(verificationJwt);
+  const payload = await jwt.verify(
+    verificationJwt,
+    process.env.VERIFICATION_SECRET
+  );
+  console.log(payload);
+  const { email } = payload;
+  const student = await Student.findOne({ collegeMail: email });
+  if (!student) {
+    throw new ApiError(StatusCodes.NOT_FOUND, "Student details not found");
+  }
+  const verified = student.verified;
+  if (verified) {
+    throw new ApiError(StatusCodes.CONFLICT, "Email Already Verified");
+  }
+  student.verified = true;
+  await student.save();
+  return res
+    .status(StatusCodes.OK)
+    .json(new ApiResponse(StatusCodes.OK, {}, "Student email verified"));
+};
+
+// export const forgotPassword = asyncHandler(async (req, res, next) => {
+//   const { email } = req.body;
+//   const user = await User.findOne({ email, isActive: true });
+//   if (!user) {
+//     throw new Error("Enter your Registered Email", StatusCodes.UNAUTHORIZED);
+//   }
+//   const resetToken = user.getResetPasswordToken();
+//   await user.save({ validateBeforeSave: false });
+//   next();
+//   const resetPasswordUrl = `${req.protocol}://${process.env.BASE_URL}/resetPassword/${resetToken}`;
+//   const message = `Your reset password link is :\n\n ${resetPasswordUrl} \n\n This link will be active for the next 15 minutes.\n\n If you have not requested this email then please ignore it.`;
+//   try {
+//     await sendMail({
+//       email: user.email,
+//       subject: `Phoenix  Password  Recovery`,
+//       message,
+//     });
+//     res.status(StatusCodes.OK).json({ message: "Email Sent Successfully" });
+//   } catch (error) {
+//     user.resetPasswordToken = undefined;
+//     user.resetPasswordExpire = undefined;
+//     await user.save({ validateBeforeSave: false });
+//     next();
+//     throw new Error(error.message, StatusCodes.INTERNAL_SERVER_ERROR);
+//   }
+// });
+
+// export const resetPassword = asyncHandler(async (req, res, next) => {
+//   const { password, confirmPassword } = req.body;
+//   const resetPasswordToken = crypto
+//     .createHash("sha256")
+//     .update(req.params.token)
+//     .digest("hex");
+//   const user = await User.findOne({
+//     resetPasswordToken,
+//     resetPasswordExpire: { $gt: Date.now() },
+//   });
+//   if (!user) {
+//     throw new Error(
+//       "Reset Password Token is Invalid or has been Expired",
+//       StatusCodes.REQUEST_TIMEOUT
+//     );
+//   }
+//   if (password !== confirmPassword) {
+//     throw new Error("Passwords does not match", StatusCodes.BAD_REQUEST);
+//   }
+//   const newPassword = await bcrypt.hashSync(password, 10);
+//   user.password = newPassword;
+//   user.resetPasswordToken = undefined;
+//   user.resetPasswordExpire = undefined;
+//   await user.save({ validateBeforeSave: false });
+//   next();
+//   return res
+//     .status(StatusCodes.OK)
+//     .json({ message: "Password Updated Successfully" });
+// });
 
 export const deleteStudent = async (req, res) => {
   const { studentId } = req.params;

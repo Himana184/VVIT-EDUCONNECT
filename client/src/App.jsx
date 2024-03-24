@@ -29,6 +29,8 @@ import Unauthorized from "./pages/Unauthorized";
 import { useEffect } from "react";
 import { requestPermission } from "./utils/requestPermission";
 import Notifications from "./pages/admin/Notifications";
+import { studentEmailVerification } from "./redux/authSlice";
+import EmailVerification from "./pages/student/EmailVerification";
 
 const App = () => {
   useEffect(() => {
@@ -46,6 +48,8 @@ const App = () => {
           <Route path="login" element={<LoginPage />}></Route>
           <Route path="register" element={<RegisterPage />}></Route>
         </Route>
+
+        <Route path="/verify/:token" element={<EmailVerification />}></Route>
 
         {/* all routes of student */}
         <Route path="/student" element={<StudentLayout student={true} />}>

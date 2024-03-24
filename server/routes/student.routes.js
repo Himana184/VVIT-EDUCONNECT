@@ -4,6 +4,7 @@ import {
   getAllStudents,
   handleGetStudentDetails,
   handleStudentRegisteration,
+  handleStudentVerification,
   updateStudentDetails,
 } from "../controllers/student.controller.js";
 
@@ -15,6 +16,8 @@ import { isAuthenticated } from "../middleware/verifyJWT.js";
 const router = express.Router();
 
 router.route("/register").post(handleStudentRegisteration);
+router.route("/verify/:verificationJwt").get(handleStudentVerification);
+
 router.use(isAuthenticated);
 router.route("/all").get(getAllStudents);
 router
@@ -23,7 +26,6 @@ router
   .patch(updateStudentDetails)
   .delete(deleteStudent);
 
-router.use(isAuthenticated);
 
 //check for the file middleware
 router.use(filesPayloadExists);

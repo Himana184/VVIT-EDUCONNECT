@@ -56,9 +56,28 @@ export const studentRegisteration = createAsyncThunk(
   }
 );
 
+export const studentEmailVerification = createAsyncThunk(
+  "/api/v1/student/verify/:jwt",
+  async (payload, { rejectWithValue }) => {
+    console.log(payload)
+    try {
+      const response = await axios.get(
+        `/api/v1/student/verify/${payload.token}`
+      );
+      console.log(response)
+      return response.data;
+    } catch (error) {
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
+
 const token = localStorage.getItem("token");
 const user = JSON.parse(localStorage.getItem("user"));
-const role  = localStorage.getItem("role");
+const role = localStorage.getItem("role");
 const authSlice = createSlice({
   name: "auth",
   initialState: {
@@ -71,11 +90,9 @@ const authSlice = createSlice({
     setRole: (state, { payload }) => {
       state.role = payload.role;
     },
-    clearAuthState:(state) => {
-      state.user = {},
-      state.role = "",
-      state.token = ""
-    }
+    clearAuthState: (state) => {
+      (state.user = {}), (state.role = ""), (state.token = "");
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(studentLogin.pending, (state) => {
@@ -126,6 +143,18 @@ const authSlice = createSlice({
       toast.success(payload.message);
     });
     builder.addCase(studentRegisteration.rejected, (state, { payload }) => {
+      state.isLoading = false;
+      toast.error(payload?.message || "Something went wrong");
+    });
+
+    builder.addCase(studentEmailVerification.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(studentEmailVerification.fulfilled, (state, { payload }) => {
+      state.isLoading = false;
+      toast.success(payload.message);
+    });
+    builder.addCase(studentEmailVerification.rejected, (state, { payload }) => {
       state.isLoading = false;
       toast.error(payload?.message || "Something went wrong");
     });
