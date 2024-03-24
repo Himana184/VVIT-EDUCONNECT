@@ -5,7 +5,10 @@ import { formatDate } from "@/utils/formatDate";
 import { FileCheck2, FileDown } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import InternshipVerificationDialog from "@/components/internships/InternshipVerificationDialog";
-import EditInternship from "@/components/internships/EditInternship";
+// import EditInternship from "@/components/internships/EditInternship";
+import { Button } from "@/components/ui/button";
+import { NoSymbolIcon } from "@heroicons/react/24/outline";
+import CompletionCertificateDialog from "@/components/internships/CompletionCertificateDialog";
 
 
 export const adminInternshipTableColumns = [
@@ -137,8 +140,8 @@ export const adminInternshipTableColumns = [
         <div className="flex items-center space-x-3">
           {
             internship.verificationStatus == "Pending" && <>
-              <InternshipVerificationDialog type="internship" dialogTitle={"Are you sure to Approve this internship ?"} data={internship} dialogDescription={"Please verify the details correctly before approving"} handleAction={handleInternshipVerification} verificationType={"Verified"} />
-              <InternshipVerificationDialog type="internship" dialogTitle={"Are you sure to Reject this internship ?"} data={internship} dialogDescription={"Please verify the details correctly before rejecting"} handleAction={handleInternshipVerification} verificationType={"Rejected"} /></>
+              <InternshipVerificationDialog type="internship" dialogTitle={"Are you sure to Approve this internship ?"} data={internship} dialogDescription={"Please verify the details correctly before rejecting"} handleAction={handleInternshipVerification} verificationType={"Verified"} />
+              <InternshipVerificationDialog type="internship" dialogTitle={"Are you sure to Reject this internship ?"} data={internship} dialogDescription={"Please verify the details correctly before approving"} handleAction={handleInternshipVerification} verificationType={"Rejected"} /></>
           }
           {
             internship.verificationStatus == "Verified" && <InternshipVerificationDialog type="internship" dialogTitle={"Are you sure to Reject this internship ?"} data={internship} dialogDescription={"Please verify the details correctly before rejecting"} handleAction={handleInternshipVerification} verificationType={"Verified"} />
@@ -207,7 +210,7 @@ export const studentInternshipTableColumns = [
     accessorKey: "offerLetter",
     cell: ({ row }) => {
       return (
-        <div className="flex gap-2">
+        <div className="flex items-center gap-5">
           {
             row.original.offerLetter && <TooltipProvider>
               <Tooltip>
@@ -283,6 +286,15 @@ export const studentInternshipTableColumns = [
   //   },
   // },
   {
+    header: "Upload",
+    id: "Upload completion certificate",
+    cell: ({ row }) => {
+      return (
+        <CompletionCertificateDialog internship={row.original} />
+      )
+    }
+  },
+  {
     header: "Delete",
     id: "DeleteAction",
     enableHiding: false,
@@ -300,7 +312,18 @@ export const studentInternshipTableColumns = [
             handleDelete={deleteInternship}
           />
         </div> : (
-          <p>--</p>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button variant="icon">
+                  <NoSymbolIcon className="h-6 w-6 text-red-500" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Action disabled by admin</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         )
       )
     },

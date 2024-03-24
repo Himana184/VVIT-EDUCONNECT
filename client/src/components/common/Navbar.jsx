@@ -21,16 +21,16 @@ import { Label } from "../ui/label";
 import { requestPermission } from "@/utils/requestPermission";
 import { handleSaveUserToken } from "@/redux/notificationSlice";
 import { sidebarLinks } from "@/utils/sidebarLinks";
-import { clearAuthState } from "@/redux/authSlice";
 
 export function Navbar() {
   const dispatch = useDispatch();
   const { role, user } = useSelector((state) => state["auth"]);
-
+  console.log(user);
   const handleNotification = async () => {
     const data = await requestPermission();
     if (data.status) {
       dispatch(handleSaveUserToken({ token: data.response }));
+      window.location.reload();
     }
   }
   const handleLogout = () => {
@@ -69,9 +69,9 @@ export function Navbar() {
                 <DropdownMenuGroup>
 
                   {
-                    (
+                    role == "student" && (
                       <div className="flex items-center justify-center gap-2">
-                        <Switch defaultChecked={user.deviceTokens} onCheckedChange={(e) => e ? handleNotification() : console.log("Must implement to remove device token")}></Switch>
+                        <Switch defaultChecked={user.deviceTokens.length > 0} onCheckedChange={(e) => e ? handleNotification() : console.log("Must implement to remove device token")}></Switch>
                         <Label>Notifications</Label>
                       </div>
                     )

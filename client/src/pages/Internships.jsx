@@ -1,11 +1,7 @@
-import InternshipCard from '@/components/internships/InternshipCard'
 import TanstackTable from '@/components/table/TanstackTable';
-import { Label } from '@/components/ui/label';
-import { Switch } from '@/components/ui/switch';
 import { adminInternshipTableColumns, studentInternshipTableColumns } from '@/data/internships';
-import { Loader2 } from 'lucide-react';
 import { useDispatch, useSelector } from "react-redux"
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 import { getInternships, handleFilter } from '@/redux/internshipSlice';
 import { Select, SelectContent, SelectTrigger, SelectValue, SelectItem } from '@/components/ui/select';
 import AddInternship from '@/components/internships/AddInternship';
@@ -14,9 +10,8 @@ import Loading from '@/components/common/Loading';
 
 const Internships = () => {
 
-  const [view, setView] = useState("table");
   const { internships, isLoading } = useSelector((state) => state["internship"]);
-  const { user, role } = useSelector((state) => state["auth"])
+  const { role } = useSelector((state) => state["auth"])
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -52,26 +47,13 @@ const Internships = () => {
               </SelectContent>
             </Select>
           </div>
-          {/* <div className='flex items-center space-x-3'>
-            <Switch onCheckedChange={e => {
-              e ? setView("table") : setView("card")
-            }} defaultChecked={view == "table"} />
-            <Label>Table View</Label>
-          </div> */}
+
         </div>
         {
-          view == "table" ? <TanstackTable tableData={internships || []} columns={user.role !="student" ? adminInternshipTableColumns : studentInternshipTableColumns} /> : (
-            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10'>
-              {
-                internships?.map((internship, index) => {
-                  return (
-                    <InternshipCard internship={internship} key={index} />
-                  )
-                })
-              }
-            </div>
-          )
+          !isLoading ? role == "student" ? <TanstackTable tableData={internships || []} columns={studentInternshipTableColumns} />
+            : <TanstackTable tableData={internships || []} columns={adminInternshipTableColumns} /> : <Loading />
         }
+
       </div>
     </>
   )

@@ -13,16 +13,20 @@ const studentSchema = new mongoose.Schema(
       type: String,
       required: [true, "Student Name is required"],
       minlenth: [5, "Minimum length of 5 characters"],
+      trim: true,
     },
     rollNumber: {
       type: String,
       required: [true, "Student roll number is required"],
       unique: true,
+      trim: true,
     },
     collegeMail: {
       type: String,
       required: [true, "College Mail is required"],
       unique: true,
+      lowercase: true,
+      trim: true,
       validate: {
         validator: (value) => validator.isEmail(value),
         message: "Please provide a valid college mail",
@@ -30,6 +34,8 @@ const studentSchema = new mongoose.Schema(
     },
     personalMail: {
       type: String,
+      trim: true,
+      lowercase: true,
       required: [true, "Student personal mail is required"],
       unique: true,
       validate: {
@@ -41,10 +47,12 @@ const studentSchema = new mongoose.Schema(
       type: String,
       required: [true, "Password is required"],
       select: false,
+      trim: true,
     },
     contact: {
       type: String,
       unique: true,
+      trim: true,
       required: [true, "Student contact number is required"],
       validate: {
         validator: (value) => validator.isMobilePhone(value),
@@ -88,6 +96,7 @@ const studentSchema = new mongoose.Schema(
     skills: [
       {
         type: String,
+        trim: true,
       },
     ],
     verified: {
@@ -135,7 +144,7 @@ studentSchema.virtual("certificationsCount").get(function () {
 });
 
 studentSchema.virtual("coursesCount").get(function () {
-  return this.courses?.count || 0;
+  return this.courses?.length || 0;
 });
 
 //generate access token for the student document

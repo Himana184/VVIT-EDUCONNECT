@@ -2,7 +2,7 @@ import { Briefcase, FolderKanban, Globe } from 'lucide-react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card'
 import { PiStack } from 'react-icons/pi'
 import { useSelector } from 'react-redux'
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../ui/table'
+import { Table, TableBody, TableCell, TableHead, TableRow } from '../ui/table'
 
 const StudentStatistics = () => {
   const { student } = useSelector((state) => state["student"]);
@@ -27,7 +27,7 @@ const StudentStatistics = () => {
           <Briefcase />
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold">4</div>
+          <div className="text-2xl font-bold">{student?.optedJobsCount}</div>
         </CardContent>
       </Card>
       <Card className="w-full">
@@ -95,12 +95,20 @@ const StudentDetails = () => {
                 <TableCell>{student?.rollNumber}</TableCell>
               </TableRow>
               <TableRow>
+                <TableHead className="text-black">College Mail</TableHead>
+                <TableCell>
+                  <a href={`mailto:${student?.collegeMail}`}>{student?.collegeMail}</a>
+                </TableCell>
+              </TableRow>
+              <TableRow>
                 <TableHead className="text-black">Contact</TableHead>
                 <TableCell>{student?.contact}</TableCell>
               </TableRow>
               <TableRow>
                 <TableHead className="text-black">Personal Email</TableHead>
-                <TableCell>{student?.personalMail}</TableCell>
+                <TableCell>
+                  <a href={`mailto:${student?.personalMail}`}>{student?.personalMail}</a>
+                </TableCell>
               </TableRow>
             </TableBody>
           </Table>

@@ -171,7 +171,7 @@ const AddInternship = () => {
           </div>
 
           <div className="flex flex-col space-y-3 shrink-0">
-            <Label>Certificate</Label>
+            <Label>Offer Letter</Label>
             <input type="file" {...register("offerLetter", {
               required: {
                 value: true,

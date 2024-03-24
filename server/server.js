@@ -19,7 +19,7 @@ import notificationRouter from "./routes/notification.routes.js";
 import statsRouter from "./routes/stats.routes.js"
 //configure the env variable from the root path of the server (filename: .env)
 dotenv.config();
-const upload = multer({
+export const upload = multer({
   storage: multer.memoryStorage(),
   limits: {
     fileSize: 5 * 1024 * 1024, // Maximum file size is 20MB
@@ -33,7 +33,8 @@ app.use(cors());
 
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/student", upload.single("studentImage"), studentRouter);
-app.use("/api/v1/internship", upload.single("offerLetter"), internshipRouter);
+app.use("/api/v1/internship", internshipRouter);
+app.use("/api/v1/internship", upload.single("completionCertificate"), internshipRouter);
 app.use(
   "/api/v1/certification",
   upload.single("certification-file"),

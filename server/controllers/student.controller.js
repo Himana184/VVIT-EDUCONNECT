@@ -51,7 +51,7 @@ export const handleStudentRegisteration = async (req, res) => {
   const uploadResponse = await uploadSingleFile(
     req.file,
     "student-images",
-    req.body.name.replace(/\s+/g, "") + "." + fileType
+    rollNumber.replace(/\s+/g, "") + "." + fileType
   );
 
   if (!uploadResponse.status) {
@@ -133,6 +133,7 @@ export const handleGetStudentDetails = async (req, res) => {
 
   // Add the optedJobs field to the studentDetails object
   studentDetails.optedJobs = studentOptedJobs;
+  studentDetails.optedJobsCount = studentOptedJobs.length;
   return res
     .status(StatusCodes.OK)
     .json(
@@ -345,7 +346,7 @@ export const deleteStudent = async (req, res) => {
 export const getStudentsByRole = async (req) => {
   let students = [];
   if (req.user.role === "admin") {
-    students = await Student.find({})
+    students = await Student.find({ verified: true })
       .sort({ createdAt: -1 })
       .populate([
         { path: "internships" },

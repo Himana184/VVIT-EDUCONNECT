@@ -42,7 +42,7 @@ export const sendNotificationsToTokens = async (req, res) => {
   const responses = await Promise.all(
     tokens.map((token) => sendNotification(token, title, body))
   );
-  console.log(responses)
+  console.log(responses);
   return res
     .status(StatusCodes.OK)
     .json(
@@ -64,24 +64,31 @@ export const getAllDeviceTokens = async () => {
 
 export const handleSaveUserDeviceToken = async (req, res) => {
   const { token } = req.body;
+  const studentId = req.user.userId;
   if (!token) {
     throw new ApiError(
       StatusCodes.BAD_REQUEST,
       "User device token is required"
     );
   }
-  const student = await Student.findById(req.user.userId);
+  const student = await Student.findById(studentId);
   if (!student) {
     throw new ApiError(StatusCodes.NOT_FOUND, "Student details not found");
   }
   const response = await Student.findByIdAndUpdate(
-    req.user.userId,
+    studentId,
     { $addToSet: { deviceTokens: token } },
     { new: true }
   );
-
+  const updatedStudentDetails = await Student.findById(studentId);
   console.log("Response after adding device token : ", response);
   return res
     .status(StatusCodes.OK)
-    .json(new ApiResponse(StatusCodes.OK, {}, "Device token added"));
+    .json(
+      new ApiResponse(
+        StatusCodes.OK,
+        { student: updatedStudentDetails },
+        "Device token added"
+      )
+    );
 };

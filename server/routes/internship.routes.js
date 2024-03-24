@@ -3,6 +3,7 @@ import {
   getAllInternships,
   getStudentInternships,
   handleAddInternship,
+  handleCompletionCertificateUpload,
   handleDeleteInternship,
   handleInternshipVerification,
   handleUpdateInternship,
@@ -11,7 +12,13 @@ import { filesPayloadExists } from "../middleware/filePayloadExists.js";
 import { fileSizeLimiter } from "../middleware/fileSizeLimiter.js";
 import { fileExtLimiter } from "../middleware/fileExtLimiter.js";
 import { isAuthenticated } from "../middleware/verifyJWT.js";
-
+import multer from "multer";
+export const upload = multer({
+  storage: multer.memoryStorage(),
+  limits: {
+    fileSize: 5 * 1024 * 1024, // Maximum file size is 20MB
+  },
+});
 const router = express.Router();
 
 router.use(isAuthenticated);
@@ -29,11 +36,28 @@ router.route("/student/:studentId").get(getStudentInternships);
 //to be done by admin or coordinator
 router.route("/verify/:internshipId").patch(handleInternshipVerification);
 
-router.use(filesPayloadExists);
-router.use(
-  fileExtLimiter([".JPG", ".PNG", ".JPEG", ".jpg", ".png", ".jpeg", ".pdf"])
-);
-router.use(fileSizeLimiter);
+// router.use(filesPayloadExists);
+// router.use(
+//   fileExtLimiter([".JPG", ".PNG", ".JPEG", ".jpg", ".png", ".jpeg", ".pdf"])
+// );
+// router.use(fileSizeLimiter);
 
-router.route("/").post(handleAddInternship);
+router
+  .route("/")
+  .post(
+    upload.single("offerLetter"),
+    filesPayloadExists,
+    fileExtLimiter([".JPG", ".PNG", ".JPEG", ".jpg", ".png", ".jpeg", ".pdf"]),
+    fileSizeLimiter,
+    handleAddInternship
+  );
+router
+  .route("/upload/certificate")
+  .patch(
+    upload.single("completionCertificate"),
+    filesPayloadExists,
+    fileExtLimiter([".JPG", ".PNG", ".JPEG", ".jpg", ".png", ".jpeg", ".pdf"]),
+    fileSizeLimiter,
+    handleCompletionCertificateUpload
+  );
 export default router;

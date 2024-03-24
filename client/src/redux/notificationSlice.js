@@ -50,8 +50,7 @@ export const sendNotificationToStudents = createAsyncThunk(
     }
   }
 );
-const token = localStorage.getItem("token");
-const user = JSON.parse(localStorage.getItem("user"));
+
 const notificationSlice = createSlice({
   name: "notification",
   initialState: {
@@ -68,6 +67,7 @@ const notificationSlice = createSlice({
     });
     builder.addCase(handleSaveUserToken.fulfilled, (state, { payload }) => {
       state.isLoading = false;
+      localStorage.setItem("user",JSON.stringify(payload.student))
       toast.success(payload.message || "Token saved to DB");
     });
     builder.addCase(handleSaveUserToken.rejected, (state, { payload }) => {

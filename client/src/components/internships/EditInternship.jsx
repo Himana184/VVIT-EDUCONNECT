@@ -1,25 +1,21 @@
 /* eslint-disable react/prop-types */
-/* eslint-disable no-unused-vars */
 import { useEffect, useState } from "react"
 import { Dialog, DialogContent, DialogHeader, DialogTrigger, DialogTitle, DialogFooter } from "../ui/dialog"
-import { FolderKanban } from "lucide-react";
+
 import { useForm } from "react-hook-form"
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { FormError } from "../common/FormError";
-import { Textarea } from "../ui/textarea";
-import { MultiSelect } from "react-multi-select-component";
-//import { internshipType } from "@/data/internshiptypes";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import { Loader2 } from "lucide-react";
 import { Button } from "../ui/button";
 import { useDispatch, useSelector } from 'react-redux';
-import toast from 'react-hot-toast';
 import { updateInternship } from "@/redux/internshipSlice";
 import { PencilSquareIcon } from "@heroicons/react/24/outline";
+import { internshipType } from "@/utils/internship";
 
 const EditInternship = ({ internship }) => {
-  console.log(internship)
+
   const dispatch = useDispatch();
   const { isLoading } = useSelector((state) => state["internship"]);
   const [open, setOpen] = useState(false);
@@ -31,12 +27,12 @@ const EditInternship = ({ internship }) => {
       ...internship
     }
   });
-  const { register, handleSubmit, formState, clearErrors, reset } = form;
+  const { register, handleSubmit, formState, clearErrors } = form;
   const { errors } = formState;
   const handleEditDetails = async (data) => {
     data.internshipType = type;
     const response = await dispatch(updateInternship(data));
-    setOpen(false)
+    console.log(response)
   }
 
   //clear errors of the form based on the open and close of dialog
@@ -130,7 +126,7 @@ const EditInternship = ({ internship }) => {
               </SelectTrigger>
               <SelectContent>
                 {
-                  ["remote", "hybrid", "on-site"].map((item, index) => {
+                  internshipType.map((item, index) => {
                     return (
                       <SelectItem value={item} key={index}>{item}</SelectItem>
                     )
@@ -159,6 +155,8 @@ const EditInternship = ({ internship }) => {
             })} />
             {errors["endDate"] && <FormError message={errors["endDate"].message} />}
           </div>
+
+
 
 
 

@@ -66,17 +66,18 @@ export const deleteInternship = createAsyncThunk(
 export const updateInternship = createAsyncThunk(
   "/api/v1/internship/:internshipId(patch)",
   async (payload, { rejectWithValue }) => {
-    console.log("update user payload : ", payload);
+    console.log("update internship payload : ", payload);
     try {
       const response = await axios.patch(
-        `/api/v1/internship/${payload.data._id}`,
-        payload.data,
+        `/api/v1/internship/${payload._id}`,
+        payload,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         }
       );
+      console.log(response);
       return response.data;
     } catch (error) {
       if (!error?.response) {
@@ -94,6 +95,29 @@ export const handleInternshipVerification = createAsyncThunk(
       console.log(payload);
       const response = await axios.patch(
         `/api/v1/internship/verify/${payload.id}`,
+        payload,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
+
+export const uploadCompletionCertificate = createAsyncThunk(
+  "/api/v1/internship/upload/certificate",
+  async (payload, { rejectWithValue }) => {
+    try {
+      const response = await axios.patch(
+        `/api/v1/internship/upload/certificate`,
         payload,
         {
           headers: {
@@ -177,12 +201,14 @@ const internshipSlice = createSlice({
     });
     builder.addCase(updateInternship.fulfilled, (state, { payload }) => {
       state.isLoading = false;
-      state.internships = payload.data.internships;
+      state.allInternships = payload.data.internships;
+      state.internships = payload.data.internships.All || [];
       toast.success(payload.message);
     });
     builder.addCase(updateInternship.rejected, (state, { payload }) => {
       state.isLoading = false;
-      toast.error(payload.message || "something went wrong");
+      console.log(payload);
+      toast.error(payload?.message || "something went wrong");
     });
 
     builder.addCase(handleInternshipVerification.pending, (state) => {
@@ -199,6 +225,26 @@ const internshipSlice = createSlice({
     );
     builder.addCase(
       handleInternshipVerification.rejected,
+      (state, { payload }) => {
+        state.isLoading = false;
+        toast.error(payload.message || "something went wrong");
+      }
+    );
+
+    builder.addCase(uploadCompletionCertificate.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(
+      uploadCompletionCertificate.fulfilled,
+      (state, { payload }) => {
+        state.isLoading = false;
+        state.allInternships = payload.data.internships.All;
+        state.internships = payload.data.internships.All;
+        toast.success(payload.message);
+      }
+    );
+    builder.addCase(
+      uploadCompletionCertificate.rejected,
       (state, { payload }) => {
         state.isLoading = false;
         toast.error(payload.message || "something went wrong");

@@ -74,7 +74,7 @@ export const handleAddInternship = async (req, res) => {
 // Access permission - Student
 export const handleUpdateInternship = async (req, res) => {
   const { internshipId } = req.params;
-
+  console.log(internshipId);
   if (!internshipId || !mongoose.isValidObjectId(internshipId)) {
     throw new ApiError(StatusCodes.BAD_REQUEST, "Not a valid internship Id");
   }
@@ -87,7 +87,7 @@ export const handleUpdateInternship = async (req, res) => {
 
   const updatedInternship = await Internship.findByIdAndUpdate(
     internshipId,
-    req.body,
+    { ...req.body },
     {
       runValidators: true,
       new: true,
@@ -234,6 +234,57 @@ export const handleDeleteInternship = async (req, res) => {
         StatusCodes.OK,
         { internships: groupedInternships },
         `internship ${response.companyName} deleted successfully`
+      )
+    );
+};
+
+export const handleCompletionCertificateUpload = async (req, res) => {
+  const internshipId = req.body.internshipId;
+  if (!internshipId || !mongoose.isValidObjectId(internshipId)) {
+    throw new ApiError(StatusCodes.BAD_REQUEST, "Not a valid internshipId");
+  }
+  const internship = await Internship.findById(internshipId);
+  if (!internship) {
+    throw new ApiError(StatusCodes.BAD_REQUEST, "Internship Details not found");
+  }
+  const fileType = req.file.originalname.split(".")[1];
+  const fileUploadResponse = await uploadSingleFile(
+    req.file,
+    "internship-completion-certificates",
+    internship.companyName.replace(/\s+/g, "") +
+      req.user.userId +
+      "." +
+      fileType
+  );
+  if (!fileUploadResponse.status) {
+    throw new ApiError(
+      StatusCodes.INTERNAL_SERVER_ERROR,
+      "Unable to upload file"
+    );
+  } else {
+    internship.completionCertificate = fileUploadResponse.url;
+  }
+  await internship.save();
+
+  //fetch the internships based on role
+  const internships = await getInternshipsByRole(req);
+
+  //group the internships based on the verification status this will be helpful to filter in the frontend
+  const groupedInternships = groupData(internships, "verificationStatus");
+  logActivity(
+    req,
+    res,
+    logcategories["internship"],
+    `Student with id ${req.user.userId} has uplaoded the internship completion certificate`
+  );
+
+  return res
+    .status(StatusCodes.OK)
+    .json(
+      new ApiResponse(
+        StatusCodes.CREATED,
+        { internships: groupedInternships },
+        `Internship completion certificate added`
       )
     );
 };

@@ -1,8 +1,17 @@
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+
 export const optedStudentsTableColumns = [
   {
     header: "Image",
     cell: ({ row }) => {
-      return <img src={"https://docs.material-tailwind.com/img/face-2.jpg"} alt={row.original.name} className="h-10 w-10 rounded-full" />;
+      return (
+        <Avatar className="cursor-pointer">
+          <AvatarImage
+            src={row.original.image}
+            alt="avatar"
+          />
+          <AvatarFallback>{row.original.name.charAt(0).toUpperCase()}</AvatarFallback>
+        </Avatar>)
     },
   },
   {

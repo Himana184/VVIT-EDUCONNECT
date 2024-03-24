@@ -1,12 +1,19 @@
 import DeleteDialog from "@/components/common/DeleteDialog";
 import EditCoordinator from "@/components/coordinator/EditCoordinator";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { deleteUser } from "@/redux/userSlice";
 
 export const coordinatorTableColumns = [
   {
-    header: "Image",
-    cell: ({ row }) => {
-      return <img src={row.original.image || "https://docs.material-tailwind.com/img/face-2.jpg"} alt={row.original.name} className="h-10 w-10 rounded-full" />;
+    header: "Image", cell: ({ row }) => {
+      return (
+        <Avatar className="cursor-pointer">
+          <AvatarImage
+            src={row.original.image}
+            alt="avatar"
+          />
+          <AvatarFallback>{row.original.name.charAt(0).toUpperCase()}</AvatarFallback>
+        </Avatar>)
     },
   },
   {

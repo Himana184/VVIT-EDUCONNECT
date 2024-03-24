@@ -10,7 +10,6 @@ import { useParams } from 'react-router-dom'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getJobDriveDetails } from '@/redux/jobSlice'
-import { Loader2 } from 'lucide-react'
 import Loading from '../common/Loading'
 
 const JobDetail = () => {
@@ -49,7 +48,7 @@ const JobDetail = () => {
           </CardHeader>
           <CardContent>
             {
-              job?.optedStudents?.length > 0 && <OptedStudents students={job?.optedStudents} />
+              job?.optedStudents?.length > 0 ? <OptedStudents students={job?.optedStudents} /> : <p>No opted students</p>
             }
           </CardContent>
         </Card>

@@ -11,6 +11,7 @@ import { Button } from "../ui/button";
 import { useDispatch } from "react-redux";
 import { studentRegisteration } from "@/redux/authSlice";
 import { generateYears } from "@/utils/generateyears";
+import toast from "react-hot-toast";
 
 
 const RegisterForm = () => {
@@ -39,6 +40,10 @@ const RegisterForm = () => {
 
   const handleStudentRegisteration = async (data) => {
     const studentData = new FormData();
+    if (!(data.collegeMail.toLowerCase().includes(data.rollNumber.toLowerCase()))) {
+      toast.error("Roll number and email does not match");
+      return;
+    }
     data.branch = branch;
     data.section = section;
     data.passoutYear = Number(passoutYear);
@@ -121,7 +126,15 @@ const RegisterForm = () => {
                   required: {
                     value: true,
                     message: "Student college email is required"
-                  }
+                  },
+                  validate: {
+                    matchPattern: (v) => {
+                      return (
+                        /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) ||
+                        "College Mail is Invalid"
+                      );
+                    },
+                  },
                 })
                 }
               />
@@ -136,7 +149,15 @@ const RegisterForm = () => {
                   required: {
                     value: true,
                     message: "Student personal email is required"
-                  }
+                  },
+                  validate: {
+                    matchPattern: (v) => {
+                      return (
+                        /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) ||
+                        "Personal Mail is Invalid"
+                      );
+                    },
+                  },
                 })
                 }
               />
