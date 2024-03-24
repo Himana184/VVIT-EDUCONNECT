@@ -29,7 +29,6 @@ import Unauthorized from "./pages/Unauthorized";
 import { useEffect } from "react";
 import { requestPermission } from "./utils/requestPermission";
 import Notifications from "./pages/admin/Notifications";
-import { studentEmailVerification } from "./redux/authSlice";
 import EmailVerification from "./pages/student/EmailVerification";
 
 const App = () => {
@@ -53,7 +52,7 @@ const App = () => {
 
         {/* all routes of student */}
         <Route path="/student" element={<StudentLayout student={true} />}>
-          <Route path="announcements" element={<Announcements />}></Route>
+          <Route index  element={<Announcements />}></Route>
           <Route path="jobs" element={<Jobs />}></Route>
           <Route path="jobs/:jobId" element={<JobDetail />}></Route>
           <Route path="internships" element={<Internships />}></Route>

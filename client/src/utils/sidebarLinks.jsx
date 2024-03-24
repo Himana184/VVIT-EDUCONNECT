@@ -1,7 +1,6 @@
 import { PiStudentFill, PiCertificateFill } from "react-icons/pi";
 import { TfiAnnouncement } from "react-icons/tfi";
 import { FaRegUser } from "react-icons/fa"
-import { MdOutlineHelp } from "react-icons/md";
 import { BriefcaseIcon, FolderKanban } from "lucide-react";
 import { PiStack } from "react-icons/pi"
 
@@ -92,7 +91,7 @@ export const sidebarLinks = {
     {
       icon: <TfiAnnouncement size={24} />,
       text: "Announcements",
-      href: "announcements",
+      href: "",
     },
     {
       icon: <BriefcaseIcon size={24} />,
