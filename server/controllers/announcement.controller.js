@@ -105,7 +105,6 @@ export const handleUpdateAnnouncement = async (req, res) => {
       "announcement-files",
       req.body.title.replace(/\s+/g, "") + "." + fileType
     );
-    console.log(fileUploadResponse);
     if (!fileUploadResponse.status) {
       throw new ApiError(
         StatusCodes.INTERNAL_SERVER_ERROR,
@@ -145,7 +144,6 @@ export const handleUpdateAnnouncement = async (req, res) => {
 
 export const handleDeleteAnnouncement = async (req, res) => {
   const { announcementId } = req.params;
-  console.log(announcementId);
   //check whether it is a valid announcement id or not
   if (!mongoose.isValidObjectId(announcementId)) {
     throw new ApiError(StatusCodes.BAD_REQUEST, "Not a valid Announcement Id");

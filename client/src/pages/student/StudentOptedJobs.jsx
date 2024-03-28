@@ -5,7 +5,6 @@ import { useSelector } from 'react-redux'
 
 const StudentOptedJobs = () => {
   const { student } = useSelector((state) => state["student"]);
-  console.log(student)
   const optedJobs = student.optedJobs;
   return (
     <TanstackTable tableData={optedJobs || []} columns={studentOptedJobs} />

@@ -42,7 +42,6 @@ export const sendNotificationsToTokens = async (req, res) => {
   const responses = await Promise.all(
     tokens.map((token) => sendNotification(token, title, body))
   );
-  console.log(responses);
   return res
     .status(StatusCodes.OK)
     .json(
@@ -81,7 +80,6 @@ export const handleSaveUserDeviceToken = async (req, res) => {
     { new: true }
   );
   const updatedStudentDetails = await Student.findById(studentId);
-  console.log("Response after adding device token : ", response);
   return res
     .status(StatusCodes.OK)
     .json(

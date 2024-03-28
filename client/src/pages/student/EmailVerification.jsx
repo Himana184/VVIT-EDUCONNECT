@@ -17,7 +17,6 @@ const EmailVerification = () => {
     }
     verifyEmail();
   }, [])
-  console.log(message)
   return (
     <div className='h-screen flex w-screen items-center justify-center'>
       {

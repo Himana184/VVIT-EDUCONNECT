@@ -26,7 +26,7 @@ export const handleAddCourse = async (req, res) => {
   //set the branch of the user so that it is easy to filter the courses based on branch
   req.body.branch = req.user.branch;
   req.body.student = req.user.userId;
-  
+
   const newCourse = await Course.create(req.body);
 
   const courses = await Course.find({ student: req.user.userId }).sort({
@@ -161,6 +161,6 @@ export const getCoursesByRole = async (req) => {
     courses = await Course.find({ student: req.user.userId }).sort({});
   }
 
-  console.log("courses : ", courses);
+  "courses : ", courses;
   return courses;
 };

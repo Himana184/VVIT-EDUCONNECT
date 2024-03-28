@@ -31,8 +31,7 @@ const EditInternship = ({ internship }) => {
   const { errors } = formState;
   const handleEditDetails = async (data) => {
     data.internshipType = type;
-    const response = await dispatch(updateInternship(data));
-    console.log(response)
+    await dispatch(updateInternship(data));
   }
 
   //clear errors of the form based on the open and close of dialog

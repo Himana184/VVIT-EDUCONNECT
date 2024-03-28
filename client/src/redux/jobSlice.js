@@ -29,7 +29,6 @@ export const getJobDrives = createAsyncThunk(
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
-      console.log("Get jobdrive response : ", response);
       return response.data;
     } catch (error) {
       if (!error?.response) {
@@ -139,13 +138,11 @@ const jobSlice = createSlice({
     builder.addCase(handleAddJobDrive.fulfilled, (state, { payload }) => {
       state.isLoading = false;
       state.jobs = payload.data.jobs;
-      console.log(payload);
       toast.success(payload.message);
     });
 
     builder.addCase(handleAddJobDrive.rejected, (state, { payload }) => {
       state.isLoading = false;
-      console.log(payload);
       toast.error(payload?.message || "Something went wrong");
     });
 
@@ -169,7 +166,6 @@ const jobSlice = createSlice({
     });
     builder.addCase(getJobDriveDetails.fulfilled, (state, { payload }) => {
       state.isLoading = false;
-      console.log(payload);
       state.job = payload.data.job;
       toast.success(payload.message);
     });

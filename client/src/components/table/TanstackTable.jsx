@@ -13,7 +13,7 @@ import { Download } from "lucide-react";
 
 const TanstackTable = ({ tableData, columns }) => {
 
-  // console.log("Table data : ", tableData)
+  // ("Table data : ", tableData)
   // Memorizing the data using useMemo
   const data = useMemo(() => tableData, [tableData]);
 
@@ -45,10 +45,10 @@ const TanstackTable = ({ tableData, columns }) => {
       }
     });
     const headerNames = headers.map((header) => header.accessorKey);
-    console.log(headerNames)
+    (headerNames)
     const data = table.getFilteredRowModel().flatRows.map((row) => row.original);
-    console.log(data);
-    console.log(headerNames);
+    (data);
+    (headerNames);
     const accessNestedProperty = (obj, path) => {
       const parts = path.split('[').map(part => part.replace(']', ''));
       let value = obj;

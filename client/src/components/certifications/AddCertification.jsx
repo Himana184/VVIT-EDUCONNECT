@@ -29,14 +29,12 @@ const AddCertification = () => {
   const { register, handleSubmit, formState, clearErrors, reset } = form;
   const { errors } = formState;
 
-  console.log(errors)
 
 
   const handleAddCertification = async (data) => {
 
     const certificationData = new FormData();
     data.tags = Object.values(certificationTags);
-    console.log(data.tags);
     data.issueDate = date;
     Object.keys(data).forEach((key) => {
       if (key !== "file") {

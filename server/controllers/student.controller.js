@@ -21,7 +21,6 @@ const currentYear = new Date().getFullYear();
 
 export const handleStudentRegisteration = async (req, res) => {
   //verify whether all the details are received or not
-  // console.log(req.body)
   const validationResponse = checkRequiredFields(
     req.body,
     studentRequiredFields
@@ -124,7 +123,6 @@ export const handleGetStudentDetails = async (req, res) => {
   const studentOptedJobs = await jobDriveModel.find({
     optedStudents: { $in: studentId },
   });
-  // console.log(studentOptedJobs)
   //if no student is found
   if (!student) {
     throw new ApiError(StatusCodes.NOT_FOUND, "Student details not found");
@@ -223,12 +221,10 @@ export const handleAddStudentSkills = async (req, res) => {
 
 export const handleStudentVerification = async (req, res) => {
   const { verificationJwt } = req.params;
-  console.log(verificationJwt);
   const payload = await jwt.verify(
     verificationJwt,
     process.env.VERIFICATION_SECRET
   );
-  console.log(payload);
   const { email } = payload;
   const student = await Student.findOne({ collegeMail: email });
   if (!student) {
@@ -354,7 +350,7 @@ export const getStudentsByRole = async (req) => {
         { path: "courses" },
       ]);
   } else if (req.user.role === "coordinator") {
-    students = await Student.find({ branch: req.user.branch })
+    students = await Student.find({ branch: req.user.branch, verified: true })
       .sort({
         createdAt: -1,
       })

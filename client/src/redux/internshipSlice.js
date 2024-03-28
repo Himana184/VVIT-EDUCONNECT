@@ -30,7 +30,6 @@ export const getInternships = createAsyncThunk(
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
-      console.log("Get Internships response : ", response);
       return response.data;
     } catch (error) {
       if (!error?.response) {
@@ -44,7 +43,6 @@ export const getInternships = createAsyncThunk(
 export const deleteInternship = createAsyncThunk(
   "/api/v1/internship/:internshipId(delete)",
   async (payload, { rejectWithValue }) => {
-    console.log("Delete certification payload : ", payload);
     try {
       const response = await axios.delete(
         `/api/v1/internship/${payload.data._id}`,
@@ -66,7 +64,6 @@ export const deleteInternship = createAsyncThunk(
 export const updateInternship = createAsyncThunk(
   "/api/v1/internship/:internshipId(patch)",
   async (payload, { rejectWithValue }) => {
-    console.log("update internship payload : ", payload);
     try {
       const response = await axios.patch(
         `/api/v1/internship/${payload._id}`,
@@ -77,7 +74,6 @@ export const updateInternship = createAsyncThunk(
           },
         }
       );
-      console.log(response);
       return response.data;
     } catch (error) {
       if (!error?.response) {
@@ -92,7 +88,6 @@ export const handleInternshipVerification = createAsyncThunk(
   "/api/v1/internship/verify/:internshipId",
   async (payload, { rejectWithValue }) => {
     try {
-      console.log(payload);
       const response = await axios.patch(
         `/api/v1/internship/verify/${payload.id}`,
         payload,
@@ -147,7 +142,6 @@ const internshipSlice = createSlice({
   reducers: {
     handleFilter: (state, { payload }) => {
       state.internships = state.allInternships[payload.status];
-      console.log(state.internships);
     },
   },
   extraReducers: (builder) => {
@@ -207,7 +201,6 @@ const internshipSlice = createSlice({
     });
     builder.addCase(updateInternship.rejected, (state, { payload }) => {
       state.isLoading = false;
-      console.log(payload);
       toast.error(payload?.message || "something went wrong");
     });
 

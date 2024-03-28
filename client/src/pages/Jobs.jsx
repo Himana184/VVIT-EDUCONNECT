@@ -10,7 +10,6 @@ const Jobs = () => {
   const dispatch = useDispatch();
   const { role } = useSelector((state) => state["auth"])
   const { jobs, isLoading } = useSelector((state) => state["job"]);
-  console.log(jobs)
   useEffect(() => {
     dispatch(getJobDrives())
   }, [])

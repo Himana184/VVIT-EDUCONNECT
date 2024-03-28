@@ -16,7 +16,7 @@ import userRouter from "./routes/user.routes.js";
 import cors from "cors";
 import { isAuthenticated } from "./middleware/verifyJWT.js";
 import notificationRouter from "./routes/notification.routes.js";
-import statsRouter from "./routes/stats.routes.js"
+import statsRouter from "./routes/stats.routes.js";
 //configure the env variable from the root path of the server (filename: .env)
 dotenv.config();
 export const upload = multer({
@@ -34,7 +34,11 @@ app.use(cors());
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/student", upload.single("studentImage"), studentRouter);
 app.use("/api/v1/internship", internshipRouter);
-app.use("/api/v1/internship", upload.single("completionCertificate"), internshipRouter);
+app.use(
+  "/api/v1/internship",
+  upload.single("completionCertificate"),
+  internshipRouter
+);
 app.use(
   "/api/v1/certification",
   upload.single("certification-file"),
@@ -50,7 +54,7 @@ app.use("/api/v1/query", queryRouter);
 app.use("/api/v1/jobdrive", upload.array("files", 5), jobdriveRouter);
 app.use("/api/v1/user", upload.single("userImage"), userRouter);
 app.use("/api/v1/notification", isAuthenticated, notificationRouter);
-app.use("/api/v1/stats",statsRouter)
+app.use("/api/v1/stats", statsRouter);
 //custom error middleware
 app.use(errorHandler);
 

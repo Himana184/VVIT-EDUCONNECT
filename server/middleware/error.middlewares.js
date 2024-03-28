@@ -3,7 +3,6 @@ import { ApiError } from "../utils/ApiError.js";
 
 const errorHandler = (err, req, res, next) => {
   let error = err;
-  console.log(err)
   // Check if the error is an instance of an ApiError class which extends native Error class
   if (!(error instanceof ApiError)) {
     // if not

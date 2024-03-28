@@ -30,13 +30,11 @@ const InternshipVerificationDialog = ({ dialogTitle, dialogDescription, data, ha
 
   //function that will dispatch the delete function received as parameter
   const handleVerification = async (values) => {
-    console.log(values)
     // Internship ID
     values.id = data._id;
     values.verificationStatus = verificationType === "Rejected" ? "Verified" : "Rejected"
 
     const response = await dispatch(handleAction(values));
-    console.log(response)
     setOpen(false)
   }
 

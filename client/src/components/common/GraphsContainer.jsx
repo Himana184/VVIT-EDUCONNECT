@@ -18,15 +18,15 @@ const GraphsContainer = () => {
   //       (placement) => placement.year_of_passing == selectedYear
   //     );
   //   }
-  //   console.log(filtered.length);
+  //   (filtered.length);
   //   if (selectedDepartment) {
   //     filtered = filtered.filter(
   //       (placement) => placement.department === selectedDepartment
   //     );
   //   }
-  //   console.log(filtered.length);
+  //   (filtered.length);
   //   setFilteredData(filtered);
-  //   console.log(filtered.length);
+  //   (filtered.length);
   // }, [selectedYear, selectedDepartment]);
 
   const dataByYear = data.reduce((accumulator, student) => {

@@ -59,12 +59,10 @@ export const studentRegisteration = createAsyncThunk(
 export const studentEmailVerification = createAsyncThunk(
   "/api/v1/student/verify/:jwt",
   async (payload, { rejectWithValue }) => {
-    console.log(payload)
     try {
       const response = await axios.get(
         `/api/v1/student/verify/${payload.token}`
       );
-      console.log(response)
       return response.data;
     } catch (error) {
       if (!error?.response) {
@@ -150,10 +148,13 @@ const authSlice = createSlice({
     builder.addCase(studentEmailVerification.pending, (state) => {
       state.isLoading = true;
     });
-    builder.addCase(studentEmailVerification.fulfilled, (state, { payload }) => {
-      state.isLoading = false;
-      toast.success(payload.message);
-    });
+    builder.addCase(
+      studentEmailVerification.fulfilled,
+      (state, { payload }) => {
+        state.isLoading = false;
+        toast.success(payload.message);
+      }
+    );
     builder.addCase(studentEmailVerification.rejected, (state, { payload }) => {
       state.isLoading = false;
       toast.error(payload?.message || "Something went wrong");

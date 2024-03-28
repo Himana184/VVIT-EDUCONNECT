@@ -10,7 +10,6 @@ import { Link } from 'react-router-dom'
 import { formatDate } from '@/utils/formatDate'
 
 const AnnouncementCard = ({ announcement }) => {
-  console.log(announcement)
   const dispatch = useDispatch();
   const { role } = useSelector((state) => state["auth"])
   return (

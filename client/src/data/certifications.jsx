@@ -127,7 +127,6 @@ export const studentCertificationTableColumns = [
     header: "Tags",
     accessorKey: "tags",
     cell: ({ row }) => {
-      console.log(row.original.tags)
       return (
         <div className="flex flex-wrap gap-x-2 gap-y-1 justify-start ">
           {

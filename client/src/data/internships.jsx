@@ -66,7 +66,6 @@ export const adminInternshipTableColumns = [
     accessorKey: "verificationStatus",
     cell: ({ row }) => {
       const status = row.original.verificationStatus;
-      console.log(row.original);
       return (
         <>
           {status === "Pending" && (
@@ -135,7 +134,6 @@ export const adminInternshipTableColumns = [
     header: "Actions",
     cell: ({ row }) => {
       const internship = row.original;
-      console.log(internship.verificationStatus)
       return (
         <div className="flex items-center space-x-3">
           {
@@ -249,7 +247,6 @@ export const studentInternshipTableColumns = [
     accessorKey: "verificationStatus",
     cell: ({ row }) => {
       const status = row.original.verificationStatus;
-      console.log(row.original);
       return (
         <>
           {status === "Pending" && (
@@ -360,7 +357,6 @@ export const profileInternshipColumns = [
     accessorKey: "verificationStatus",
     cell: ({ row }) => {
       const status = row.original.verificationStatus;
-      console.log(row.original);
       return (
         <>
           {status === "Pending" && (
@@ -429,7 +425,6 @@ export const profileInternshipColumns = [
     header: "Actions",
     cell: ({ row }) => {
       const internship = row.original;
-      console.log(internship.verificationStatus)
       return (
         <div className="flex items-center space-x-3">
           {

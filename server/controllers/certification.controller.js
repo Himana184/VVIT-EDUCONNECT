@@ -212,7 +212,6 @@ export const getCertificationsByRole = async (req) => {
           passoutYear: { $gte: currentYear },
         },
       });
-      console.log("Certifications : ",certifications)
   } else {
     certifications = await Certification.find({
       student: req.user.userId,

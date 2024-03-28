@@ -74,7 +74,6 @@ export const handleAddInternship = async (req, res) => {
 // Access permission - Student
 export const handleUpdateInternship = async (req, res) => {
   const { internshipId } = req.params;
-  console.log(internshipId);
   if (!internshipId || !mongoose.isValidObjectId(internshipId)) {
     throw new ApiError(StatusCodes.BAD_REQUEST, "Not a valid internship Id");
   }
@@ -118,7 +117,6 @@ export const handleUpdateInternship = async (req, res) => {
 // Access permission - Admin, Coordinator of that branch
 export const handleInternshipVerification = async (req, res) => {
   const { internshipId } = req.params;
-  console.log(req.body);
   if (!internshipId || !mongoose.isValidObjectId(internshipId)) {
     throw new ApiError(StatusCodes.BAD_REQUEST, "Not a valid Internship id");
   }
@@ -144,7 +142,6 @@ export const handleInternshipVerification = async (req, res) => {
       new: true,
     }
   );
-  console.log(updatedDetails);
   //fetch and group the internship based on verification status
   const internships = await getInternshipsByRole(req);
 
@@ -195,7 +192,6 @@ export const getAllInternships = async (req, res) => {
   const internships = await getInternshipsByRole(req);
 
   const groupedInternships = await groupData(internships, "verificationStatus");
-  // console.log(groupedInternships);
   return res
     .status(StatusCodes.OK)
     .json(

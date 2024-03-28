@@ -17,11 +17,9 @@ const JobDetail = () => {
   const dispatch = useDispatch();
   const { role } = useSelector((state) => state["auth"])
   const { job, isLoading } = useSelector((state) => state["job"]);
-  console.log(job)
   useEffect(() => {
     const fetchJob = async () => {
-      const response = await dispatch(getJobDriveDetails({ id: jobId }))
-      console.log(response)
+      await dispatch(getJobDriveDetails({ id: jobId }))
     }
     fetchJob();
   }, [jobId])
@@ -41,7 +39,7 @@ const JobDetail = () => {
       <AttachedFiles job={job} />
       {/* Opted students - only for admin */}
       {
-        role == "admin" && <Card>
+        role != "student" && <Card>
           <CardHeader>
             <CardTitle>Details of Opted Students</CardTitle>
             <CardDescription>Below are the students who have shown interest in the job drive</CardDescription>

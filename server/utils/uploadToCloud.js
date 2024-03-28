@@ -17,7 +17,7 @@ const uploadSingleFile = async (file, folderName, fileName) => {
 
   return new Promise((resolve, reject) => {
     blobStream.on("error", (err) => {
-      console.log(err);
+      
       reject({ status: false, err });
     });
     blobStream.on("finish", async () => {
@@ -37,7 +37,6 @@ export const uploadMultipleFiles = async (files, folderName) => {
 
     return new Promise((resolve, reject) => {
       blobStream.on("error", (err) => {
-        console.log(err);
         reject({ filename: fileName, status: false, err });
       });
       blobStream.on("finish", async () => {

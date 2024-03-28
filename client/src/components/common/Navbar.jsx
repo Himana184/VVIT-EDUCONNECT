@@ -25,7 +25,6 @@ import { sidebarLinks } from "@/utils/sidebarLinks";
 export function Navbar() {
   const dispatch = useDispatch();
   const { role, user } = useSelector((state) => state["auth"]);
-  console.log(user);
   const handleNotification = async () => {
     const data = await requestPermission();
     if (data.status) {

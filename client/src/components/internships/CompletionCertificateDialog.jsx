@@ -26,8 +26,7 @@ const CompletionCertificateDialog = ({ internship }) => {
     completionCertificateData.append("completionCertificate", data.completionCertificate[0])
     completionCertificateData.append("internshipId", internship._id);
 
-    const response = await dispatch(uploadCompletionCertificate(completionCertificateData));
-    console.log(response);
+    await dispatch(uploadCompletionCertificate(completionCertificateData));
     setOpen(false)
   }
 

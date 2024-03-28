@@ -18,7 +18,7 @@ export const addAnnouncement = createAsyncThunk(
       }
       return rejectWithValue(error?.response?.data);
     }
-  }
+  },
 );
 
 export const getAnnouncements = createAsyncThunk(
@@ -30,7 +30,6 @@ export const getAnnouncements = createAsyncThunk(
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
-      console.log("Get announcement response : ", response);
       return response.data;
     } catch (error) {
       if (!error?.response) {
@@ -38,13 +37,12 @@ export const getAnnouncements = createAsyncThunk(
       }
       return rejectWithValue(error?.response?.data);
     }
-  }
+  },
 );
 
 export const deleteAnnouncement = createAsyncThunk(
   "/api/v1/announcement/:announcementId(delete)",
   async (payload, { rejectWithValue }) => {
-    console.log("Delete announcement payload : ", payload);
     try {
       const response = await axios.delete(
         `/api/v1/announcement/${payload._id}`,
@@ -52,7 +50,7 @@ export const deleteAnnouncement = createAsyncThunk(
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
-        }
+        },
       );
       return response.data;
     } catch (error) {
@@ -61,13 +59,12 @@ export const deleteAnnouncement = createAsyncThunk(
       }
       return rejectWithValue(error?.response?.data);
     }
-  }
+  },
 );
 
 export const updateAnnouncement = createAsyncThunk(
   "/api/v1/announcement/:announcementId(patch)",
   async (payload, { rejectWithValue }) => {
-    console.log("update announcement payload : ", payload);
     try {
       const response = await axios.patch(
         `/api/v1/announcement/${payload._id}`,
@@ -76,7 +73,7 @@ export const updateAnnouncement = createAsyncThunk(
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
-        }
+        },
       );
       return response.data;
     } catch (error) {
@@ -85,7 +82,7 @@ export const updateAnnouncement = createAsyncThunk(
       }
       return rejectWithValue(error?.response?.data);
     }
-  }
+  },
 );
 
 const announcementSlice = createSlice({
@@ -107,10 +104,9 @@ const announcementSlice = createSlice({
         state.announcements = state.allAnnouncements;
       } else {
         state.announcements = state.allAnnouncements.filter(
-          (announcement) => announcement.priority == payload.priority
+          (announcement) => announcement.priority == payload.priority,
         );
       }
-      console.log(state.allAnnouncements);
     },
   },
   extraReducers: (builder) => {

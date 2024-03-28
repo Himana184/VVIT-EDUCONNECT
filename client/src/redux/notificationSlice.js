@@ -7,7 +7,6 @@ import toast from "react-hot-toast";
 export const handleSaveUserToken = createAsyncThunk(
   "/api/v1/notification/saveToken",
   async (payload, { rejectWithValue }) => {
-    console.log(payload);
     try {
       const response = await axios.post(
         `/api/v1/notification/saveToken`,
@@ -18,7 +17,6 @@ export const handleSaveUserToken = createAsyncThunk(
           },
         }
       );
-      console.log(response);
       return response.data;
     } catch (error) {
       if (!error?.response) {
@@ -67,13 +65,11 @@ const notificationSlice = createSlice({
     });
     builder.addCase(handleSaveUserToken.fulfilled, (state, { payload }) => {
       state.isLoading = false;
-      localStorage.setItem("user",JSON.stringify(payload.student))
+      localStorage.setItem("user", JSON.stringify(payload.student));
       toast.success(payload.message || "Token saved to DB");
     });
     builder.addCase(handleSaveUserToken.rejected, (state, { payload }) => {
       state.isLoading = false;
-      console.log(payload);
-      console.log(payload?.message || "Something went wrong");
     });
 
     builder.addCase(sendNotificationToStudents.pending, (state) => {
@@ -90,8 +86,6 @@ const notificationSlice = createSlice({
       sendNotificationToStudents.rejected,
       (state, { payload }) => {
         state.isLoading = false;
-        console.log(payload);
-        console.log(payload?.message || "Something went wrong");
       }
     );
   },

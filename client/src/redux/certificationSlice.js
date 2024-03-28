@@ -30,7 +30,6 @@ export const getCertifications = createAsyncThunk(
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
-      console.log("Get certifications response : ", response);
       return response.data;
     } catch (error) {
       if (!error?.response) {
@@ -44,7 +43,6 @@ export const getCertifications = createAsyncThunk(
 export const deleteCertification = createAsyncThunk(
   "/api/v1/certification/:certificationId(delete)",
   async (payload, { rejectWithValue }) => {
-    console.log("Delete certification payload : ", payload);
     try {
       const response = await axios.delete(
         `/api/v1/certification/${payload.data._id}`,
@@ -67,7 +65,6 @@ export const deleteCertification = createAsyncThunk(
 export const updateCertification = createAsyncThunk(
   "/api/v1/certification/:certificationId(patch)",
   async (payload, { rejectWithValue }) => {
-    console.log("update user payload : ", payload);
     try {
       const response = await axios.patch(
         `/api/v1/certification/${payload.data._id}`,
@@ -118,7 +115,6 @@ const certificationSlice = createSlice({
     });
     builder.addCase(getCertifications.fulfilled, (state, { payload }) => {
       state.isLoading = false;
-      console.log("Payload : ", payload);
       state.certifications = payload.data.certifications.All;
       toast.success(payload.message);
     });

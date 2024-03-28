@@ -30,7 +30,6 @@ export const getUsers = createAsyncThunk(
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
-      console.log("Get users response : ", response);
       return response.data;
     } catch (error) {
       if (!error?.response) {
@@ -44,7 +43,6 @@ export const getUsers = createAsyncThunk(
 export const deleteUser = createAsyncThunk(
   "/api/v1/user/:userId(delete)",
   async (payload, { rejectWithValue }) => {
-    console.log("Delete user payload : ", payload);
     try {
       const response = await axios.delete(`/api/v1/user/${payload.data._id}`, {
         headers: {
@@ -64,7 +62,6 @@ export const deleteUser = createAsyncThunk(
 export const updateUser = createAsyncThunk(
   "/api/v1/user/:userId(patch)",
   async (payload, { rejectWithValue }) => {
-    console.log("update user payload : ", payload);
     try {
       const response = await axios.patch(
         `/api/v1/user/${payload.data._id}`,

@@ -42,7 +42,6 @@ export const getStudentDetails = createAsyncThunk(
 export const deleteStudent = createAsyncThunk(
   "/api/v1/student/:id(delete)",
   async (payload, { rejectWithValue }) => {
-    console.log("Delete student payload : ", payload);
     try {
       const response = await axios.delete(
         `/api/v1/student/${payload.data._id}`,

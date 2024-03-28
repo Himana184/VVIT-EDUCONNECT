@@ -15,7 +15,7 @@ import { sendNotificationToStudents } from '@/redux/notificationSlice';
 
 const SendNotification = () => {
   const dispatch = useDispatch();
-  const [open, setOpen] = useState();
+  const [open, setOpen] = useState(true);
   const form = useForm();
   const { register, handleSubmit, clearErrors, formState, reset } = form;
   const { errors } = formState;
@@ -23,7 +23,6 @@ const SendNotification = () => {
 
   const handleSendNotification = async (data) => {
     const response = await dispatch(sendNotificationToStudents(data));
-    console.log("Response of Notification : ", response)
     if (response.meta.requestStatus == "fulfilled") {
       setOpen(false);
       reset();

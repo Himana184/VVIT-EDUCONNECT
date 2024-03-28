@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 
 const StudentLayout = (props) => {
   const { token, role } = useSelector((state) => state["auth"]);
-  console.log("Token : ", token)
+  ("Token : ", token)
   if (!token) {
     return <Navigate to={"/auth/login"} replace />;
   }

@@ -11,7 +11,6 @@ export const getCourses = createAsyncThunk(
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
-      console.log("Get courses response : ", response);
       return response.data;
     } catch (error) {
       if (!error?.response) {
@@ -43,7 +42,6 @@ export const addCourse = createAsyncThunk(
 export const updateCourse = createAsyncThunk(
   "/api/v1/course/:courseId(patch)",
   async (payload, { rejectWithValue }) => {
-    console.log("update course payload : ", payload);
     try {
       const response = await axios.patch(
         `/api/v1/course/${payload.data._id}`,
@@ -66,7 +64,6 @@ export const updateCourse = createAsyncThunk(
 export const deleteCourse = createAsyncThunk(
   "/api/v1/course/:courseId(delete)",
   async (payload, { rejectWithValue }) => {
-    console.log("Delete course payload : ", payload);
     try {
       const response = await axios.delete(
         `/api/v1/course/${payload.data._id}`,
@@ -105,7 +102,6 @@ const courseSlice = createSlice({
     });
     builder.addCase(getCourses.fulfilled, (state, { payload }) => {
       state.isLoading = false;
-      console.log("Payload : ", payload.data.courses);
       state.courses = payload.data.courses;
       toast.success(payload.message);
     });
@@ -125,7 +121,6 @@ const courseSlice = createSlice({
     });
     builder.addCase(deleteCourse.rejected, (state, { payload }) => {
       state.isLoading = false;
-      console.log(payload);
       toast.error(payload.message || "something went wrong");
     });
 
@@ -140,7 +135,6 @@ const courseSlice = createSlice({
     });
     builder.addCase(addCourse.rejected, (state, { payload }) => {
       state.isLoading = false;
-      console.log(payload);
       toast.error(payload.message || "something went wrong");
     });
 

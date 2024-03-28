@@ -48,7 +48,6 @@ const AddJobDrive = () => {
     data.categories = categories.map((category) => {
       return category.value;
     })
-    console.log(data.categories)
     data.skills = Object.values(skills);
     data.eligibleBranches = eligibleBranches.map((branch) => {
       return branch.value;
@@ -66,7 +65,7 @@ const AddJobDrive = () => {
     });
 
     const response = await dispatch(handleAddJobDrive(jobData));
-    console.log(response);
+    (response);
     if (response.meta.requestStatus == "fulfilled") {
       navigate("/admin/jobs", { replace: true });
     }

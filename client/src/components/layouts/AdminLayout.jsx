@@ -6,7 +6,6 @@ import { useSelector } from "react-redux";
 
 const AdminLayout = (props) => {
   const { token, role } = useSelector((state)=>state["auth"]);
-  console.log("Token : ",token)
   if (!token) {
     return <Navigate to={"/auth/login"} replace />;
   }

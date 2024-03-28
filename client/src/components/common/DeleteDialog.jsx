@@ -28,7 +28,6 @@ const DeleteDialog = ({ dialogTitle, dialogDescription, data, handleDelete, type
   //function that will dispatch the delete function received as parameter
   const handleDeleteAction = async () => {
     const response = await dispatch(handleDelete({ data }));
-    console.log(response)
     setOpen(false)
   }
 
