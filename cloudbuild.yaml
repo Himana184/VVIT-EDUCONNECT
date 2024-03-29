@@ -2,7 +2,7 @@ steps:
   # Step 1: Building the server side
   - name: "gcr.io/cloud-builders/docker"
     args:
-      ["build", "-t", "gcr.io/$PROJECT_ID/educonnect",  "Dockerfile", "."]
+      ["build", "-t", "gcr.io/$PROJECT_ID/educonnect", "."]
 
   # Step 2: Pushing the server image to Container Registry
   - name: "gcr.io/cloud-builders/docker"
