@@ -1,5 +1,5 @@
 # Stage - 1 - Building the client side 
-FROM node:20-alpine3.14 as builder
+FROM node:20-alpine as builder
 
 # Set the current working directory to app
 WORKDIR /app
@@ -15,7 +15,7 @@ RUN npm run build
 
 # Stage - 2 - Preparing the server
 # Base image for server
-FROM node:20-alpine3.14 as runner
+FROM node:20-alpine as runner
 
 # Set the current working directory to app
 WORKDIR /app
