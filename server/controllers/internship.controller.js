@@ -189,6 +189,7 @@ export const getStudentInternships = async (req, res) => {
 
 // Access permission - Admin, Coordinator, Student - based on their roles data will be sent back
 export const getAllInternships = async (req, res) => {
+  console.log("Internships requested");
   const internships = await getInternshipsByRole(req);
 
   const groupedInternships = await groupData(internships, "verificationStatus");

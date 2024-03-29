@@ -30,6 +30,7 @@ export const getInternships = createAsyncThunk(
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
+      console.log(response);
       return response.data;
     } catch (error) {
       if (!error?.response) {
