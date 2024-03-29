@@ -2,11 +2,11 @@ steps:
   # Step 1: Building the server side
   - name: "gcr.io/cloud-builders/docker"
     args:
-      ["build", "-t", "gcr.io/$PROJECT_ID/educonnect", "."]
+      ["build", "-t", "asia-south1-docker.pkg.dev/gnanachandra/educonnect-repo/$PROJECT_ID/educonnect", "."]
 
   # Step 2: Pushing the server image to Container Registry
   - name: "gcr.io/cloud-builders/docker"
-    args: ["push", "gcr.io/$PROJECT_ID/educonnect"]
+    args: ["push", "asia-south1-docker.pkg.dev/gnanachandra/educonnect-repo/educonnect"]
 
   # Step 3: Deploying to Cloud Run
   - name: "gcr.io/cloud-builders/gcloud"
@@ -14,7 +14,7 @@ steps:
       - "run"
       - "deploy"
       - "your-app"
-      - "--image=gcr.io/$PROJECT_ID/educonnect"
+      - "--image=asia-south1-docker.pkg.dev/gnanachandra/educonnect-repo/educonnect"
       - "--region=asia-south1"
       - "--platform=managed"
       - "--set-env-vars=SECRET_NAME=$(gcloud secrets versions access latest --secret=educonnect-secret-keys)"
