@@ -1,3 +1,3 @@
 import Redis from "ioredis";
-const redisClient = new Redis(6379, "13.233.64.99");
+const redisClient = new Redis(process.env.REDIS_URL);
 export default redisClient;
